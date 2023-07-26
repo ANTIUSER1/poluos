@@ -18,15 +18,15 @@ public class SocketConnector {
     private ReceiverData receiverData;
 
 
-public  void connect(  int port) throws IOException {
-    ServerSocket serverSocket= new ServerSocket(port);
-    ExecutorService execService = Executors.newFixedThreadPool(20);
-    while (true){
-        log.info("Socket connects to "+port);
-        Socket socket = serverSocket.accept();
-receiverData.setSocket(socket);
-execService.submit(receiverData);
+    public void connect(int port) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(port);
+        ExecutorService execService = Executors.newFixedThreadPool(20);
+        while (true) {
+            log.info("Socket connects to " + port);
+            Socket socket = serverSocket.accept();
+            receiverData.setSocket(socket);
+            execService.submit(receiverData);
+        }
     }
-}
 
 }

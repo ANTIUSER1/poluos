@@ -13,10 +13,14 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
 
     @Override
     public Outcoming createNormalResponce(HeaderData hd) {
+        System.out.println("==");
+        System.out.println( hd);
+
+        System.out.println("==");
+
         BodyData_RESPONSE bdr= BodyData_RESPONSE.builder()
                 .rpid(hd.getPid())
                 .rp(ProcessingResultCodeConstants.EGTS_PC_OK)
-
                 .build();
 
         return bdr;

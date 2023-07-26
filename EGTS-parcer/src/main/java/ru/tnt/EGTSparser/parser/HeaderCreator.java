@@ -24,9 +24,9 @@ public class HeaderCreator implements ConvertIncomingData {
 
     @Override
     public Incoming create(byte[] data) throws IncorrectDataException {
-        if (data.length < ByteFixedPositions.PACKAGE_HEAD_MIN_LENGTH){
+        if (data.length < ByteFixedPositions.HEAD_MIN_LENGTH){
             log.error("Incoming header data too small. Expected minimum "
-                    +ByteFixedPositions.PACKAGE_HEAD_MIN_LENGTH
+                    +ByteFixedPositions.HEAD_MIN_LENGTH
                     +" bytes, but received "+data.length+" ");
             throw new IncorrectDataException("Incoming header data too small");}
         log.info("Start parsing incoming data");

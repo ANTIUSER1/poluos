@@ -26,7 +26,7 @@ public class APPDATAOptCreatorTool {
 
     public void setShiftAction(byte[] data) {
         this.siftAction = headerLength;
-        headerLength = data[ByteFixedPositions.PACKAGE_HEAD_LENGTH_INDEX];
+        headerLength = data[ByteFixedPositions.HEAD_LENGTH_INDEX];
         hasTmField = tmExist(data[headerLength + 4]);
         hasEvField = evExist(data[headerLength + 4]);
         hasObField = obExist(data[headerLength + 4]);

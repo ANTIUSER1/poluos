@@ -23,7 +23,7 @@ public class APPDATACreator implements ConvertIncomingData {
 
     @Override
     public Incoming create(byte[] data) throws IncorrectDataException {
-        if( data.length < ByteFixedPositions.PACKAGE_HEAD_MIN_LENGTH
+        if( data.length < ByteFixedPositions.HEAD_MIN_LENGTH
                 +ByteFixedPositions.PACKAGE_APPDATA_MIN_LENGTH
                 +ByteFixedPositions.PACKAGE_APPDATA_RECORD_DATA_MIN_LENGTH
 

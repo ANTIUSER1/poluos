@@ -26,11 +26,11 @@ public class AdditionalDataCreatorTool {
     public BodyData_APPDATA tailCreate(BodyData_APPDATA bda,byte[] data,int headerLength1){
         bda.setSst(data[headerLength1 + 1]);//25
         bda.setRst(data[headerLength1 + 2]);//26
-        headerLength1  = data[ByteFixedPositions.PACKAGE_HEAD_LENGTH_INDEX] +18;
+        headerLength1  = data[ByteFixedPositions.HEAD_LENGTH_INDEX] +18;
 
         //setting RD
         Byte[] rd = new Byte[data.length - headerLength1];
-        System.out.println("    headerLength:  " +data[ByteFixedPositions.PACKAGE_HEAD_LENGTH_INDEX]   );
+        System.out.println("    headerLength:  " +data[ByteFixedPositions.HEAD_LENGTH_INDEX]   );
         System.out.println("    headerLength1:  " +headerLength1   );
         System.out.println("     REST LENGTH:  " +(data.length- headerLength1)   );
         for (int k = headerLength1 ; k < data.length; k++) {

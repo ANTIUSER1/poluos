@@ -13,12 +13,17 @@ public class ByteFixedPositions {
     /**
      * index of input byte array where is the package-headerLength information
      */
-    public static final int PACKAGE_HEAD_LENGTH_INDEX = 3;
+    public static final int HEAD_LENGTH_INDEX = 3;
+
+    /**
+     * minimal head length
+     */
+    public static final int HEAD_MIN_LENGTH = 11;
 
     /**
      *  minimal  header length   information
      */
-    public static final int PACKAGE_HEAD_MIN_LENGTH = 11;
+    public static final int PACKAGE_HCS_MAX_INDEX = 11;
 
     /**
      * minimal appdata length information
@@ -50,5 +55,8 @@ public class ByteFixedPositions {
      */
     public static final int TYPE_SIGNED_APPDATA = 2;
 
-
+    public  static  int getHCSIndex(byte[] data){
+    if(data[HEAD_LENGTH_INDEX]==11) return 10;
+    return 15;
+}
 }

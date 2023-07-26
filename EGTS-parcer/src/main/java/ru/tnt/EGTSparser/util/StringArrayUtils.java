@@ -1,13 +1,20 @@
 package ru.tnt.EGTSparser.util;
 
-import java.util.Arrays;
+import java.math.BigInteger;
 
 public class StringArrayUtils {
 
-    public static <T> void arrayPrintToScreen(T[] data) {
+    public static <T> String arrayPrintToScreen(T[] data) {
+        StringBuffer out=new StringBuffer();
         for (int k = 0; k < data.length; k++) {
-            System.out.print(" v[" + k + "]=" + data[k] + "  ");
-        }
+            out.append( " v[" + k + "]=" + data[k] + "  ");
+        }return out.toString();
+    }
+    public static String arrayPrintToScreen(byte[] data) {
+        StringBuffer out=new StringBuffer();
+        for (int k = 0; k < data.length; k++) {
+            out.append( " v[" + k + "]=" + data[k] + "  ");
+        }return out.toString();
     }
 
     public static Byte[] convertToObject(byte[] data) {
@@ -22,10 +29,26 @@ public class StringArrayUtils {
         return String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace(' ', '0');
     }
 
-    public static byte[] joinArrays(byte[] data1, byte[] data2) {
-       byte[] outData = Arrays.copyOf(data1, data2.length + data2.length);
-        System.arraycopy(data1, 0, outData, data2.length, data2.length);
+    public static byte[] joinArrays(byte[] dataFirst, byte[] dataSecond) {
+        byte[] outData = new byte[dataFirst.length + dataSecond.length];
+        for (int k = 0; k < dataFirst.length; k++) outData[k] = dataFirst[k];
+        for (int k = dataFirst.length; k < outData.length; k++) outData[k] = dataSecond[k - dataFirst.length];
         return outData;
+    }
+
+    public static byte[] shortToByteArray(short N ) {
+        return new byte[] { (byte) (N >> 8), (byte) (N & 255) };
+    }
+    public static byte[] inverse(byte[] data){
+        byte[] out = new byte[data.length ];
+        for(int k=0;k<data.length;k++)out[k]=data[data.length-k];
+        return out;
+    }
+    public  static byte[] addByteToTail(byte[] data, byte b){
+        byte[] out = new byte[data.length + 1];
+        for(int k=0;k<data.length;k++)out[k]=data[k];
+        out[out.length-1]=b;
+        return out;
     }
 
     public static byte[] createSubArray(byte[] inData, int from,int to){
@@ -41,5 +64,12 @@ public class StringArrayUtils {
     return out;
     }
 
+    public static long[] byteToLong(byte[] data){
+        long[] out =new long[data.length];
+        for(int k=0;k<data.length;k++){
+            out[k]=data[k] &0xff;
+        }
+        return out;
+    }
 
 }
