@@ -29,5 +29,4 @@ public class CRC16Calculator {
             crc &= 0xffff;
     }
 
-
-    }
+ }
