@@ -14,16 +14,14 @@ import lombok.ToString;
 @ToString
 public class BodyData_RESPONSE implements  Outcoming{
 
-    /**
-     * (Response Packet ID)  length 2
-     * contains id of rectived package
-     */
-    private Byte[] rpid;
+    private HeaderData header;
 
+    private   byte[] headBody;
+    private   byte[] responseBody;
     /**
      * (Processing Result)
      */
-    private Byte rp;
+    private Byte pr;
 
 
 }

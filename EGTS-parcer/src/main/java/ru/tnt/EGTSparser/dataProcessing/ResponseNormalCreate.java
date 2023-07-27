@@ -9,7 +9,12 @@ import ru.tnt.EGTSparser.data.Outcoming;
  */
 public interface ResponseNormalCreate {
 
+    /**
+     * for normal response
+     * @param hd
+     * @return
+     */
     Outcoming createNormalResponce(HeaderData hd);
-    Outcoming createProgressResponse(HeaderData hd);
-    Outcoming createDoubleProcessingResponse(HeaderData hd);
+
+
 }

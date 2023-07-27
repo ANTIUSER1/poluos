@@ -6,9 +6,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.tnt.EGTSparser.crc.service.CRC;
 import ru.tnt.EGTSparser.data.BodyData_APPDATA;
+import ru.tnt.EGTSparser.data.BodyData_RESPONSE;
 import ru.tnt.EGTSparser.data.HeaderData;
+import ru.tnt.EGTSparser.data.Outcoming;
+import ru.tnt.EGTSparser.dataProcessing.ResponseNormalCreate;
 import ru.tnt.EGTSparser.parser.ConvertIncomingData;
-import ru.tnt.EGTSparser.parser.NormalProcessingImpl;
+
+import ru.tnt.EGTSparser.parser.ResponseCreateImpl;
 import ru.tnt.EGTSparser.util.ByteFixedPositions;
 import ru.tnt.EGTSparser.util.ProcessingResultCodeConstants;
 import ru.tnt.EGTSparser.util.StringArrayUtils;
@@ -25,20 +29,25 @@ import java.util.concurrent.Future;
 @Component
 public class ReceiverData implements Callable<Future<Byte[]>> {
 
-    @Autowired
-    NormalProcessingImpl normalProcessing;
+//    @Autowired
+//    NormalProcessingImpl normalProcessing;
     private Socket socket;
     @Autowired
     @Qualifier(StringFixedBeanNames.HEADER_CREATOR_BEAN)
     private ConvertIncomingData headerCreator;
+
     @Autowired
     @Qualifier(StringFixedBeanNames.APP_DATA_CREATOR_BEAN)
     private ConvertIncomingData appDataCreator;
+
+    @Autowired
+    private ResponseNormalCreate responseNormal;
+
     @Autowired
     private CRC crc;
 
     @Override
-    public Future<Byte[]> call() throws Exception {
+    public Future<Byte[]> call() throws Exception{
         BodyData_APPDATA appData;
         byte[] income = receive();
         log.info("   Received: " + income.length + " bytes ");
@@ -50,14 +59,47 @@ public class ReceiverData implements Callable<Future<Byte[]>> {
         System.out.println();System.out.println();System.out.println();
         if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] == ByteFixedPositions.TYPE_APPDATA)
             appData = (BodyData_APPDATA) appDataCreator.create(income);
-        response(income);
+        System.out.println(")))))))))))))))))");
+//       response(income); //crc8=117   crc16  -11435   checkSumm ++   v[0]=-45   v[1]=85
+
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(1234567890);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+       response(hd);
+     //
         return null;
+    }
+
+    private void response(HeaderData hd) throws IOException {
+        BodyData_RESPONSE bdr = (BodyData_RESPONSE) responseNormal.createNormalResponce(hd);
+
+
+
+//        output.write(responseData);
+//        log.info("Responce send    :   "+responseData.length);
+//        output.close();
+        System.out.println("  HeaderData hd)");
+        System.out.println();
+        System.out.println();
+        System.out.println(bdr);
+        System.out.println();
+        System.out.println();
+        OutputStream output = socket.getOutputStream();
+        output.write(bdr.getResponseBody());
+        output.close();
+
     }
 
     private void response(byte[] income) throws IOException {
         OutputStream output = socket.getOutputStream();
-//        BodyData_RESPONSE bdr = (BodyData_RESPONSE) normalProcessing.prepareData(income);
-//        System.responseBody.println("    *****bdr \n" + bdr + " \n  *****");
+
 
         System.out.println("+   income  ++  "+StringArrayUtils.arrayPrintToScreen( income ));
         System.out.println("INCOME  HCS "+ByteFixedPositions.getHCSIndex(income));
@@ -94,6 +136,12 @@ public class ReceiverData implements Callable<Future<Byte[]>> {
         System.out.println("+-----   HCS  ++  "+StringArrayUtils.arrayPrintToScreen(hcs));
         System.out.println();
 
+        System.out.println(" *****\n********                     hcs len  "+hcs.length);
+System.out.println("ARRAYS: \n" +
+        "[2, 0, 2, 11, 0, 3, 0, 122, 0, 0] \n" +
+       StringArrayUtils.arrayPrintToScreen(hcs)+" \n"
+
+);
         byte crcVal8 =(byte) crc.calculate8(StringArrayUtils.byteToLong(hcs));
         System.out.println("+-----   crcVal8 ++  "+crcVal8);
         System.out.println();
@@ -103,19 +151,6 @@ public class ReceiverData implements Callable<Future<Byte[]>> {
         System.out.println("+-----   -----responseBody ++  "+StringArrayUtils.arrayPrintToScreen(responseBody));
         System.out.println();
         System.out.println();
-
-        //  ===================================
-
-short m=2;
-byte[] ms=StringArrayUtils.shortToByteArray(m);
-        System.out.println("+-----   m ++  "+m);
-        System.out.println("+-----   -----ms ++  "+StringArrayUtils.arrayPrintToScreen(ms));
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-
-        //  ===================================
 
 
         System.out.println("+   responseData array before ++  " + StringArrayUtils.arrayPrintToScreen(responseData));
@@ -128,13 +163,19 @@ byte[] ms=StringArrayUtils.shortToByteArray(m);
         System.out.println("+-----   -----checkSumm ++  "+StringArrayUtils.arrayPrintToScreen(checkSumm));
         System.out.println();
 
-        responseData=StringArrayUtils.joinArrays( responseData,StringArrayUtils.inverse( checkSumm ) );
+
 
         System.out.println("+ 3  responseData ++  "+StringArrayUtils.arrayPrintToScreen(responseData));
         System.out.println();
 
-        output.write(responseData);
-        log.info("Responce send ");
+        short ccrr=  (short) crc.calculate16(StringArrayUtils.byteToLong(responseData));
+        System.out.println(ccrr+" CORRECT "+
+                StringArrayUtils.arrayPrintToScreen(responseData)+" \n");
+
+        System.out.println("F    FFFFFFFFFFFFFF   RESPONSEBODY Len "+responseData.length);
+
+         output.write(responseData);
+        log.info("Responce send    :   "+responseData.length);
     }
 
     public void setSocket(Socket socket) {

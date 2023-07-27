@@ -14,8 +14,8 @@ public class NormalProcessingImpl implements NormalProcessingCreate {
         pid[0]=data[8];
         pid[1]=data[9];
         BodyData_RESPONSE brs=BodyData_RESPONSE.builder()
-                .rp(ProcessingResultCodeConstants.EGTS_PC_INC_HEADERFORM)
-                .rpid(pid)
+                .pr(ProcessingResultCodeConstants.EGTS_PC_INC_HEADERFORM)
+                //.rpid(pid)
                 .build();
         return brs;
     }

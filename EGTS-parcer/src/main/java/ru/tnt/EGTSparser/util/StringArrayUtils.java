@@ -16,6 +16,12 @@ public class StringArrayUtils {
             out.append( " v[" + k + "]=" + data[k] + "  ");
         }return out.toString();
     }
+    public static String arrayPrintToScreen(long[] data) {
+        StringBuffer out=new StringBuffer();
+        for (int k = 0; k < data.length; k++) {
+            out.append( " v[" + k + "]=" + data[k] + "  ");
+        }return out.toString();
+    }
 
     public static Byte[] convertToObject(byte[] data) {
         Byte[] result = new Byte[data.length];
@@ -30,18 +36,25 @@ public class StringArrayUtils {
     }
 
     public static byte[] joinArrays(byte[] dataFirst, byte[] dataSecond) {
-        byte[] outData = new byte[dataFirst.length + dataSecond.length];
-        for (int k = 0; k < dataFirst.length; k++) outData[k] = dataFirst[k];
-        for (int k = dataFirst.length; k < outData.length; k++) outData[k] = dataSecond[k - dataFirst.length];
-        return outData;
+        byte[] out = new byte[dataFirst.length + dataSecond.length];
+        for (int k = 0; k < dataFirst.length; k++) out[k] = dataFirst[k];
+        for (int k = dataFirst.length; k < out.length; k++) out[k] = dataSecond[k - dataFirst.length];
+        return out;
     }
 
+    public static byte[] convertToByteArray(long[] data){
+        byte[] out = new byte[data.length];
+        for(int k=0;k<data.length;k++)out[k]= (byte) data[k];
+        return out;
+    }
     public static byte[] shortToByteArray(short N ) {
         return new byte[] { (byte) (N >> 8), (byte) (N & 255) };
     }
     public static byte[] inverse(byte[] data){
         byte[] out = new byte[data.length ];
-        for(int k=0;k<data.length;k++)out[k]=data[data.length-k];
+        for(int k=0;k<data.length;k++){
+            out[k]=data[data.length-k-1];
+        }
         return out;
     }
     public  static byte[] addByteToTail(byte[] data, byte b){
@@ -67,7 +80,7 @@ public class StringArrayUtils {
     public static long[] byteToLong(byte[] data){
         long[] out =new long[data.length];
         for(int k=0;k<data.length;k++){
-            out[k]=data[k] &0xff;
+            out[k]=data[k] & 0xff;
         }
         return out;
     }
