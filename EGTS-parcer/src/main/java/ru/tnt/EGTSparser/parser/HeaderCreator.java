@@ -28,7 +28,8 @@ public class HeaderCreator implements ConvertIncomingData {
             log.error("Incoming header data too small. Expected minimum "
                     +ByteFixedPositions.HEAD_MIN_LENGTH
                     +" bytes, but received "+data.length+" ");
-            throw new IncorrectDataException("Incoming header data too small");}
+            throw new IncorrectDataException("Incoming header data too small");
+        }
         log.info("Start parsing incoming data");
         HeaderData hd = HeaderData.builder()
                 .hasOptions(data[3] == 16).prv(data[0])
@@ -38,8 +39,7 @@ public class HeaderCreator implements ConvertIncomingData {
                 .pt(data[9]).hcs(data[10]).build();
         hd = additionalDataCreatorTool.additionalCreate(hd, data);
         if (hd.isHasOptions()) headerOptCreatorTool.optCreate(hd, data);
-        log.info("Finish parsing incoming data header normally");
-        System.out.println("\n" + hd + "\n");
+        log.info("Finish parsing incoming data header normally \n" + hd + "\n");
         return hd;
     }
 }

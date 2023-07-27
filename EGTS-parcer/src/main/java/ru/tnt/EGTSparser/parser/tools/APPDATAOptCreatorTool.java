@@ -1,11 +1,13 @@
 package ru.tnt.EGTSparser.parser.tools;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.tnt.EGTSparser.data.BodyData_APPDATA;
 import ru.tnt.EGTSparser.util.ByteFixedPositions;
 import ru.tnt.EGTSparser.util.StringArrayUtils;
 
 @Service
+@Slf4j
 public class APPDATAOptCreatorTool {
 
     boolean hasTmField;
@@ -25,6 +27,7 @@ public class APPDATAOptCreatorTool {
     }
 
     public void setShiftAction(byte[] data) {
+        log.info("Initialize start shift for array index in head sensitive part ");
         this.siftAction = headerLength;
         headerLength = data[ByteFixedPositions.HEAD_LENGTH_INDEX];
         hasTmField = tmExist(data[headerLength + 4]);
@@ -33,6 +36,7 @@ public class APPDATAOptCreatorTool {
     }
 
     public BodyData_APPDATA optCreateOID(BodyData_APPDATA bda, byte[] data ) {
+        log.info("Creating OID field");
         if (hasObField) {
             bda.setOid(new Byte[4]);
             // data[headerLength+8] data[headerLength+7]
@@ -48,6 +52,7 @@ public class APPDATAOptCreatorTool {
 
 
     public BodyData_APPDATA optCreateEVID(BodyData_APPDATA bda, byte[] data ) {
+        log.info("Creating EVID field");
         if (hasEvField) {
             bda.setEvid(new Byte[4]);
             // data[headerLength+12] data[headerLength+11]
@@ -62,6 +67,7 @@ public class APPDATAOptCreatorTool {
     }
 
     public BodyData_APPDATA optCreateTm(BodyData_APPDATA bda, byte[] data ) {
+        log.info("Creating TM field");
         if (hasTmField) {
             bda.setEvid(new Byte[4]);
             // data[headerLength+16] data[headerLength+15]
@@ -76,26 +82,6 @@ public class APPDATAOptCreatorTool {
     }
 
 
-    private boolean ssodExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
-        return test.charAt(test.length() - 1 - 6) == '1';
-    }
-
-    private boolean rsodExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
-        return test.charAt(test.length() - 1 - 5) == '1';
-    }
-
-    private boolean grpExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
-        return test.charAt(test.length() - 1 - 4) == '1';
-    }
-
-    private boolean rppExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
-        return test.charAt(test.length() - 1 - 3) == '1';
-    }
-
     private boolean tmExist(byte val) {
         String test = StringArrayUtils.byteToBinary(val);
         return test.charAt(test.length() - 1 - 2) == '1';
@@ -108,7 +94,6 @@ public class APPDATAOptCreatorTool {
 
     private boolean obExist(byte val) {
         String test = StringArrayUtils.byteToBinary(val);
-        System.out.println(test + "  test.charAt(0) = " + test.charAt(0) + "   test.charAt(test.length()-1-0) == '1' " + (test.charAt(test.length() - 1) == '1'));
         return test.charAt(test.length() - 1) == '1';
     }
 }

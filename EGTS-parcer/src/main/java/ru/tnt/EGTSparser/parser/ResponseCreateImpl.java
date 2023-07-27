@@ -1,5 +1,6 @@
 package ru.tnt.EGTSparser.parser;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.tnt.EGTSparser.crc.service.CRC;
@@ -12,6 +13,7 @@ import ru.tnt.EGTSparser.util.ProcessingResultCodeConstants;
 import ru.tnt.EGTSparser.util.StringArrayUtils;
 
 @Service
+@Slf4j
 public class ResponseCreateImpl implements ResponseNormalCreate {
 
 
@@ -19,7 +21,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
     private CRC crc;
     @Override
     public Outcoming createNormalResponce(HeaderData hd) {
-
+        log.info("Responser to BNSO creation start");
        BodyData_RESPONSE bdr= BodyData_RESPONSE.builder()
                 .header(hd)
                 .pr(ProcessingResultCodeConstants.EGTS_PC_OK)
@@ -59,7 +61,8 @@ rb = StringArrayUtils.joinArrays(bdr.getHeadBody() , bdr.getResponseBody());
         bdr.setResponseBody(rb);
         System.out.println("    BR RESP BODY LEN "+bdr.getResponseBody().length);
 
-
+        log.info("Responser to BNSO creation finish" +
+                "\n "+bdr);
         return bdr;
     }
 
