@@ -39,7 +39,7 @@ public class HeaderCreator implements ConvertIncomingData {
                 .pt(data[9]).hcs(data[10]).build();
         hd = additionalDataCreatorTool.additionalCreate(hd, data);
         if (hd.isHasOptions()) headerOptCreatorTool.optCreate(hd, data);
-        log.info("Finish parsing incoming data header normally \n" + hd + "\n");
+        log.info("Finish parsing incoming data header normally \n \n" + hd + "\n");
         return hd;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import ru.tnt.EGTSparser.controllers.receiver.SocketConnector;
 import ru.tnt.EGTSparser.util.StringArrayUtils;
 
+import java.nio.ByteBuffer;
+
 @Service
 @Slf4j
 public class CLIRunner implements CommandLineRunner {
@@ -25,6 +27,8 @@ public class CLIRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
- connector.connect(socketPort);
+
+           connector.connect(socketPort);
     }
+
 }

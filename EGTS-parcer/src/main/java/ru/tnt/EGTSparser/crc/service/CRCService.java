@@ -20,7 +20,7 @@ public class CRCService implements CRC {
     private CRC16Calculator calculator16;
 
     @Override
-    public long calculate8(long[] data) {
+    public long calculate8(byte[] data) {
         log.info("CRC-8 generates data");
         calculator8.reset();
         calculator8.update(data);
@@ -28,10 +28,10 @@ public class CRCService implements CRC {
     }
 
     @Override
-    public long calculate16(long[] data) {
+    public long calculate16(byte[] data) {
         log.info("CRC-16 generates data");
         calculator16.setData(data);
-        return calculator16.value();
+        return  calculator16.value();
     }
 
 }

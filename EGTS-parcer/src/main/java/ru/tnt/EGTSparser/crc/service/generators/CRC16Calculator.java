@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 public class CRC16Calculator {
 
     long crc= 0xFFFF;
-    long[] data;
+    byte[] data;
 
     public long value() {
         calculate();
         return crc;
     }
 
-    public void setData(long[] data) {
+    public void setData(byte[] data) {
         this.data = data;
     }
 

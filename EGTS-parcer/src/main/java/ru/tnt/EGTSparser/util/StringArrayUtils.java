@@ -1,6 +1,7 @@
 package ru.tnt.EGTSparser.util;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 
 public class StringArrayUtils {
 
@@ -23,6 +24,11 @@ public class StringArrayUtils {
         }return out.toString();
     }
 
+    public static    short calcShortFromArray(byte[] data){
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+        return buffer.getShort();
+
+    }
     public static Byte[] convertToObject(byte[] data) {
         Byte[] result = new Byte[data.length];
         for (int k = 0; k < data.length; k++) {
