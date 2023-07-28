@@ -1,5 +1,6 @@
 package ru.tnt.EGTSparser.parser;
 
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import ru.tnt.EGTSparser.util.StringFixedBeanNames;
 @Slf4j
 public class APPDATACreator implements ConvertIncomingData {
 
+
     @Autowired
     private APPDATAOptCreatorTool appdataOptCreatorTool;
 
@@ -23,6 +25,7 @@ public class APPDATACreator implements ConvertIncomingData {
 
     @Override
     public Incoming create(byte[] data) throws IncorrectDataException {
+
         log.info("Creating APPDATA  start");
         if (data.length < ByteFixedPositions.HEAD_MIN_LENGTH
                 + ByteFixedPositions.PACKAGE_APPDATA_MIN_LENGTH

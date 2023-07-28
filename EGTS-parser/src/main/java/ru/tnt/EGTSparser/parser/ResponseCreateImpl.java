@@ -33,6 +33,9 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
         bdr=createHeadBody(bdr) ;
         bdr = createResponse(bdr);
         bdr = createCRC8(bdr);
+
+        System.out.println("-------1----\n " + bdr +"  \n -----------");
+
         bdr = createCRC16(bdr);
         bdr = createResponseBodyFinal(bdr);
         log.info("Response data to BNSO creation finish" +
@@ -54,8 +57,8 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
         return bdr;
     }
 
-    private BodyData_RESPONSE createCRC16(BodyData_RESPONSE bdr) {
-        short crcV16 = (short) crc.calculate16(bdr.getResponseBody());
+    private BodyData_RESPONSE createCRC16(BodyData_RESPONSE bdr) { 
+        short crcV16 = (short) crc.calculate16(  bdr.getResponseBody()    );
         byte[] checkSumm = StringArrayUtils.shortToByteArray(crcV16);
         byte[] rb = StringArrayUtils.joinArrays(bdr.getResponseBody(), StringArrayUtils.inverse(checkSumm));
         bdr.setResponseBody(rb);
