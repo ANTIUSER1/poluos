@@ -10,7 +10,6 @@ import ru.tnt.EGTSparser.data.BodyData_RESPONSE;
 import ru.tnt.EGTSparser.data.HeaderData;
 import ru.tnt.EGTSparser.dataProcessing.ResponseNormalCreate;
 import ru.tnt.EGTSparser.parser.ConvertIncomingData;
-
 import ru.tnt.EGTSparser.util.ByteFixedPositions;
 import ru.tnt.EGTSparser.util.StringArrayUtils;
 import ru.tnt.EGTSparser.util.StringFixedBeanNames;
@@ -26,9 +25,11 @@ import java.util.concurrent.Future;
 @Slf4j
 public class ReceiverData implements Callable<Future<Byte[]>> {
 
-//    @Autowired
-//    NormalProcessingImpl normalProcessing;
     private Socket socket;
+
+    @Autowired
+    private ByteAnalizer byteAnalizer;
+
     @Autowired
     @Qualifier(StringFixedBeanNames.HEADER_CREATOR_BEAN)
     private ConvertIncomingData headerCreator;
@@ -43,40 +44,48 @@ public class ReceiverData implements Callable<Future<Byte[]>> {
     @Autowired
     private CRC crc;
 
-    @Override
-    public Future<Byte[]> call() throws Exception{
-        BodyData_APPDATA appData;
-        byte[] income = receive();
-        log.info("Received: " + income.length + " bytes ");
-short pid = calcPID(income);
-        log.info("PID: [" + income[7] + "  " + income[8]+ "] ( "+pid+" ) ");
+    private byte responseCode;
 
-        HeaderData hd = (HeaderData) headerCreator.create(income);
+    @Override
+    public Future<Byte[]> call() throws Exception {
+        BodyData_APPDATA appData;
+        HeaderData hd = null;
+        byte[] income = receive();
+        responseCode = byteAnalizer.analize(income);
+        System.out.println("  \n Resp. CODDE " + responseCode + "     =============\n");
+
+        // log.info("Received: " + income.length + " bytes ");
+        short pid = calcPID(income);
+        log.info("PID: [" + income[7] + "  " + income[8]+ "] ( "+pid+" ) ");
+        // if(responseCode==0) {
+        hd = (HeaderData) headerCreator.create(income);
+        //   }
 
         if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] == ByteFixedPositions.TYPE_APPDATA)
             appData = (BodyData_APPDATA) appDataCreator.create(income);
+        System.out.println("*****************************\n\nresponseCode   " + responseCode);
 
-
-       response(hd);
+        response(hd, responseCode);
         return null;
     }
 
-    private void response(HeaderData hd) throws IOException {
-        BodyData_RESPONSE bdr = (BodyData_RESPONSE) responseNormal.createNormalResponse(hd);
-        log.info("Sending back response to BNSO start. \n Data: "
-                +StringArrayUtils.arrayPrintToScreen(bdr.getResponseBody()));
+    private void response(HeaderData hd, byte code) throws IOException {
+        BodyData_RESPONSE bdr = (BodyData_RESPONSE) responseNormal.createNormalResponse(hd, code);
+        // log.info("Sending back response to BNSO start. \n Data: "                 +StringArrayUtils.arrayPrintToScreen(bdr.getResponseBody()));
+
         OutputStream output = socket.getOutputStream();
 
         output.write(bdr.getResponseBody());
-        log.info("Sending back response to BNSO finish. " );
+        // log.info("Sending back response to BNSO finish. " );
         // output.close();
     }
 
 
     private short calcPID(byte[] income) {
-        byte[] pid=new byte[2];
-        pid[0]=income[8];pid[1]=income[7];
-        return  StringArrayUtils.calcShortFromArray(pid);
+        byte[] pid = new byte[2];
+        pid[0] = income[8];
+        pid[1] = income[7];
+        return StringArrayUtils.calcShortFromArray(pid);
     }
 
     public void setSocket(Socket socket) {

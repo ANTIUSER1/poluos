@@ -71,7 +71,8 @@ public class StringArrayUtils {
     }
 
     public static byte[] createSubArray(byte[] inData, int from,int to){
-       if(inData.length==0 || from>=to || from<0 || to<0 || from+to>inData.length) throw new IllegalArgumentException("array borders error");
+     if(from+to>inData.length) to=inData.length;
+       if(inData.length==0 || from>=to || from<0 || to<0 ) throw new IllegalArgumentException("array borders error");
         byte[] outData =new byte[to-from];
         for(int k=from;k<to;k++)outData[k-from]=inData[k];
         return outData;
@@ -91,4 +92,10 @@ public class StringArrayUtils {
         return out;
     }
 
+    public static    boolean  arraysEquals(byte[] data1, byte[] data2){
+        if(data2.length!=data1.length)return false;
+        for(int k=0; k<data1.length;k++ ){
+            if(data1[k]!=data2[k])return false;
+        }return true;
+    }
 }

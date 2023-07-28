@@ -27,7 +27,6 @@ public class CLIRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
            connector.connect(socketPort);
     }
 

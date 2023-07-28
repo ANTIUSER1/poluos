@@ -14,7 +14,7 @@ public interface ResponseNormalCreate {
      * @param hd
      * @return
      */
-    Outcoming createNormalResponse(HeaderData hd);
+    Outcoming createNormalResponse(HeaderData hd, byte resultCode);
 
 
 }

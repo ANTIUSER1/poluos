@@ -21,21 +21,19 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
     private CRC crc;
 
     @Override
-    public Outcoming createNormalResponse(HeaderData hd) {
+    public Outcoming createNormalResponse(HeaderData hd , byte resultCode) {
         log.info("Response data to BNSO creation start");
         BodyData_RESPONSE bdr = BodyData_RESPONSE.builder()
                 .header(hd).pr(ProcessingResultCodeConstants.EGTS_PC_OK)
                 .build();
+
         bdr = changeDataBodyLength(bdr);
         bdr = changeDataFDL(bdr);
-        bdr = changeDataResponseType(bdr);
+        bdr = changeDataResponseType(bdr, resultCode);
         bdr = changeHeaherOptopnals(bdr);
         bdr=createHeadBody(bdr) ;
         bdr = createResponse(bdr);
         bdr = createCRC8(bdr);
-
-        System.out.println("-------1----\n " + bdr +"  \n -----------");
-
         bdr = createCRC16(bdr);
         bdr = createResponseBodyFinal(bdr);
         log.info("Response data to BNSO creation finish" +
@@ -57,7 +55,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
         return bdr;
     }
 
-    private BodyData_RESPONSE createCRC16(BodyData_RESPONSE bdr) { 
+    private BodyData_RESPONSE createCRC16(BodyData_RESPONSE bdr) {
         short crcV16 = (short) crc.calculate16(  bdr.getResponseBody()    );
         byte[] checkSumm = StringArrayUtils.shortToByteArray(crcV16);
         byte[] rb = StringArrayUtils.joinArrays(bdr.getResponseBody(), StringArrayUtils.inverse(checkSumm));
@@ -105,8 +103,8 @@ bdr.setHeadBody(out);
         return bdr;
     }
 
-    private BodyData_RESPONSE changeDataResponseType(BodyData_RESPONSE bdr) {
-        bdr.getHeader().setPt((byte) 0);
+    private BodyData_RESPONSE changeDataResponseType(BodyData_RESPONSE bdr, byte resultCode) {
+        bdr.getHeader().setPt(  resultCode);
         return bdr;
     }
 
