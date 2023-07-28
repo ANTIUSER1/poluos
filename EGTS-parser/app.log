@@ -1,0 +1,10 @@
+21:17:06.205 [main] INFO  r.t.EGTSparser.EgtsParcerApplication - Starting EgtsParcerApplication v0.0.1-SNAPSHOT using Java 17.0.4 with PID 15608 (C:\Developing\DBUPRG\TT-app\EGTS\parser\EGTS-parcer\target\EGTS-parcer-0.0.1-SNAPSHOT.jar started by User in C:\Developing\DBUPRG\TT-app\EGTS\parser\EGTS-parcer)
+21:17:06.206 [main] DEBUG r.t.EGTSparser.EgtsParcerApplication - Running with Spring Boot v3.1.1, Spring v6.0.10
+21:17:06.207 [main] INFO  r.t.EGTSparser.EgtsParcerApplication - No active profile set, falling back to 1 default profile: "default"
+21:17:06.610 [main] INFO  r.t.EGTSparser.EgtsParcerApplication - Started EgtsParcerApplication in 0.738 seconds (process running for 0.983)
+21:17:06.618 [main] INFO  r.t.E.c.receiver.SocketConnector - Socket connects to 5555
+21:19:20.789 [main] INFO  r.t.EGTSparser.EgtsParcerApplication - Starting EgtsParcerApplication v0.0.1-SNAPSHOT using Java 17.0.4 with PID 10704 (C:\Developing\DBUPRG\TT-app\EGTS\parser\EGTS-parcer\target\EGTS-parcer-0.0.1-SNAPSHOT.jar started by User in C:\Developing\DBUPRG\TT-app\EGTS\parser\EGTS-parcer)
+21:19:20.790 [main] DEBUG r.t.EGTSparser.EgtsParcerApplication - Running with Spring Boot v3.1.1, Spring v6.0.10
+21:19:20.791 [main] INFO  r.t.EGTSparser.EgtsParcerApplication - No active profile set, falling back to 1 default profile: "default"
+21:19:21.188 [main] INFO  r.t.EGTSparser.EgtsParcerApplication - Started EgtsParcerApplication in 0.745 seconds (process running for 0.994)
+21:19:21.196 [main] INFO  r.t.E.c.receiver.SocketConnector - Socket connects to 5555
