@@ -21,23 +21,20 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
     private CRC crc;
 
     @Override
-    public Outcoming createNormalResponse(HeaderData hd , byte resultCode) {
+    public Outcoming createNormalResponse(HeaderData hd, byte resultCode) {
         log.info("Response data to BNSO creation start");
-        BodyData_RESPONSE bdr = BodyData_RESPONSE.builder()
-                .header(hd).pr(ProcessingResultCodeConstants.EGTS_PC_OK)
-                .build();
+        BodyData_RESPONSE bdr = BodyData_RESPONSE.builder().header(hd).pr(ProcessingResultCodeConstants.EGTS_PC_OK).build();
 
         bdr = changeDataBodyLength(bdr);
         bdr = changeDataFDL(bdr);
         bdr = changeDataResponseType(bdr, resultCode);
         bdr = changeHeaherOptopnals(bdr);
-        bdr=createHeadBody(bdr) ;
+        bdr = createHeadBody(bdr);
         bdr = createResponse(bdr);
         bdr = createCRC8(bdr);
         bdr = createCRC16(bdr);
         bdr = createResponseBodyFinal(bdr);
-        log.info("Response data to BNSO creation finish" +
-                "\n " + bdr);
+        log.info("Response data to BNSO creation finish" + "\n " + bdr);
         return bdr;
     }
 
@@ -48,15 +45,15 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
     }
 
     private BodyData_RESPONSE createCRC8(BodyData_RESPONSE bdr) {
-        System.out.println(" \n\n  BDR  "+bdr+" \n\n ");
+        System.out.println(" \n\n  BDR  " + bdr + " \n\n ");
         byte crcV8 = (byte) crc.calculate8(bdr.getHeadBody());
-               byte[] hb = StringArrayUtils.addByteToTail(bdr.getHeadBody(), crcV8);
+        byte[] hb = StringArrayUtils.addByteToTail(bdr.getHeadBody(), crcV8);
         bdr.setHeadBody(hb);
         return bdr;
     }
 
     private BodyData_RESPONSE createCRC16(BodyData_RESPONSE bdr) {
-        short crcV16 = (short) crc.calculate16(  bdr.getResponseBody()    );
+        short crcV16 = (short) crc.calculate16(bdr.getResponseBody());
         byte[] checkSumm = StringArrayUtils.shortToByteArray(crcV16);
         byte[] rb = StringArrayUtils.joinArrays(bdr.getResponseBody(), StringArrayUtils.inverse(checkSumm));
         bdr.setResponseBody(rb);
@@ -73,7 +70,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
         return bdr;
     }
 
-    private BodyData_RESPONSE  createHeadBody(BodyData_RESPONSE bdr) {
+    private BodyData_RESPONSE createHeadBody(BodyData_RESPONSE bdr) {
         byte[] out = new byte[10];
         out[0] = (byte) (bdr.getHeader().getPrv() + 1);
         out[1] = bdr.getHeader().getSkid();
@@ -85,7 +82,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
         out[7] = 120;//bdr.getHeader().getPid()[0];
         out[8] = -120;//bdr.getHeader().getPid()[1];
         out[9] = bdr.getHeader().getPt();
-bdr.setHeadBody(out);
+        bdr.setHeadBody(out);
         return bdr;
     }
 
@@ -104,7 +101,7 @@ bdr.setHeadBody(out);
     }
 
     private BodyData_RESPONSE changeDataResponseType(BodyData_RESPONSE bdr, byte resultCode) {
-        bdr.getHeader().setPt(  resultCode);
+        bdr.getHeader().setPt(resultCode);
         return bdr;
     }
 
