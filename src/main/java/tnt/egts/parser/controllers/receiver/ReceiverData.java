@@ -51,7 +51,7 @@ public class ReceiverData implements Runnable {
         HeaderData hd = null;
         byte[] income = receive();
         responseCode = byteAnalizer.analize(income);
-        System.out.println("  \n Resp. CODDE " + responseCode + "     =============\n");
+            log.info(  "  \n Response. CODDE " + responseCode + "     =============\n");
 
         // log.info("Received: " + income.length + " bytes ");
         short pid = calcPID(income);
@@ -62,7 +62,6 @@ public class ReceiverData implements Runnable {
 
         if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] == ByteFixedPositions.TYPE_APPDATA)
             appData = (BodyData_APPDATA) appDataCreator.create(income);
-        System.out.println("*****************************\n\nresponseCode   " + responseCode);
 
             response(hd, responseCode);
         } catch (IOException | IncorrectDataException e) {

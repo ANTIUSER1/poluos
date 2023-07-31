@@ -32,15 +32,12 @@ public class APPDATACreator implements ConvertIncomingData {
                     .rn(new Byte[2]) // data[headerLength+3] data[headerLength+2]
                     .rfl(data[appdataOptCreatorTool.getHeaderLength() + 4]).build();
             bda = appdataOptCreatorTool.optCreateOID(bda, data );
-            System.out.println(" 0  appdataOptCreatorTool.getSiftAction() " + appdataOptCreatorTool.getSiftAction());
             bda = appdataOptCreatorTool.optCreateEVID(bda, data );
-            System.out.println("  1 appdataOptCreatorTool.getSiftAction() " + appdataOptCreatorTool.getSiftAction());
             bda = appdataOptCreatorTool.optCreateTm(bda, data );
-            System.out.println("  2 appdataOptCreatorTool.getSiftAction() " + appdataOptCreatorTool.getSiftAction());
             bda = additionalDataCreatorTool.additionalCreate(bda, data,  data[3]);
             bda = additionalDataCreatorTool.tailCreate(
                     bda, data , appdataOptCreatorTool.getSiftAction());
-            System.out.println(bda);
+        log.info( "BodyData_APPDATA created \n" +bda );
             return bda;
 
     }

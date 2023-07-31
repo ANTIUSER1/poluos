@@ -21,6 +21,6 @@ public class CLIRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         log.info("Start parser service");
-        connector.connect(socketPort);
+      connector.connect(socketPort);
     }
 }

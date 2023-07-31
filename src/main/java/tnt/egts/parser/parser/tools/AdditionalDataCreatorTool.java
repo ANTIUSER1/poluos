@@ -32,14 +32,8 @@ public class AdditionalDataCreatorTool {
 
         //setting RD
         Byte[] rd = new Byte[data.length - headerLength1];
-        System.out.println("    headerLength:  " + data[ByteFixedPositions.HEAD_LENGTH_INDEX]);
-        System.out.println("    headerLength1:  " + headerLength1);
-        System.out.println("     REST LENGTH:  " + (data.length - headerLength1));
         for (int k = headerLength1; k < data.length; k++) {
             rd[k - headerLength1] = data[k];
-            System.out.println((k - headerLength1) + "   data[" + k +
-
-                    "]=" + data[k]);
         }
         bda.setRd(rd);
         return bda;

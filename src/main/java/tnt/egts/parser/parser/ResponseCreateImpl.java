@@ -42,7 +42,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
     }
 
     private BodyData_RESPONSE createCRC8(BodyData_RESPONSE bdr) {
-        System.out.println(" \n\n  BDR  " + bdr + " \n\n ");
+        log.info(  " \n\n  BDR  " + bdr + " \n\n ");
         byte crcV8 = (byte) crc.calculate8(bdr.getHeadBody());
         byte[] hb = StringArrayUtils.addByteToTail(bdr.getHeadBody(), crcV8);
         bdr.setHeadBody(hb);
