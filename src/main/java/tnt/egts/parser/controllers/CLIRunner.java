@@ -10,12 +10,15 @@ import tnt.egts.parser.controllers.receiver.SocketConnector;
 @Slf4j
 public class CLIRunner implements CommandLineRunner {
 
+
     @Autowired
     private SocketConnector connector;
     @Autowired
     private String socketHost;
     @Autowired
     private int socketPort;
+
+
 
 
     @Override

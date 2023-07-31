@@ -19,9 +19,13 @@ public class ByteFixedPositions {
      * minimal head length
      */
     public static final int HEAD_MIN_LENGTH = 11;
+    /**
+     * maximal head length
+     */
+    public static final int HEAD_MAX_LENGTH = 16;
 
     /**
-     *  minimal  header length   information
+     *  HCS  index   information
      */
     public static final int PACKAGE_HCS_MAX_INDEX = 11;
 
@@ -29,11 +33,6 @@ public class ByteFixedPositions {
      * minimal appdata length information
      */
     public static final int PACKAGE_APPDATA_MIN_LENGTH = 7;
-
-    /**
-     * minimal appdata length information
-     */
-    public static final int PACKAGE_КУЫЗЩТЫУ_MIN_LENGTH = 3;
 
     /**
      * minimal appdata record-data length information

@@ -5,8 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.crc.service.CRC;
-import tnt.egts.parser.util.*;
-
+import tnt.egts.parser.util.ByteFixedPositions;
+import tnt.egts.parser.util.ProcessingResultCodeConstants;
+import tnt.egts.parser.util.StringArrayUtils;
 
 import java.nio.ByteBuffer;
 
@@ -29,7 +30,6 @@ public class ByteAnalizer {
         } else if (incorrectDataLength(income)) {
             return ProcessingResultCodeConstants.EGTS_PC_INVDATALEN;
         }
-
         return -10;
     }
 
@@ -44,9 +44,10 @@ public class ByteAnalizer {
         return incomeDataLength != calcFDL;
     }
 
+
     private boolean incorrectCRC16(byte[] income) {
-        byte[] dataOnly = StringArrayUtils.createSubArray(income, income[ByteFixedPositions.HEAD_LENGTH_INDEX],
-                income.length - 1);
+        byte[] dataOnly = StringArrayUtils.createSubArray(income,
+                income[ByteFixedPositions.HEAD_LENGTH_INDEX], income.length - 1);
         byte[] dataCrcFree = StringArrayUtils.createSubArray(dataOnly, 0, dataOnly.length - 2);
         byte[] dataCrc = StringArrayUtils.createSubArray(dataOnly, dataOnly.length - 2, dataOnly.length);
         dataCrc = StringArrayUtils.inverse(dataCrc);
@@ -64,6 +65,10 @@ public class ByteAnalizer {
     }
 
     private boolean invalidDataLength(byte[] income) {
-        return income.length < ByteFixedPositions.HEAD_MIN_LENGTH;
+        return (income.length != ByteFixedPositions.HEAD_MIN_LENGTH || income.length != ByteFixedPositions.HEAD_MAX_LENGTH);
     }
+
 }
+
+
+
