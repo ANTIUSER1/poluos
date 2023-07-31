@@ -6,7 +6,7 @@ import lombok.ToString;
 
 /**
  * HEADER
- * Container for incoming byte-data
+ * Container for header byte-data
  * the fields name are the same as in EGTS-protocol
  */
 @Builder

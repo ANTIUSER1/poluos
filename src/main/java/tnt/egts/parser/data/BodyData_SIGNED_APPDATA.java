@@ -7,7 +7,7 @@ import lombok.ToString;
 /**
  * EGTS_PT_SIGNED_APPDATA
  *
- * Container for incoming byte-data
+ * Container for signed data byte-data
  * the fields name are the same as in EGTS-protocol
  */
 @Builder

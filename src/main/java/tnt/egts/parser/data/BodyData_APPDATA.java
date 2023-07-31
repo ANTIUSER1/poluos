@@ -15,7 +15,8 @@ import lombok.ToString;
 @ToString
 public class BodyData_APPDATA implements Incoming {
 
-    /* EGTS_PT_APPDATA */
+    /*
+     EGTS_PT_APPDATA */
     /*  ГОСТ Р 56361-2015 Таблица В.1 */
     /**
      * (Record Length) length 2 , m

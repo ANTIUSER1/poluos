@@ -7,7 +7,7 @@ import lombok.ToString;
 /**
  * EGTS_PT_RESPONSE
  *
- * Container for incoming byte-data
+ * Container for outcoming byte-data
  * the fields name are the same as in EGTS-protocol
  */
 @Builder

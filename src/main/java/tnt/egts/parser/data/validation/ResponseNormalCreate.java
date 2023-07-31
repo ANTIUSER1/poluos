@@ -1,4 +1,4 @@
-package tnt.egts.parser.dataProcessing;
+package tnt.egts.parser.data.validation;
 
 
 import tnt.egts.parser.data.*;

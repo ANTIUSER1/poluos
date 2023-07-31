@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.*;
-import tnt.egts.parser.dataProcessing.ResponseNormalCreate;
+import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.util.*;
 
 

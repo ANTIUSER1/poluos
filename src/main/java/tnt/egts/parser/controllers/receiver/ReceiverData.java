@@ -8,7 +8,7 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.BodyData_APPDATA;
 import tnt.egts.parser.data.BodyData_RESPONSE;
 import tnt.egts.parser.data.HeaderData;
-import tnt.egts.parser.dataProcessing.ResponseNormalCreate;
+import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.parser.ConvertIncomingData;
 import tnt.egts.parser.util.ByteFixedPositions;
