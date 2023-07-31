@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.*;
 import tnt.egts.parser.dataProcessing.ResponseNormalCreate;
+import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.parser.ConvertIncomingData;
 import tnt.egts.parser.util.*;
 
@@ -20,7 +21,7 @@ import java.util.concurrent.Future;
 
 @Component
 @Slf4j
-public class ReceiverData implements Callable<Future<Byte[]>> {
+public class ReceiverData implements Runnable {
 
     private Socket socket;
 
@@ -44,7 +45,8 @@ public class ReceiverData implements Callable<Future<Byte[]>> {
     private byte responseCode;
 
     @Override
-    public Future<Byte[]> call() throws Exception {
+    public void run()  {
+        try {
         BodyData_APPDATA appData;
         HeaderData hd = null;
         byte[] income = receive();
@@ -62,19 +64,21 @@ public class ReceiverData implements Callable<Future<Byte[]>> {
             appData = (BodyData_APPDATA) appDataCreator.create(income);
         System.out.println("*****************************\n\nresponseCode   " + responseCode);
 
-        response(hd, responseCode);
-        return null;
+            response(hd, responseCode);
+        } catch (IOException | IncorrectDataException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void response(HeaderData hd, byte code) throws IOException {
         BodyData_RESPONSE bdr = (BodyData_RESPONSE) responseNormal.createNormalResponse(hd, code);
-        // log.info("Sending back response to BNSO start. \n Data: "                 +StringArrayUtils.arrayPrintToScreen(bdr.getResponseBody()));
+          log.info("Sending back response to BNSO start. \n Data: "                 +StringArrayUtils.arrayPrintToScreen(bdr.getResponseBody()));
 
         OutputStream output = socket.getOutputStream();
 
         output.write(bdr.getResponseBody());
-        // log.info("Sending back response to BNSO finish. " );
-        // output.close();
+         log.info("Sending back response to BNSO finish. " );
+         output.close();
     }
 
 
