@@ -14,6 +14,13 @@ public interface ProtocolValidate {
      * @param income
      * @return
      */
+    boolean validProtocolType(byte[] income);
+
+    /**
+     * [2] index bits 6, 7 must be 00
+     * @param income
+     * @return
+     */
     boolean validPRF(byte[] income);
 
 

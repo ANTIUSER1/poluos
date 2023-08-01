@@ -25,6 +25,10 @@ public class ByteAnalizer {
 
     public byte analize(byte[] income) {
         log.error(" Validation incoming data start   ");
+        if(invalidProtocolType(income)){
+            log.error("Invalid  protocol Type ");
+            return ProcessingResultCodeConstants.EGTS_PC_INC_HEADERFORM;
+        }else
         if (invalidProtocolPRF(income)) {
             log.error("Invalid  PRF data ");
             return ProcessingResultCodeConstants.EGTS_PC_UNS_PROTOCOL;
@@ -49,6 +53,10 @@ public class ByteAnalizer {
         }
         log.error(" Validation incoming data finish   ");
         return 0;
+    }
+
+    private boolean invalidProtocolType(byte[] income) {
+        return   !protocolValidate.validProtocolType(income);
     }
 
     private boolean invalidProtocolPRF(byte[] income) {

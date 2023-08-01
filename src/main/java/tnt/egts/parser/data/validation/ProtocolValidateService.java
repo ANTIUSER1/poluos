@@ -7,9 +7,16 @@ import tnt.egts.parser.util.StringArrayUtils;
 @Service
 public class ProtocolValidateService implements ProtocolValidate {
 
+
+
     @Override
     public boolean validPRV(byte[] income) {
         return income[ByteFixedPositions.PACKAGE_PRV_INDEX] == ByteFixedPositions.PACKAGE_PRV_VALUE;
+    }
+
+    @Override
+    public boolean validProtocolType(byte[] income) {
+        return income[9]==1 ||  income[9]==2 ;
     }
 
     @Override

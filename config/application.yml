@@ -5,7 +5,7 @@ socket:
 
 
 logging:
-  file.name: target/logs/-egts-parser-data.log
+  file.name: logs/-egts-parser-data.log
   file.max-size: 1MB
 
   level:
