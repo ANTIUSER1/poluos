@@ -7,7 +7,7 @@ import tnt.egts.parser.util.StringArrayUtils;
 import java.nio.ByteBuffer;
 
 @Service
-public class DataLengthValidateService implements  DataLengthValidate{
+public class DataLengthValidateService implements DataLengthValidate {
 
     @Override
     public boolean validDataLength(byte[] income) {
@@ -24,12 +24,12 @@ public class DataLengthValidateService implements  DataLengthValidate{
 
     @Override
     public boolean validHeaderLength(byte[] income) {
-        return   (income[ByteFixedPositions.HEAD_LENGTH_INDEX] == ByteFixedPositions.HEAD_MIN_LENGTH || income[ByteFixedPositions.HEAD_LENGTH_INDEX]  == ByteFixedPositions.HEAD_MAX_LENGTH);
+        return (income[ByteFixedPositions.HEAD_LENGTH_INDEX] == ByteFixedPositions.HEAD_MIN_LENGTH || income[ByteFixedPositions.HEAD_LENGTH_INDEX] == ByteFixedPositions.HEAD_MAX_LENGTH);
 
     }
 
     @Override
     public boolean validPackageLength(byte[] income) {
-        return income.length < ByteFixedPositions.HEAD_MIN_LENGTH;
+        return income.length >= ByteFixedPositions.HEAD_MIN_LENGTH;
     }
 }

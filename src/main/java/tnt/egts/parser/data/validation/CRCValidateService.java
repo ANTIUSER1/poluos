@@ -21,7 +21,8 @@ public class CRCValidateService implements CRCValidate {
         long crc8 = crc.calculate8(testIncome);
         return crc8 == onlyHead[onlyHead.length - 1];
     }
-@Override
+
+    @Override
     public boolean CRC16Correct(byte[] income) {
         byte[] dataOnly = StringArrayUtils.createSubArray(income,
                 income[ByteFixedPositions.HEAD_LENGTH_INDEX], income.length - 1);

@@ -6,6 +6,26 @@ package tnt.egts.parser.util;
 public class ByteFixedPositions {
 
     /**
+     * index of input byte array where is the PRV (Protocol Version) information
+     */
+    public static final int PACKAGE_PRV_INDEX = 0;
+    /**
+     * index of input byte array  PRV (Protocol Version) value information
+     */
+    public static final int PACKAGE_PRV_VALUE = 0x01;
+
+    /**
+     * index of input byte array where is the PRF (Preffix) information
+     * --bits 6,7
+     */
+    public static final int PACKAGE_PRF_INDEX = 2;
+    /**
+     * index of input byte array where is the PRF (Preffix) information
+     * --bits 6,7
+     */
+    public static final String PACKAGE_PRF_VALUE="00";
+
+    /**
      * index of input byte array where is the package-type information
      */
     public static final int PACKAGE_TYPE_INDEX = 9;

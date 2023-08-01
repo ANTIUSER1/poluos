@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.crc.generator.*;
+import tnt.egts.parser.util.StringArrayUtils;
 
 @Service("makeCRC")
 @Slf4j
@@ -20,7 +21,7 @@ public class CRCService implements CRC {
 
     @Override
     public long calculate8(byte[] data) {
-        log.info("CRC-8 generates data");
+        log.info(" CRC-8 generates data   "  );
         calculator8.reset();
         calculator8.update(data);
         return calculator8.value();

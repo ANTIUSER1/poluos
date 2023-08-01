@@ -57,24 +57,24 @@ public class ReceiverData implements Runnable {
             // log.info("Received: " + income.length + " bytes ");
             short pid = calcPID(income);
             log.info("PID: [" + income[7] + "  " + income[8] + "] ( " + pid + " ) ");
-            // if(responseCode==0) {
-            hd = (HeaderData) headerCreator.create(income);
-            //   }
+            if (responseCode == 0) {
+                hd = (HeaderData) headerCreator.create(income);
+            }
 
             if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] == ByteFixedPositions.TYPE_APPDATA)
                 appData = (BodyData_APPDATA) appDataCreator.create(income);
-
-            response(hd, responseCode);
+            response(income, responseCode);
         } catch (IOException | IncorrectDataException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void response(HeaderData hd, byte code) throws IOException {
-        BodyData_RESPONSE bdr = (BodyData_RESPONSE) responseNormal.createNormalResponse(hd, code);
+
+    private void response(byte[] income, byte code) throws IOException {
+        BodyData_RESPONSE bdr =
+                (BodyData_RESPONSE) responseNormal.createNormalResponse(income,
+                        code);
         log.info("Sending back response to BNSO start. \n Data: " + StringArrayUtils.arrayPrintToScreen(bdr.getResponseBody()));
-
-
         OutputStream output = socket.getOutputStream();
         output.write(bdr.getResponseBody());
         log.info("Sending back response to BNSO finish. ");
@@ -96,9 +96,9 @@ public class ReceiverData implements Runnable {
     private byte[] receive() throws IOException {
         DataInputStream in = new DataInputStream(socket.getInputStream());
         int dataSize = in.available();
-        byte[] res = new byte[dataSize];
-        in.read(res);
-        return res;
+        byte[] out = new byte[dataSize];
+        in.read(out);
+        return out;
 
     }
 }

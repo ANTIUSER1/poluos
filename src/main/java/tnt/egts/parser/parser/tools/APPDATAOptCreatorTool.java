@@ -108,7 +108,6 @@ public class APPDATAOptCreatorTool {
 
     private boolean obExist(byte val) {
         String test = StringArrayUtils.byteToBinary(val);
-        System.out.println(test + "  test.charAt(0) = " + test.charAt(0) + "   test.charAt(test.length()-1-0) == '1' " + (test.charAt(test.length() - 1) == '1'));
-        return test.charAt(test.length() - 1) == '1';
+         return test.charAt(test.length() - 1) == '1';
     }
 }

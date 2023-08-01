@@ -11,10 +11,10 @@ public interface ResponseNormalCreate {
 
     /**
      * for normal response
-     * @param hd
+     * @param income
      * @return
      */
-    Outcoming createNormalResponse(HeaderData hd, byte resultCode);
+    Outcoming createNormalResponse( byte[] income, byte resultCode);
 
 
 }

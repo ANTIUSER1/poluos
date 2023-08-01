@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 @Component("crc8")
 public class CRC8Calculator {
     public static final long poly = 0x31;
-    private long crc = 0x00;
+    private long crc = 0xff;
     public long value() {
-        return (crc & 0xFF);
+        return (crc & 0xff);
     }
 
     public void reset() {

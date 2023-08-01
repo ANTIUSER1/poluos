@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.data.validation.CRCValidate;
 import tnt.egts.parser.data.validation.DataLengthValidate;
+import tnt.egts.parser.data.validation.ProtocolValidate;
 import tnt.egts.parser.util.ProcessingResultCodeConstants;
 
 @Service
@@ -19,9 +20,18 @@ public class ByteAnalizer {
     @Autowired
     private DataLengthValidate dataLengthValidate;
 
-    public byte analize(byte[] income) {
+    @Autowired
+    private ProtocolValidate protocolValidate;
 
-        if (invalidPackageLength(income)) {
+    public byte analize(byte[] income) {
+        log.error(" Validation incoming data start   ");
+        if (invalidProtocolPRF(income)) {
+            log.error("Invalid  PRF data ");
+            return ProcessingResultCodeConstants.EGTS_PC_UNS_PROTOCOL;
+        } else if (invalidProtocolPRV(income)) {
+            log.error("Invalid  PRV data ");
+            return ProcessingResultCodeConstants.EGTS_PC_UNS_PROTOCOL;
+        } else if (invalidPackageLength(income)) {
             log.error("Invalid  package  length ");
             return ProcessingResultCodeConstants.EGTS_PC_INVDATALEN;
         } else if (invalidDataLength(income)) {
@@ -37,7 +47,16 @@ public class ByteAnalizer {
             log.error("Invalid SFRD length  ");
             return ProcessingResultCodeConstants.EGTS_PC_INVDATALEN;
         }
-        return -10;
+        log.error(" Validation incoming data finish   ");
+        return 0;
+    }
+
+    private boolean invalidProtocolPRF(byte[] income) {
+        return !protocolValidate.validPRF(income);
+    }
+
+    private boolean invalidProtocolPRV(byte[] income) {
+        return !protocolValidate.validPRV(income);
     }
 
 
@@ -59,7 +78,7 @@ public class ByteAnalizer {
 
 
     private boolean invalidPackageLength(byte[] income) {
-    return  dataLengthValidate.validPackageLength(income);
+        return !dataLengthValidate.validPackageLength(income);
     }
 
 

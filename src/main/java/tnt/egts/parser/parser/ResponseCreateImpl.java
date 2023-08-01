@@ -4,9 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.crc.service.CRC;
-import tnt.egts.parser.data.*;
+import tnt.egts.parser.data.BodyData_RESPONSE;
+import tnt.egts.parser.data.Outcoming;
 import tnt.egts.parser.data.validation.ResponseNormalCreate;
-import tnt.egts.parser.util.*;
+import tnt.egts.parser.util.ByteFixedPositions;
+import tnt.egts.parser.util.ProcessingResultCodeConstants;
+import tnt.egts.parser.util.StringArrayUtils;
 
 
 @Service
@@ -14,24 +17,40 @@ import tnt.egts.parser.util.*;
 public class ResponseCreateImpl implements ResponseNormalCreate {
 
 
+    byte[] tmpPid = new byte[2];
+
     @Autowired
     private CRC crc;
 
     @Override
-    public Outcoming createNormalResponse(HeaderData hd, byte resultCode) {
+    public Outcoming createNormalResponse(byte[] income, byte resultCode) {
         log.info("Response data to BNSO creation start");
-        BodyData_RESPONSE bdr = BodyData_RESPONSE.builder().header(hd).pr(ProcessingResultCodeConstants.EGTS_PC_OK).build();
+        tmpPid[0] = income[7];
+        tmpPid[1] = income[8];
+        BodyData_RESPONSE bdr =
+                BodyData_RESPONSE.builder()
+                        .headBody(StringArrayUtils.createSubArray(income,
+                                0, ByteFixedPositions.HEAD_MIN_LENGTH))
+                        .pr(ProcessingResultCodeConstants.EGTS_PC_OK).build();
+         bdr = changeFields(bdr, resultCode);
+        log.info("Response data to BNSO creation finish:" + "\n " + bdr);
+        return bdr;
+    }
 
+    private BodyData_RESPONSE changeFields(BodyData_RESPONSE bdr,
+                                           byte resultCode) {
+
+        log.info("Response data to BNSO creation -- update process start" +
+                 "\n " + bdr );
         bdr = changeDataBodyLength(bdr);
         bdr = changeDataFDL(bdr);
         bdr = changeDataResponseType(bdr, resultCode);
-        bdr = changeHeaherOptopnals(bdr);
         bdr = createHeadBody(bdr);
         bdr = createResponse(bdr);
         bdr = createCRC8(bdr);
         bdr = createCRC16(bdr);
         bdr = createResponseBodyFinal(bdr);
-        log.info("Response data to BNSO creation finish" + "\n " + bdr);
+        log.info("Response data to BNSO creation -- update process finish" + "\n " + bdr);
         return bdr;
     }
 
@@ -42,26 +61,29 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
     }
 
     private BodyData_RESPONSE createCRC8(BodyData_RESPONSE bdr) {
-        log.info(  " \n\n  BDR  " + bdr + " \n\n ");
-        byte crcV8 = (byte) crc.calculate8(bdr.getHeadBody());
+        log.info("CRC8 create for  " + bdr +" start" );
+          byte crcV8 = (byte) crc.calculate8(bdr.getHeadBody());
         byte[] hb = StringArrayUtils.addByteToTail(bdr.getHeadBody(), crcV8);
         bdr.setHeadBody(hb);
+        log.info("CRC8 create for  finish" );
         return bdr;
     }
 
     private BodyData_RESPONSE createCRC16(BodyData_RESPONSE bdr) {
+        log.info("CRC16 create for  " + bdr +" start" );
         short crcV16 = (short) crc.calculate16(bdr.getResponseBody());
         byte[] checkSumm = StringArrayUtils.shortToByteArray(crcV16);
         byte[] rb = StringArrayUtils.joinArrays(bdr.getResponseBody(), StringArrayUtils.inverse(checkSumm));
         bdr.setResponseBody(rb);
+        log.info("CRC16 create for  finish" );
         return bdr;
     }
 
     private BodyData_RESPONSE createResponse(BodyData_RESPONSE bdr) {
         byte[] responseBody = new byte[3];
         // responseBody[0]=bdr.getHeader().getHcs();
-        responseBody[0] = bdr.getHeader().getPid()[0];
-        responseBody[1] = bdr.getHeader().getPid()[1];
+        responseBody[0] = tmpPid[0];
+        responseBody[1] = tmpPid[1];
         responseBody[2] = bdr.getPr();
         bdr.setResponseBody(responseBody);
         return bdr;
@@ -69,41 +91,30 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
 
     private BodyData_RESPONSE createHeadBody(BodyData_RESPONSE bdr) {
         byte[] out = new byte[10];
-        out[0] = (byte) (bdr.getHeader().getPrv() + 1);
-        out[1] = bdr.getHeader().getSkid();
-        out[2] = bdr.getHeader().getPrf();
-        out[3] = bdr.getHeader().getHl();
-        out[4] = bdr.getHeader().getHe();
-        out[5] = bdr.getHeader().getFdl()[0];
-        out[6] = bdr.getHeader().getFdl()[1];
-        out[7] = 120;//bdr.getHeader().getPid()[0];
-        out[8] = -120;//bdr.getHeader().getPid()[1];
-        out[9] = bdr.getHeader().getPt();
-        bdr.setHeadBody(out);
+        bdr.getHeadBody()[0]++;
+        bdr.getHeadBody()[7] = 1;
+        bdr.getHeadBody()[8] = 1;
+
         return bdr;
     }
 
-    private BodyData_RESPONSE changeHeaherOptopnals(BodyData_RESPONSE bdr) {
-        bdr.getHeader().setRca(null);
-        bdr.getHeader().setPra(null);
-        bdr.getHeader().setTtl(null);
-        return bdr;
-    }
+
 
 
     private BodyData_RESPONSE changeDataFDL(BodyData_RESPONSE bdr) {
-        bdr.getHeader().getFdl()[0] = 3;
-        bdr.getHeader().getFdl()[1] = 0;
+        bdr.getHeadBody()[5] = 3;
+        bdr.getHeadBody()[6] = 0;
         return bdr;
     }
 
     private BodyData_RESPONSE changeDataResponseType(BodyData_RESPONSE bdr, byte resultCode) {
-        bdr.getHeader().setPt(resultCode);
+        bdr.getHeadBody()[ByteFixedPositions.PACKAGE_TYPE_INDEX] = resultCode;
         return bdr;
     }
 
     private BodyData_RESPONSE changeDataBodyLength(BodyData_RESPONSE bdr) {
-        bdr.getHeader().setHl((byte) ByteFixedPositions.HEAD_MIN_LENGTH);
+        bdr.getHeadBody()[ByteFixedPositions.HEAD_LENGTH_INDEX] =
+                ByteFixedPositions.HEAD_MIN_LENGTH;
         return bdr;
     }
 
