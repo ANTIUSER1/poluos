@@ -4,6 +4,8 @@ package tnt.egts.parser.controllers.receiver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tnt.egts.parser.data.analysis.BitFlags;
+import tnt.egts.parser.data.analysis.BitsAnalizer;
 import tnt.egts.parser.data.validation.CRCValidate;
 import tnt.egts.parser.data.validation.DataLengthValidate;
 import tnt.egts.parser.data.validation.ProtocolValidate;
@@ -23,13 +25,13 @@ public class ByteAnalizer {
     @Autowired
     private ProtocolValidate protocolValidate;
 
+
     public byte analize(byte[] income) {
         log.error(" Validation incoming data start   ");
-        if(invalidProtocolType(income)){
+        if (invalidProtocolType(income)) {
             log.error("Invalid  protocol Type ");
             return ProcessingResultCodeConstants.EGTS_PC_INC_HEADERFORM;
-        }else
-        if (invalidProtocolPRF(income)) {
+        } else if (invalidProtocolPRF(income)) {
             log.error("Invalid  PRF data ");
             return ProcessingResultCodeConstants.EGTS_PC_UNS_PROTOCOL;
         } else if (invalidProtocolPRV(income)) {
@@ -56,7 +58,7 @@ public class ByteAnalizer {
     }
 
     private boolean invalidProtocolType(byte[] income) {
-        return   !protocolValidate.validProtocolType(income);
+        return !protocolValidate.validProtocolType(income);
     }
 
     private boolean invalidProtocolPRF(byte[] income) {
@@ -77,7 +79,7 @@ public class ByteAnalizer {
     }
 
     private boolean invalidDataLength(byte[] income) {
-        return !dataLengthValidate.validHeaderLength(income);
+         return !dataLengthValidate.validHeaderLength(income);
     }
 
     private boolean incorrectDataLength(byte[] income) {

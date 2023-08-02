@@ -21,9 +21,9 @@ public class APPDATACreator implements ConvertIncomingData {
 
     @Override
     public Incoming create(byte[] data) throws IncorrectDataException {
-        if( data.length < ByteFixedPositions.HEAD_MIN_LENGTH
-                +ByteFixedPositions.PACKAGE_APPDATA_MIN_LENGTH
-                +ByteFixedPositions.PACKAGE_APPDATA_RECORD_DATA_MIN_LENGTH
+        if( data.length < ByteFixValues.HEAD_MIN_LENGTH
+                +ByteFixValues.PACKAGE_APPDATA_MIN_LENGTH
+                +ByteFixValues.PACKAGE_APPDATA_RECORD_DATA_MIN_LENGTH
 
         )
             throw new IncorrectDataException("Incoming APPDATA data too small ");

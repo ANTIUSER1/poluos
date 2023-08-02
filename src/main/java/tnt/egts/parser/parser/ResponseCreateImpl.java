@@ -7,6 +7,7 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.BodyData_RESPONSE;
 import tnt.egts.parser.data.Outcoming;
 import tnt.egts.parser.data.validation.ResponseNormalCreate;
+import tnt.egts.parser.util.ByteFixValues;
 import tnt.egts.parser.util.ByteFixedPositions;
 import tnt.egts.parser.util.ProcessingResultCodeConstants;
 import tnt.egts.parser.util.StringArrayUtils;
@@ -30,7 +31,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
         BodyData_RESPONSE bdr =
                 BodyData_RESPONSE.builder()
                         .headBody(StringArrayUtils.createSubArray(income,
-                                0, ByteFixedPositions.HEAD_MIN_LENGTH))
+                                0, ByteFixValues.HEAD_MIN_LENGTH))
                         .pr(ProcessingResultCodeConstants.EGTS_PC_OK).build();
          bdr = changeFields(bdr, resultCode);
         log.info("Response data to BNSO creation finish:" + "\n " + bdr);
@@ -114,7 +115,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
 
     private BodyData_RESPONSE changeDataBodyLength(BodyData_RESPONSE bdr) {
         bdr.getHeadBody()[ByteFixedPositions.HEAD_LENGTH_INDEX] =
-                ByteFixedPositions.HEAD_MIN_LENGTH;
+                ByteFixValues.HEAD_MIN_LENGTH;
         return bdr;
     }
 

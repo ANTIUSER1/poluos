@@ -24,4 +24,6 @@ public interface ProtocolValidate {
     boolean validPRF(byte[] income);
 
 
+
+
 }
