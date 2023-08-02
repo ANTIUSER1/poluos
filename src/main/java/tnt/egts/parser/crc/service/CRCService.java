@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.crc.generator.*;
-import tnt.egts.parser.util.StringArrayUtils;
 
 @Service("makeCRC")
 @Slf4j

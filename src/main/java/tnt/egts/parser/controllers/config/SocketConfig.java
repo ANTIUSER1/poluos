@@ -10,9 +10,15 @@ public class SocketConfig {
 
     @Value("${socket.port}")
     private  int port;
+    @Value("${threads}")
+    private  int threads;
 
     @Value("${socket.host}")
     private  String host;
+
+    public int threadCount() {
+        return threads;
+    }
 
     @Bean
     public int socketPort() {

@@ -6,7 +6,7 @@ import tnt.egts.parser.data.analysis.BitFlags;
 import tnt.egts.parser.data.analysis.BitsAnalizer;
 import tnt.egts.parser.util.ByteFixValues;
 import tnt.egts.parser.util.ByteFixedPositions;
-import tnt.egts.parser.util.StringArrayUtils;
+import tnt.egts.parser.util.ArrayUtils;
 
 import java.nio.ByteBuffer;
 
@@ -14,14 +14,14 @@ import java.nio.ByteBuffer;
 public class DataLengthValidateService implements DataLengthValidate {
 
     @Autowired
-    private BitsAnalizer optionAnalysis;
+    private BitsAnalizer bitsAnalizer;
 
     @Override
     public boolean validDataLength(byte[] income) {
 
         ByteBuffer bbf = ByteBuffer.allocate(2);
-        byte[] fdl = StringArrayUtils.createSubArray(income, 5, 7);
-        fdl = StringArrayUtils.inverse(fdl);
+        byte[] fdl = ArrayUtils.createSubArray(income, 5, 7);
+        fdl = ArrayUtils.inverse(fdl);
         bbf.put(fdl);
         short calcFDL = bbf.getShort(0);
         int incomeDataLength = income.length - income[ByteFixedPositions.HEAD_LENGTH_INDEX];
@@ -32,7 +32,7 @@ public class DataLengthValidateService implements DataLengthValidate {
     @Override
     public boolean validHeaderLength(byte[] income) {
         BitFlags flag =
-                optionAnalysis.optionAnalysis(StringArrayUtils.byteToBinary(income[2]));
+                bitsAnalizer.optionAnalysis(ArrayUtils.byteToBinary(income[2]));
         if (flag.equals(BitFlags.HOPTIONS_NOT_EXISTS))
             return income[ByteFixedPositions.HEAD_LENGTH_INDEX] == ByteFixValues.HEAD_MIN_LENGTH;
         return income[ByteFixedPositions.HEAD_LENGTH_INDEX] == ByteFixValues.HEAD_MAX_LENGTH;

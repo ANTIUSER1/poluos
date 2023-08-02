@@ -3,7 +3,7 @@ package tnt.egts.parser.util;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-public class StringArrayUtils {
+public class ArrayUtils {
 
     public static <T> String arrayPrintToScreen(T[] data) {
       return Arrays.toString(data);

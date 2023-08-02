@@ -3,7 +3,7 @@ package tnt.egts.parser.data.validation;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.util.ByteFixValues;
 import tnt.egts.parser.util.ByteFixedPositions;
-import tnt.egts.parser.util.StringArrayUtils;
+import tnt.egts.parser.util.ArrayUtils;
 
 @Service
 public class ProtocolValidateService implements ProtocolValidate {
@@ -23,7 +23,7 @@ public class ProtocolValidateService implements ProtocolValidate {
     @Override
     public boolean validPRF(byte[] income) {
         String bits =
-                StringArrayUtils.byteToBinary(income[ByteFixedPositions.PACKAGE_PRF_INDEX]);
+                ArrayUtils.byteToBinary(income[ByteFixedPositions.PACKAGE_PRF_INDEX]);
         bits = bits.substring(bits.length() - 2);
         return bits.equals(ByteFixValues.PACKAGE_PRF_VALUE);
     }

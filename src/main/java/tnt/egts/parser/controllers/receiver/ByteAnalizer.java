@@ -4,8 +4,6 @@ package tnt.egts.parser.controllers.receiver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tnt.egts.parser.data.analysis.BitFlags;
-import tnt.egts.parser.data.analysis.BitsAnalizer;
 import tnt.egts.parser.data.validation.CRCValidate;
 import tnt.egts.parser.data.validation.DataLengthValidate;
 import tnt.egts.parser.data.validation.ProtocolValidate;
@@ -27,9 +25,10 @@ public class ByteAnalizer {
 
 
     public byte analize(byte[] income) {
+
         log.error(" Validation incoming data start   ");
         if (invalidProtocolType(income)) {
-            log.error("Invalid  protocol Type ");
+            log.error("Invalid  protocol Type  {TYPE INCOMES: "+income[9]+"}");
             return ProcessingResultCodeConstants.EGTS_PC_INC_HEADERFORM;
         } else if (invalidProtocolPRF(income)) {
             log.error("Invalid  PRF data ");

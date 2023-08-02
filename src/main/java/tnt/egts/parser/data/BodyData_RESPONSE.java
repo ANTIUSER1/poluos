@@ -15,7 +15,6 @@ import lombok.ToString;
 @ToString
 public class BodyData_RESPONSE implements  Outcoming{
 
-    private HeaderData header;
 
     private   byte[] headBody;
     private   byte[] responseBody;

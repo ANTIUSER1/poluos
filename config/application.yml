@@ -3,6 +3,7 @@ socket:
   port: 5555
 
 
+threads: 50
 
 logging:
   file.name: logs/-egts-parser-data.log

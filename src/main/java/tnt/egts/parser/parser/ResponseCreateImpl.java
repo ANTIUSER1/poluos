@@ -10,7 +10,7 @@ import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.util.ByteFixValues;
 import tnt.egts.parser.util.ByteFixedPositions;
 import tnt.egts.parser.util.ProcessingResultCodeConstants;
-import tnt.egts.parser.util.StringArrayUtils;
+import tnt.egts.parser.util.ArrayUtils;
 
 
 @Service
@@ -30,7 +30,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
         tmpPid[1] = income[8];
         BodyData_RESPONSE bdr =
                 BodyData_RESPONSE.builder()
-                        .headBody(StringArrayUtils.createSubArray(income,
+                        .headBody(ArrayUtils.createSubArray(income,
                                 0, ByteFixValues.HEAD_MIN_LENGTH))
                         .pr(ProcessingResultCodeConstants.EGTS_PC_OK).build();
          bdr = changeFields(bdr, resultCode);
@@ -56,7 +56,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
     }
 
     private BodyData_RESPONSE createResponseBodyFinal(BodyData_RESPONSE bdr) {
-        byte[] rbFinal = StringArrayUtils.joinArrays(bdr.getHeadBody(), bdr.getResponseBody());
+        byte[] rbFinal = ArrayUtils.joinArrays(bdr.getHeadBody(), bdr.getResponseBody());
         bdr.setResponseBody(rbFinal);
         return bdr;
     }
@@ -64,7 +64,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
     private BodyData_RESPONSE createCRC8(BodyData_RESPONSE bdr) {
         log.info("CRC8 create for  " + bdr +" start" );
           byte crcV8 = (byte) crc.calculate8(bdr.getHeadBody());
-        byte[] hb = StringArrayUtils.addByteToTail(bdr.getHeadBody(), crcV8);
+        byte[] hb = ArrayUtils.addByteToTail(bdr.getHeadBody(), crcV8);
         bdr.setHeadBody(hb);
         log.info("CRC8 create for  finish" );
         return bdr;
@@ -73,8 +73,8 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
     private BodyData_RESPONSE createCRC16(BodyData_RESPONSE bdr) {
         log.info("CRC16 create for  " + bdr +" start" );
         short crcV16 = (short) crc.calculate16(bdr.getResponseBody());
-        byte[] checkSumm = StringArrayUtils.shortToByteArray(crcV16);
-        byte[] rb = StringArrayUtils.joinArrays(bdr.getResponseBody(), StringArrayUtils.inverse(checkSumm));
+        byte[] checkSumm = ArrayUtils.shortToByteArray(crcV16);
+        byte[] rb = ArrayUtils.joinArrays(bdr.getResponseBody(), ArrayUtils.inverse(checkSumm));
         bdr.setResponseBody(rb);
         log.info("CRC16 create for  finish" );
         return bdr;
@@ -92,7 +92,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
 
     private BodyData_RESPONSE createHeadBody(BodyData_RESPONSE bdr) {
         byte[] out = new byte[10];
-        bdr.getHeadBody()[0]++;
+
         bdr.getHeadBody()[7] = 1;
         bdr.getHeadBody()[8] = 1;
 

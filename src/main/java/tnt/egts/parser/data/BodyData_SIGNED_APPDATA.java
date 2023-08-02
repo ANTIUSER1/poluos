@@ -14,4 +14,6 @@ import lombok.ToString;
 @Data
 @ToString
 public class BodyData_SIGNED_APPDATA implements Incoming{
+
+    private  byte[] content;
 }

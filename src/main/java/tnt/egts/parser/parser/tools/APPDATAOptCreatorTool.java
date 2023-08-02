@@ -3,7 +3,7 @@ package tnt.egts.parser.parser.tools;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.data.BodyData_APPDATA;
 import tnt.egts.parser.util.ByteFixedPositions;
-import tnt.egts.parser.util.StringArrayUtils;
+import tnt.egts.parser.util.ArrayUtils;
 
 @Service
 public class APPDATAOptCreatorTool {
@@ -77,37 +77,37 @@ public class APPDATAOptCreatorTool {
 
 
     private boolean ssodExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
+        String test = ArrayUtils.byteToBinary(val);
         return test.charAt(test.length() - 1 - 6) == '1';
     }
 
     private boolean rsodExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
+        String test = ArrayUtils.byteToBinary(val);
         return test.charAt(test.length() - 1 - 5) == '1';
     }
 
     private boolean grpExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
+        String test = ArrayUtils.byteToBinary(val);
         return test.charAt(test.length() - 1 - 4) == '1';
     }
 
     private boolean rppExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
+        String test = ArrayUtils.byteToBinary(val);
         return test.charAt(test.length() - 1 - 3) == '1';
     }
 
     private boolean tmExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
+        String test = ArrayUtils.byteToBinary(val);
         return test.charAt(test.length() - 1 - 2) == '1';
     }
 
     private boolean evExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
+        String test = ArrayUtils.byteToBinary(val);
         return test.charAt(test.length() - 1 - 1) == '1';
     }
 
     private boolean obExist(byte val) {
-        String test = StringArrayUtils.byteToBinary(val);
+        String test = ArrayUtils.byteToBinary(val);
          return test.charAt(test.length() - 1) == '1';
     }
 }

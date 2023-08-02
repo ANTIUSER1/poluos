@@ -9,6 +9,7 @@ public class ByteFixValues {
      */
     public static final String PACKAGE_PRF_VALUE="00";
 
+
     /**
      * index of input byte array  PRV (Protocol Version) value information
      */

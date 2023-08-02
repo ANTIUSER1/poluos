@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.BodyData_APPDATA;
 import tnt.egts.parser.data.BodyData_RESPONSE;
 import tnt.egts.parser.data.HeaderData;
@@ -13,10 +12,7 @@ import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.errors.ConnectionException;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.parser.ConvertIncomingData;
-import tnt.egts.parser.util.ByteFixValues;
-import tnt.egts.parser.util.ByteFixedPositions;
-import tnt.egts.parser.util.StringArrayUtils;
-import tnt.egts.parser.util.StringFixedBeanNames;
+import tnt.egts.parser.util.*;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -46,16 +42,16 @@ public class ReceiverData implements Runnable {
     @Autowired
     private ReadFDLValidate readFDLValidate;
 
-    @Autowired
-    private CRC crc;
-
     private byte responseCode;
 
     @Override
     public void run() {
         try {
             byte[] income = receiveData();
-
+            if (income == null) {
+                log.error("Null data received");
+                return;
+            }
             response(income, responseCode);
         } catch (IOException | IncorrectDataException e) {
             log.info("Receiving broken  " + e.getCause());
@@ -66,24 +62,32 @@ public class ReceiverData implements Runnable {
     private byte[] receiveData() throws IOException {
         log.info("Receiving starts ");
         byte[] income = receive();
-        log.info("Received: " + income.length + " bytes ");
+        log.info("Received: " + income.length + " bytes {"
+                 + ArrayUtils.arrayPrintToScreen(income) + "}");
+        if (income.length ==0) {
+            log.error("Incoming data is too small ");
+            return null;
+        }
+
         short pid = calcPID(income);
         log.info("PID: [" + income[7] + "  " + income[8] + "] ( " + pid + " ) ");
         responseCode = byteAnalizer.analize(income);
-        log.info(" Response. CODDE " + responseCode  );
+        log.info(" Response. CODDE " + responseCode);
         incomingsCreate(income);
         log.info("Receiving finish ");
         return income;
     }
 
     private void incomingsCreate(byte[] income) {
+
         log.info("Incoming data wrapping start");
         HeaderData hd;
         BodyData_APPDATA appData;
-        if (responseCode == 0) {
+        if (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK) {
             hd = (HeaderData) headerCreator.create(income);
         }
-        if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] == ByteFixValues.TYPE_APPDATA)
+        if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] ==
+            ByteFixValues.TYPE_APPDATA && readFDLValidate.readFDL(income))
             appData = (BodyData_APPDATA) appDataCreator.create(income);
         log.info("Incoming data wrapping finish");
     }
@@ -91,7 +95,7 @@ public class ReceiverData implements Runnable {
 
     private void response(byte[] income, byte code) throws IOException {
         BodyData_RESPONSE bdr = (BodyData_RESPONSE) responseNormal.createNormalResponse(income, code);
-        log.info("Sending back response to BNSO start. \n Data: " + StringArrayUtils.arrayPrintToScreen(bdr.getResponseBody()));
+        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(bdr.getResponseBody()));
         OutputStream output = socket.getOutputStream();
         output.write(bdr.getResponseBody());
         log.info("Sending back response to BNSO finish. ");
@@ -103,7 +107,7 @@ public class ReceiverData implements Runnable {
         byte[] pid = new byte[2];
         pid[0] = income[8];
         pid[1] = income[7];
-        return StringArrayUtils.calcShortFromArray(pid);
+        return ArrayUtils.calcShortFromArray(pid);
     }
 
     public void setSocket(Socket socket) {
