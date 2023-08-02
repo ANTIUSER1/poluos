@@ -1,44 +1,42 @@
 package tnt.egts.parser.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tnt.egts.parser.data.*;
+import tnt.egts.parser.data.BodyData_APPDATA;
+import tnt.egts.parser.data.Incoming;
 import tnt.egts.parser.errors.IncorrectDataException;
-import tnt.egts.parser.parser.tools.*;
-import tnt.egts.parser.util.*;
+import tnt.egts.parser.errors.NumberArrayDataException;
+import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.ByteFixedPositions;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
 
-@Service(StringFixedBeanNames.APP_DATA_CREATOR_BEAN)
+@Service (StringFixedBeanNames.APP_DATA_CREATOR_BEAN)
 @Slf4j
 public class APPDATACreator implements ConvertIncomingData {
 
-    @Autowired
-    private APPDATAOptCreatorTool appdataOptCreatorTool;
-
-    @Autowired
-    private AdditionalDataCreatorTool additionalDataCreatorTool;
-
     @Override
-    public Incoming create(byte[] data) throws IncorrectDataException {
-        if( data.length < ByteFixValues.HEAD_MIN_LENGTH
-                +ByteFixValues.PACKAGE_APPDATA_MIN_LENGTH
-                +ByteFixValues.PACKAGE_APPDATA_RECORD_DATA_MIN_LENGTH
+    public Incoming create(byte[] income)
+            throws IncorrectDataException, NumberArrayDataException {
+        int startAPPDATA = ByteFixedPositions.getAPPDATAStart(income);
+System.out.println("JJJJJJJJJJstartAPPDATA   "+startAPPDATA);
+        byte[] fdl = ArrayUtils.createSubArray(income,
+                ByteFixedPositions.FDL_START_INDEX,
+                ByteFixedPositions.FDL_START_INDEX + 2);
+        System.out.println("JJFDL  "+ArrayUtils.arrayPrintToScreen(fdl));
 
-        )
-            throw new IncorrectDataException("Incoming APPDATA data too small ");
-            appdataOptCreatorTool.setShiftAction(data);
-            BodyData_APPDATA bda = BodyData_APPDATA.builder().rl(new Byte[2]) // data[headerLength+1] data[headerLength]
-                    .rn(new Byte[2]) // data[headerLength+3] data[headerLength+2]
-                    .rfl(data[appdataOptCreatorTool.getHeaderLength() + 4]).build();
-            bda = appdataOptCreatorTool.optCreateOID(bda, data );
-            bda = appdataOptCreatorTool.optCreateEVID(bda, data );
-            bda = appdataOptCreatorTool.optCreateTm(bda, data );
-            bda = additionalDataCreatorTool.additionalCreate(bda, data,  data[3]);
-            bda = additionalDataCreatorTool.tailCreate(
-                    bda, data , appdataOptCreatorTool.getSiftAction());
-        log.info( "BodyData_APPDATA created \n" +bda );
-            return bda;
+        fdl = ArrayUtils.inverse(fdl);
+        System.out.println("JJFDL  "+ArrayUtils.arrayPrintToScreen(fdl));
+
+        short fdlPos = ArrayUtils.byteArrayToShort(fdl);
+        System.out.println("fdlPos  "+fdlPos);
+        BodyData_APPDATA bda = BodyData_APPDATA.builder()
+                .content(ArrayUtils.createSubArray(income, fdlPos,
+                        income.length - 2))
+                .build();
+
+        log.info("BodyData_APPDATA created \n" + bda);
+        return bda;
 
     }
 

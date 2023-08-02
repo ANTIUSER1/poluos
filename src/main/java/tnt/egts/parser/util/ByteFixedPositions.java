@@ -34,7 +34,7 @@ public class ByteFixedPositions {
     public static  int FDL_START_INDEX=5;
     public static  int PID_START_INDEX=7;
 
-
+public  static int getAPPDATAStart(byte[] data){return getHCSIndex(data)+1;}
 
 
     public  static  int getHCSIndex(byte[] data){

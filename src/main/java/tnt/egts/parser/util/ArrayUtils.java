@@ -1,5 +1,7 @@
 package tnt.egts.parser.util;
 
+import tnt.egts.parser.errors.NumberArrayDataException;
+
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -82,7 +84,8 @@ public class ArrayUtils {
     return out;
     }
 
-    public static long[] byteToLong(byte[] data){
+
+    public static long[] byteArrayToLongArray(byte[] data){
         long[] out =new long[data.length];
         for(int k=0;k<data.length;k++){
             out[k]=data[k] & 0xff;
@@ -90,6 +93,27 @@ public class ArrayUtils {
         return out;
     }
 
+    public static long byteArrayToLong(byte[] data) throws NumberArrayDataException {
+        if (data.length!=8) throw new NumberArrayDataException("Invalid " +
+                                                               "incoming data" +
+                                                               " "+arrayPrintToScreen(data));
+        ByteBuffer bbf=ByteBuffer.wrap(data);
+        return  bbf.getLong(0);
+    }
+    public static int byteArrayToInt(byte[] data) throws NumberArrayDataException {
+        if (data.length!=4) throw new NumberArrayDataException("Invalid " +
+                                                               "incoming data" +
+                                                               " "+arrayPrintToScreen(data));
+        ByteBuffer bbf=ByteBuffer.wrap(data);
+        return  bbf.getInt(0);
+    }
+    public static short byteArrayToShort(byte[] data) throws NumberArrayDataException {
+        if (data.length!=2) throw new NumberArrayDataException("Invalid " +
+                                                               "incoming data" +
+                                                               " "+arrayPrintToScreen(data));
+        ByteBuffer bbf=ByteBuffer.wrap(data);
+        return  bbf.getShort(0);
+    }
 
 
     public static    boolean  arraysEquals(byte[] data1, byte[] data2){

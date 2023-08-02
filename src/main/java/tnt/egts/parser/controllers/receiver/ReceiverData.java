@@ -11,6 +11,7 @@ import tnt.egts.parser.data.validation.ReadFDLValidate;
 import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.errors.ConnectionException;
 import tnt.egts.parser.errors.IncorrectDataException;
+import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.parser.ConvertIncomingData;
 import tnt.egts.parser.util.*;
 
@@ -56,10 +57,12 @@ public class ReceiverData implements Runnable {
         } catch (IOException | IncorrectDataException e) {
             log.info("Receiving broken  " + e.getCause());
             throw new ConnectionException(e.getMessage());
+        } catch (NumberArrayDataException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private byte[] receiveData() throws IOException {
+    private byte[] receiveData() throws IOException, NumberArrayDataException {
         log.info("Receiving starts ");
         byte[] income = receive();
         log.info("Received: " + income.length + " bytes {"
@@ -78,14 +81,18 @@ public class ReceiverData implements Runnable {
         return income;
     }
 
-    private void incomingsCreate(byte[] income) {
+    private void incomingsCreate(byte[] income) throws NumberArrayDataException {
 
         log.info("Incoming data wrapping start");
         HeaderData hd;
         BodyData_APPDATA appData;
+        System.out.println(responseCode+"   ***000000000   " + (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK));
         if (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK) {
             hd = (HeaderData) headerCreator.create(income);
         }
+
+
+
         if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] ==
             ByteFixValues.TYPE_APPDATA && readFDLValidate.readFDL(income))
             appData = (BodyData_APPDATA) appDataCreator.create(income);
