@@ -20,7 +20,7 @@ public class DataLengthValidateService implements DataLengthValidate {
     public boolean validDataLength(byte[] income) {
 
         ByteBuffer bbf = ByteBuffer.allocate(2);
-        byte[] fdl = ArrayUtils.createSubArray(income, 5, 7);
+        byte[] fdl = ArrayUtils.getSubArrayFromTo(income, 5, 7);
         fdl = ArrayUtils.inverse(fdl);
         bbf.put(fdl);
         short calcFDL = bbf.getShort(0);

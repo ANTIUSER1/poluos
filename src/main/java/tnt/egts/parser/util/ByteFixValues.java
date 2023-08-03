@@ -2,6 +2,8 @@ package tnt.egts.parser.util;
 
 public class ByteFixValues {
 
+    private ByteFixValues() {
+    }
 
     /**
      * index of input byte array where is the PRF (Preffix) information

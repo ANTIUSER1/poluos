@@ -20,7 +20,7 @@ public class APPDATACreator implements ConvertIncomingData {
             throws IncorrectDataException, NumberArrayDataException {
         int startAPPDATA = ByteFixedPositions.getAPPDATAStart(income);
 System.out.println("JJJJJJJJJJstartAPPDATA   "+startAPPDATA);
-        byte[] fdl = ArrayUtils.createSubArray(income,
+        byte[] fdl = ArrayUtils.getSubArrayFromTo(income,
                 ByteFixedPositions.FDL_START_INDEX,
                 ByteFixedPositions.FDL_START_INDEX + 2);
         System.out.println("JJFDL  "+ArrayUtils.arrayPrintToScreen(fdl)
@@ -32,7 +32,7 @@ System.out.println("JJJJJJJJJJstartAPPDATA   "+startAPPDATA);
         short fdlPos = ArrayUtils.byteArrayToShort(fdl);
         System.out.println("fdlPos  "+fdlPos);
         APPDATA bda = APPDATA.builder()
-                .content(ArrayUtils.createFixedLengthSubArray(income, startAPPDATA,
+                .content(ArrayUtils.getFixedLengthSubArray(income, startAPPDATA,
                         fdlPos) )
                 .build();
 

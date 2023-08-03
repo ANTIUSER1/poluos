@@ -29,7 +29,7 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
         tmpPid[1] = income[8];
         BodyData_RESPONSE bdr =
                 BodyData_RESPONSE.builder()
-                        .headBody(ArrayUtils.createSubArray(income,
+                        .headBody(ArrayUtils.getSubArrayFromTo(income,
                                 0, ByteFixValues.HEAD_MIN_LENGTH))
                         .pr(ProcessingResultCodeConstants.EGTS_PC_OK).build();
          bdr = changeFields(bdr, resultCode);

@@ -9,7 +9,7 @@ public class ReadFDLValidateService implements  ReadFDLValidate{
 
     @Override
     public boolean readFDL(byte[] income) {
-        byte[] fdl= ArrayUtils.createSubArray(income,5,7);
+        byte[] fdl= ArrayUtils.getSubArrayFromTo(income,5,7);
         ByteBuffer bbf=ByteBuffer.wrap(fdl);
         return bbf.getShort(0)>0;
     }

@@ -19,7 +19,7 @@ public class HeaderCreator implements ConvertIncomingData {
         int hcsPos=ByteFixedPositions.getHCSIndex(income);
         HeaderData hd = HeaderData.builder()
                 .hasOptions(income[ByteFixedPositions.HEAD_LENGTH_INDEX] == ByteFixValues.HEAD_MAX_LENGTH)
-                .content(ArrayUtils.createSubArray(income, 0, hcsPos))
+                .content(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos))
                 .build();
 
         log.info("Finish parsing incoming data header normally");

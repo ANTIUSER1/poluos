@@ -5,6 +5,9 @@ package tnt.egts.parser.util;
  */
 public class ByteFixedPositions {
 
+    private ByteFixedPositions() {
+    }
+
     /**
      * index of input byte array where is the PRV (Protocol Version) information
      */

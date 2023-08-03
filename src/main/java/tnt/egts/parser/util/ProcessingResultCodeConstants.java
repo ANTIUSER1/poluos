@@ -9,6 +9,8 @@ import java.util.TreeMap;
  */
 public class ProcessingResultCodeConstants {
 
+    private ProcessingResultCodeConstants() {
+    }
 
     /**
      * data processing finished ok
