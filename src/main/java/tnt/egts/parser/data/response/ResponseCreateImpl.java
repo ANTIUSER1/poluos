@@ -1,10 +1,9 @@
-package tnt.egts.parser.parser;
+package tnt.egts.parser.data.response;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.crc.service.CRC;
-import tnt.egts.parser.data.BodyData_RESPONSE;
 import tnt.egts.parser.data.Outcoming;
 import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.util.ByteFixValues;

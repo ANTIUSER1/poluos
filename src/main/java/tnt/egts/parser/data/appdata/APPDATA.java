@@ -1,8 +1,9 @@
-package tnt.egts.parser.data;
+package tnt.egts.parser.data.appdata;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import tnt.egts.parser.data.Incoming;
 
 /**
  * EGTS_PT_APPDATA
@@ -13,8 +14,7 @@ import lombok.ToString;
 @Builder
 @Data
 @ToString
-public class BodyData_APPDATA implements Incoming {
-
+public class APPDATA implements Incoming {
 
     private  byte[] content;
 

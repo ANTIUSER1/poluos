@@ -71,12 +71,20 @@ public class ArrayUtils {
     }
 
     public static byte[] createSubArray(byte[] inData, int from,int to){
-     if(from+to>inData.length) to=inData.length;
-       if(inData.length==0 || from>=to || from<0 || to<0 ) throw new IllegalArgumentException("array borders error");
+        if(inData.length==0 || from>=to || from<0 || to<0 ) throw new IllegalArgumentException("array borders error");
         byte[] outData =new byte[to-from];
         for(int k=from;k<to;k++)outData[k-from]=inData[k];
         return outData;
     }
+
+    public static byte[] createFixedLengthSubArray(byte[] inData, int from,
+                                                 int length){
+        if(inData.length==0 ||  from<0 || from+length > inData.length-1  ) throw new IllegalArgumentException("array borders error");
+        byte[] outData =new byte[length];
+        for(int k=from;k<from+length;k++)outData[k-from]=inData[k];
+        return outData;
+    }
+
 
     public static  byte[] rndByte(int length){
         byte[] out=new byte[length];

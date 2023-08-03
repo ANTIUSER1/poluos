@@ -4,15 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import tnt.egts.parser.data.BodyData_APPDATA;
-import tnt.egts.parser.data.BodyData_RESPONSE;
-import tnt.egts.parser.data.HeaderData;
+import tnt.egts.parser.data.appdata.APPDATA;
+import tnt.egts.parser.data.response.BodyData_RESPONSE;
+import tnt.egts.parser.data.header.HeaderData;
 import tnt.egts.parser.data.validation.ReadFDLValidate;
 import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.errors.ConnectionException;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
-import tnt.egts.parser.parser.ConvertIncomingData;
+import tnt.egts.parser.data.ConvertIncomingData;
 import tnt.egts.parser.util.*;
 
 import java.io.DataInputStream;
@@ -85,7 +85,7 @@ public class ReceiverData implements Runnable {
 
         log.info("Incoming data wrapping start");
         HeaderData hd;
-        BodyData_APPDATA appData;
+        APPDATA appData;
         System.out.println(responseCode+"   ***000000000   " + (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK));
         if (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK) {
             hd = (HeaderData) headerCreator.create(income);
@@ -95,7 +95,7 @@ public class ReceiverData implements Runnable {
 
         if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] ==
             ByteFixValues.TYPE_APPDATA && readFDLValidate.readFDL(income))
-            appData = (BodyData_APPDATA) appDataCreator.create(income);
+            appData = (APPDATA) appDataCreator.create(income);
         log.info("Incoming data wrapping finish");
     }
 

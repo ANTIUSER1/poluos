@@ -1,4 +1,4 @@
-package tnt.egts.parser.parser;
+package tnt.egts.parser.data;
 
 
 import tnt.egts.parser.data.Incoming;

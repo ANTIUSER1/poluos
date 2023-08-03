@@ -1,12 +1,10 @@
-package tnt.egts.parser.parser;
+package tnt.egts.parser.data.header;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.data.*;
-import tnt.egts.parser.data.analysis.BitsAnalizer;
-import tnt.egts.parser.data.validation.ReadFDLValidate;
 import tnt.egts.parser.errors.IncorrectDataException;
+import tnt.egts.parser.data.ConvertIncomingData;
 import tnt.egts.parser.util.*;
 
 

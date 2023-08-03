@@ -1,8 +1,9 @@
-package tnt.egts.parser.data;
+package tnt.egts.parser.data.response;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import tnt.egts.parser.data.Outcoming;
 
 /**
  * EGTS_PT_RESPONSE
@@ -13,7 +14,7 @@ import lombok.ToString;
 @Builder
 @Data
 @ToString
-public class BodyData_RESPONSE implements  Outcoming{
+public class BodyData_RESPONSE implements Outcoming {
 
 
     private   byte[] headBody;
