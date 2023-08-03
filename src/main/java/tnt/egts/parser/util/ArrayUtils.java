@@ -1,9 +1,11 @@
 package tnt.egts.parser.util;
 
+import lombok.extern.slf4j.Slf4j;
 import tnt.egts.parser.errors.NumberArrayDataException;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+
 
 public class ArrayUtils {
 

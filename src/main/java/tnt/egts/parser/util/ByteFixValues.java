@@ -1,5 +1,7 @@
 package tnt.egts.parser.util;
 
+import tnt.egts.parser.errors.NumberArrayDataException;
+
 public class ByteFixValues {
 
     private ByteFixValues() {
@@ -50,5 +52,16 @@ public class ByteFixValues {
      * minimal appdata record-data length information
      */
     public static final int PACKAGE_APPDATA_RECORD_DATA_MIN_LENGTH = 3;
+
+
+    public static byte[] getFDLByteValue(byte[] income, int startAPPDATA) {
+        byte[] fdl = ArrayUtils.getSubArrayFromTo(income,
+                ByteFixedPositions.FDL_START_INDEX,
+                ByteFixedPositions.FDL_START_INDEX + 2);
+        return ArrayUtils.inverse(fdl);
+    }
+    public static short getFDLNumberValue(byte[] byteValue) throws NumberArrayDataException {
+        return ArrayUtils.byteArrayToShort(byteValue);
+    }
 
 }

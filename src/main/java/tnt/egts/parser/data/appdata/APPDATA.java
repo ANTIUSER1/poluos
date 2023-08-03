@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.ToString;
 import tnt.egts.parser.data.Incoming;
 
+import java.util.Map;
+
 /**
  * EGTS_PT_APPDATA
  * <p>
@@ -17,5 +19,10 @@ import tnt.egts.parser.data.Incoming;
 public class APPDATA implements Incoming {
 
     private  byte[] content;
+private Map<String, Boolean> flags;
+private int oid;
+private int evid;
+private int tm;
+
 
 }
