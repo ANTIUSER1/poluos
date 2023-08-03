@@ -23,6 +23,8 @@ private Map<String, Boolean> flags;
 private int oid;
 private int evid;
 private int tm;
+private byte rst;
+private byte[] recordData;
 
 
 }

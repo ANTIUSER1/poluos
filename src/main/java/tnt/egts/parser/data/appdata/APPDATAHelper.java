@@ -18,7 +18,18 @@ import java.util.Arrays;
         appdata.setOid(createOID(appdata ));
         appdata.setEvid(createEVID(appdata ));
         appdata.setTm(createTM(appdata ));
+        appdata.setRst(createRST(appdata ));
+        appdata.setRecordData(createRecData(appdata ));
         return appdata;
+    }
+
+    private byte[] createRecData(APPDATA appdata) {
+        return ArrayUtils.getSubArrayToEnd(appdata.getContent(),pos);
+    }
+
+    private byte createRST(APPDATA appdata) {
+        byte[] content = appdata.getContent();pos++;
+return content[pos-1];
     }
 
     private int createTM(APPDATA appdata) {

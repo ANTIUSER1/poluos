@@ -33,8 +33,6 @@ public class APPDATACreator implements ConvertIncomingData {
     public Incoming create(byte[] income)
             throws IncorrectDataException, NumberArrayDataException {
         prepareData(income);
-//        startAPPDATA=ByteFixedPositions.getAPPDATAStart(income);
-//        fdlPos
         byte[] incomeApp=ArrayUtils.getFixedLengthSubArray(income, startAPPDATA,
                 fdlPos);
         System.out.println(startAPPDATA+

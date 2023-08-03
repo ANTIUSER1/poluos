@@ -89,6 +89,12 @@ public class ArrayUtils {
         for(int k=from;k<from+length;k++)outData[k-from]=inData[k];
         return outData;
     }
+    public static byte[] getSubArrayToEnd(byte[] inData, int from ){
+        if(inData.length==0 ||  from<0 || from  > inData.length-1  ) throw new IllegalArgumentException("array borders error");
+        byte[] outData =new byte[inData.length-from];
+        for(int k=from;k<inData.length;k++)outData[k-from]=inData[k];
+        return outData;
+    }
 
 
     public static  byte[] rndByte(int length){
