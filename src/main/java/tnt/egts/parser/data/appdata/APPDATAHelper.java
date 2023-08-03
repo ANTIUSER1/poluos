@@ -11,16 +11,32 @@ import java.util.Arrays;
 @Slf4j
   class APPDATAHelper {
 
-    int pos=1;
+    int pos=0;
     APPDATA   modify(APPDATA appdata){
-
-
+        appdata.setRecLength(createRecLength(appdata));
+        appdata.setRecNum(createRecNum(appdata));
         appdata.setOid(createOID(appdata ));
         appdata.setEvid(createEVID(appdata ));
         appdata.setTm(createTM(appdata ));
         appdata.setRst(createRST(appdata ));
         appdata.setRecordData(createRecData(appdata ));
         return appdata;
+    }
+
+    private short createRecLength(APPDATA appdata) {
+        byte[] content = appdata.getContent();
+        byte[] out = ArrayUtils.getFixedLengthSubArray(content, pos, 2);pos+=2;
+        System.out.println("+++++++++   LEN  " + ArrayUtils.arrayPrintToScreen(
+                ArrayUtils.inverse( out)) );
+        return ByteBuffer.wrap(ArrayUtils.inverse( out )).getShort(0);
+    }
+
+    private short createRecNum(APPDATA appdata) {
+        byte[] content = appdata.getContent();
+        byte[] out = ArrayUtils.getFixedLengthSubArray(content, pos, 2);pos+=2;
+        System.out.println("++++++   NUM " + ArrayUtils.arrayPrintToScreen(
+                ArrayUtils.inverse( out)) );
+        return  ByteBuffer.wrap(ArrayUtils.inverse( out )).getShort(0);
     }
 
     private byte[] createRecData(APPDATA appdata) {
@@ -38,7 +54,7 @@ return content[pos-1];
         byte[] content = appdata.getContent();
         byte[] out = ArrayUtils.getFixedLengthSubArray(content, pos, 4);pos+=4;
         System.out.println("++++++++++++++++" + ArrayUtils.arrayPrintToScreen(out));
-        return ByteBuffer.wrap(out).getInt(0);
+        return  ByteBuffer.wrap(ArrayUtils.inverse( out )).getInt(0);
     }     return 0;
     }
 
@@ -49,7 +65,7 @@ return content[pos-1];
         byte[] content = appdata.getContent();
         byte[] out = ArrayUtils.getFixedLengthSubArray(content, pos, 4);pos+=4;
         System.out.println("++++++++++++++++" + ArrayUtils.arrayPrintToScreen(out));
-        return ByteBuffer.wrap(out).getInt(0);
+        return  ByteBuffer.wrap(ArrayUtils.inverse( out )).getInt(0);
     }  return 0;
     }
 

@@ -87,9 +87,9 @@ public class ReceiverData implements Runnable {
         HeaderData hd;
         APPDATA appData;
         System.out.println(responseCode+"   ***000000000   " + (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK));
-        if (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK) {
+      //  if (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK) {
             hd = (HeaderData) headerCreator.create(income);
-        }
+       // }
 
 
 

@@ -22,7 +22,7 @@ public class HeaderCreator implements ConvertIncomingData {
                 .content(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos))
                 .build();
 
-        log.info("Finish parsing incoming data header normally");
+        log.info(hcsPos+"  Finish parsing incoming data header normally  "+hd);
         System.out.println("\n" + hd + "\n");
         return hd;
     }

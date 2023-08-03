@@ -19,6 +19,9 @@ import java.util.Map;
 public class APPDATA implements Incoming {
 
     private  byte[] content;
+    private short recNum;
+    private short recLength;
+
 private Map<String, Boolean> flags;
 private int oid;
 private int evid;

@@ -33,23 +33,27 @@ public class APPDATACreator implements ConvertIncomingData {
     public Incoming create(byte[] income)
             throws IncorrectDataException, NumberArrayDataException {
         prepareData(income);
-        byte[] incomeApp=ArrayUtils.getFixedLengthSubArray(income, startAPPDATA,
-                fdlPos);
+
+        byte[] incomeApp=ArrayUtils.getFixedLengthSubArray(income,
+                startAPPDATA , fdlPos);
+
         System.out.println(startAPPDATA+
-                "   *******  "+ArrayUtils.arrayPrintToScreen(incomeApp));
-      String appDataFlags=ArrayUtils.byteToBinary(incomeApp[0]);
-        System.out.println(  "9   "+appDataFlags);
+                " ===startAPPDATA  *******  "+ArrayUtils.arrayPrintToScreen(incomeApp)+"\n");
+
+        String appDataFlags=ArrayUtils.byteToBinary(incomeApp[0]);
+        System.out.println(  " ***flags  "+appDataFlags);
         optionTypes(appDataFlags);
-          System.out.println(appDataOptions);
-        prepareData(income);
+      
         APPDATA bda = APPDATA.builder()
-                .content(incomeApp).flags(appDataOptions)
+                .content(incomeApp)
+                .flags(appDataOptions)
                 .build();
         helper.modify(bda);
-        log.info("BodyData_APPDATA created \n" + bda);
+        log.info("BodyData_APPDATA created \n" + bda+"\n ");
         return bda;
 
     }
+
 
     private void optionTypes(String appDataFlags) {
         System.out.println(appDataFlags);
@@ -61,9 +65,7 @@ public class APPDATACreator implements ConvertIncomingData {
     private void prepareData(byte[] income) throws NumberArrayDataException {
         startAPPDATA = ByteFixedPositions.getAPPDATAStart(income);
         fdl = ByteFixValues.getFDLByteValue(income, startAPPDATA);
-
-        fdlPos = ByteFixValues.getFDLNumberValue(fdl);
-         System.out.println("fdlPos  "+fdlPos);
+   fdlPos = ByteFixValues.getFDLNumberValue(fdl);
     }
 
 }
