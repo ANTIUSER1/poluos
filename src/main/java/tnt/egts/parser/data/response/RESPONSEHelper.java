@@ -27,8 +27,8 @@ class RESPONSEHelper {
         log.info("Response data to BNSO creation -- update process start" +
                  "\n " + bdr);
 
-        tmpPid[0] = bdr.getHeadBody()[7];
-        tmpPid[1] = bdr.getHeadBody()[8];
+        tmpPid[0] = bdr.getPackageHead()[7];
+        tmpPid[1] = bdr.getPackageHead()[8];
 
 //head
         bdr = changeDataBodyLength(bdr);
@@ -42,6 +42,8 @@ class RESPONSEHelper {
 //        bdr=createResponsSFRD(bdr);
         bdr = createCRC16(bdr);
         bdr = createResponseBodyFinal(bdr);
+
+        System.out.println("\n  ******* \n"+ArrayUtils.arrayPrintToScreen(bdr.getPackageHead()));
         log.info("Response data to BNSO creation -- update process finish" + "\n " + bdr);
         return bdr;
 
@@ -50,7 +52,7 @@ class RESPONSEHelper {
 
 
     private RESPONSE createResponseBodyFinal(RESPONSE bdr) {
-        byte[] rbFinal = ArrayUtils.joinArrays(bdr.getHeadBody(), bdr.getResponseBody());
+        byte[] rbFinal = ArrayUtils.joinArrays(bdr.getPackageHead(), bdr.getResponseBody());
         bdr.setResponseBody(rbFinal);
         return bdr;
     }
@@ -81,13 +83,26 @@ class RESPONSEHelper {
         return bdr;
     }
 
-   void outputHeader(RESPONSE bdr){
+    private byte[] createSFRD(RESPONSE bdr) {
+        outputHeader(bdr);
+        byte[] packHeader=appdataService.getPackageHead();
+
+        byte[] inSFRD= appdataService.getAppDataRD();
+        System.out.println("\n Response SFRD\n "  +ArrayUtils.arrayPrintToScreen( inSFRD)
+                           + "  \n  FIELDS: ");
+        byte resp=inSFRD[0];
+        System.out.println("  sfrd- EGTS_PT_RESPONSE #0 "+ inSFRD[0]);
+
+        return new byte[1];
+    }
+
+  private void outputHeader(RESPONSE bdr){
         System.out.println("    HEADER");
-        byte[] out=bdr.getHeadBody();
+        byte[] out=bdr.getPackageHead();
         ByteBuffer bbf=ByteBuffer.wrap( out);
 
-        System.out.println("\n HEADad\n "  +ArrayUtils.arrayPrintToScreen( out )
-                           + "  \n  FIELDS: ");
+        System.out.println("\n HEADad\n"  +ArrayUtils.arrayPrintToScreen( out )
+                         + "  \n  FIELDS: ");
 
 
         System.out.println( "Version prf  *0* "+out[0]);
@@ -102,48 +117,36 @@ class RESPONSEHelper {
 
 
    }
-    private byte[] createSFRD(RESPONSE bdr) {
-outputHeader(bdr);
-
-       byte[] inSFRD= appdataService.getAppDataRD();
-       System.out.println("\n Response SFRD\n "  +ArrayUtils.arrayPrintToScreen( inSFRD)
-                        + "  \n  FIELDS: ");
-       byte resp=inSFRD[0];
-       System.out.println("  sfrd- EGTS_PT_RESPONSE #0 "+ inSFRD[0]);
-
-       return new byte[1];
-    }
-
     private RESPONSE createCRC8(RESPONSE bdr) {
         log.info("CRC8 create for  " + bdr + " start");
-        byte crcV8 = (byte) crc.calculate8(bdr.getHeadBody());
-        byte[] hb = ArrayUtils.addByteToTail(bdr.getHeadBody(), crcV8);
-        bdr.setHeadBody(hb);
+        byte crcV8 = (byte) crc.calculate8(bdr.getPackageHead());
+        byte[] hb = ArrayUtils.addByteToTail(bdr.getPackageHead(), crcV8);
+        bdr.setPackageHead(hb);
         log.info("CRC8 create for  finish");
         return bdr;
     }
 
     private RESPONSE createHeadBody(RESPONSE bdr) {
       //  bdr.getHeadBody()[1]++;
-        bdr.getHeadBody()[7] = 1;
-        bdr.getHeadBody()[8] = 1;
+        bdr.getPackageHead()[7] = 1;
+        bdr.getPackageHead()[8] = 1;
         return bdr;
     }
 
     private RESPONSE changeDataResponseType(RESPONSE bdr, byte resultCode) {
-        bdr.getHeadBody()[ByteFixedPositions.PACKAGE_TYPE_INDEX] =0  ;
+        bdr.getPackageHead()[ByteFixedPositions.PACKAGE_TYPE_INDEX] =0  ;
         //resultCode
         return bdr;
     }
 
     private RESPONSE changeDataFDL(RESPONSE bdr) {
-        bdr.getHeadBody()[5] = 3;
-        bdr.getHeadBody()[6] = 0;
+        bdr.getPackageHead()[5] = 3;
+        bdr.getPackageHead()[6] = 0;
         return bdr;
     }
 
     private RESPONSE changeDataBodyLength(RESPONSE bdr) {
-        bdr.getHeadBody()[ByteFixedPositions.HEAD_LENGTH_INDEX] =
+        bdr.getPackageHead()[ByteFixedPositions.HEAD_LENGTH_INDEX] =
                 ByteFixValues.HEAD_MIN_LENGTH;
         return bdr;
     }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.data.ConvertIncomingData;
 import tnt.egts.parser.data.Incoming;
+import tnt.egts.parser.data.appdata.APPDATAService;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixValues;
@@ -17,7 +18,9 @@ import tnt.egts.parser.util.StringFixedBeanNames;
 public class HeaderCreator implements ConvertIncomingData {
 
     @Autowired
-    private HeaderService headerService;
+    private APPDATAService appdataService;
+
+
 
     @Override
     public Incoming create(byte[] income) throws IncorrectDataException {
@@ -29,13 +32,14 @@ public class HeaderCreator implements ConvertIncomingData {
                 .packageHead(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos+1))
                 .content(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos))
                 .build();
-        headerService.setPackageHead(hd.getPackageHead());
-        headerService.setHeaderContent(hd.getContent());
+
+         appdataService.setPackageHead(hd.getPackageHead());
+
         log.info(hcsPos + "  Finish parsing incoming data header normally  " +
                  "\n" + hd);
         System.out.println("\n ||||||///// hd.getContent()  \n   "+ArrayUtils.arrayPrintToScreen(hd.getContent()  )+"\n"
         +"  hd.getPackageHead()  \n   "+ArrayUtils.arrayPrintToScreen(hd.getPackageHead()  )+"\n");
-        System.out.println("******\n" + hd + "\n*******");
+
         return hd;
     }
 }

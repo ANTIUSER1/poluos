@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.data.ConvertIncomingData;
 import tnt.egts.parser.data.Incoming;
-import tnt.egts.parser.data.header.HeaderService;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
@@ -22,7 +21,8 @@ import java.util.Map;
 public class APPDATACreator implements ConvertIncomingData {
 
     @Autowired
-    private HeaderService headerService;
+    private APPDATAService appdataService;
+
 
     @Autowired
     private APPDATAHelper helper;
@@ -49,12 +49,13 @@ public class APPDATACreator implements ConvertIncomingData {
         System.out.println(startAPPDATA +
                            " ===startAPPDATA  *******  " + ArrayUtils.arrayPrintToScreen(incomeApp) + "\n");
         APPDATA bda = APPDATA.builder()
-                .packageHeader(headerService.getPackageHead())
+                .packageHeader(appdataService.getPackageHead())
                 .content(incomeApp)
                 .flags(appDataOptions)
                 .build();
 
         helper.modify(bda);
+
 
         System.out.println("\n\n \n  ***||||||||   appdata getPackageHeader \n" + ArrayUtils.arrayPrintToScreen(bda.getPackageHeader()));
         System.out.println("\n \n ***||||||||   appdata getContent \n" + ArrayUtils.arrayPrintToScreen(bda.getContent()));

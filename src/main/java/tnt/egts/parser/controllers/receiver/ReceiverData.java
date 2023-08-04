@@ -5,6 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.data.ConvertIncomingData;
+import tnt.egts.parser.data.cmmon.app.CommonAPPDATA;
+import tnt.egts.parser.data.cmmon.app.CommonAPPService;
+import tnt.egts.parser.data.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.data.appdata.APPDATA;
 import tnt.egts.parser.data.header.HeaderData;
 import tnt.egts.parser.data.response.RESPONSE;
@@ -28,6 +32,14 @@ import java.net.Socket;
 public class ReceiverData implements Runnable {
 
     private Socket socket;
+
+    @Autowired
+    private Storage storage;
+
+    @Autowired
+    private CommonAPPService commonAPPService;
+
+    //**********************************************************
 
     @Autowired
     private ByteAnalizer byteAnalizer;
@@ -57,14 +69,33 @@ public class ReceiverData implements Runnable {
                 log.error("Null data received");
                 return;
             }
+            System.out.println("\n\n Creating RESPONSE NEXT\n ");
+
+dataTransform(income);
+
+
+            /**
+             * possibly omit in future --- will be seen
+             */
+          //  response(income, responseCode);
             log.info("work on request finish");
-            response(income, responseCode);
         } catch (IOException | IncorrectDataException e) {
             log.info("Receiving broken  " + e.getCause());
             throw new ConnectionException(e.getMessage());
         } catch (NumberArrayDataException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void dataTransform(byte[] income) throws NumberArrayDataException {
+
+       IncomeDataStorage store= storage.create(income);
+        System.out.println(store);
+        CommonAPPDATA cnd=commonAPPService.create(store);
+
+        System.out.println( );
+        System.out.println(cnd );
+        System.out.println( );
     }
 
     private byte[] receiveData() throws IOException, NumberArrayDataException {

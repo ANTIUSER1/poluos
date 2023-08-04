@@ -17,7 +17,8 @@ import tnt.egts.parser.data.Outcoming;
 public class RESPONSE implements Outcoming {
 
 
-    private   byte[] headBody;
+
+    private byte[] packageHead;
     private   byte[] responseBody;
     /**
      * (Processing Result)
