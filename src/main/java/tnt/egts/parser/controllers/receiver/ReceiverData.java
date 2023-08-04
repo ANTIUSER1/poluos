@@ -7,13 +7,15 @@ import org.springframework.stereotype.Component;
 import tnt.egts.parser.data.ConvertIncomingData;
 import tnt.egts.parser.data.appdata.APPDATA;
 import tnt.egts.parser.data.header.HeaderData;
-import tnt.egts.parser.data.response.BodyData_RESPONSE;
+import tnt.egts.parser.data.response.RESPONSE;
 import tnt.egts.parser.data.validation.ReadFDLValidate;
 import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.errors.ConnectionException;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.ByteFixValues;
+import tnt.egts.parser.util.ByteFixedPositions;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.io.DataInputStream;
@@ -56,7 +58,7 @@ public class ReceiverData implements Runnable {
                 return;
             }
             log.info("work on request finish");
-      //      response(income, responseCode);
+            response(income, responseCode);
         } catch (IOException | IncorrectDataException e) {
             log.info("Receiving broken  " + e.getCause());
             throw new ConnectionException(e.getMessage());
@@ -88,16 +90,16 @@ public class ReceiverData implements Runnable {
 
         log.info("Incoming data wrapping start");
         HeaderData hd = createHeadData(income);
-      //  APPDATA appdata = createAppData(income);
+        APPDATA appdata = createAppData(income);
 
         log.info("Incoming data wrapping finish");
     }
 
-    private APPDATA createAppData(byte[] income) {
+    private APPDATA createAppData(byte[] income) throws NumberArrayDataException {
         APPDATA appData = null;
-//        if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] ==
-//            ByteFixValues.TYPE_APPDATA && readFDLValidate.readFDL(income))
-//            appData = (APPDATA) appDataCreator.create(income);
+        if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] ==
+            ByteFixValues.TYPE_APPDATA && readFDLValidate.readFDL(income))
+            appData = (APPDATA) appDataCreator.create(income);
         return appData;
     }
 
@@ -111,7 +113,7 @@ public class ReceiverData implements Runnable {
 
 
     private void response(byte[] income, byte code) throws IOException {
-        BodyData_RESPONSE bdr = (BodyData_RESPONSE) responseNormal.createNormalResponse(income, code);
+        RESPONSE bdr = (RESPONSE) responseNormal.createNormalResponse(income, code);
         log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(bdr.getResponseBody()));
         OutputStream output = socket.getOutputStream();
         output.write(bdr.getResponseBody());

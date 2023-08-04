@@ -14,7 +14,7 @@ import tnt.egts.parser.data.Outcoming;
 @Builder
 @Data
 @ToString
-public class BodyData_RESPONSE implements Outcoming {
+public class RESPONSE implements Outcoming {
 
 
     private   byte[] headBody;

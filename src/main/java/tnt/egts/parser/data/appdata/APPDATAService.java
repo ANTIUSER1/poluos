@@ -1,6 +1,5 @@
 package tnt.egts.parser.data.appdata;
 
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -9,4 +8,7 @@ import org.springframework.stereotype.Service;
 public class APPDATAService {
 
     private byte[] appDataRD;
+
+    private byte[] packageHead;
+
 }

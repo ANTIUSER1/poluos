@@ -20,7 +20,7 @@ public class APPDATA implements Incoming {
 
     private byte[] content;
 
-    private byte[] head;
+    private byte[] packageHeader;
 
     private short recNum;
 

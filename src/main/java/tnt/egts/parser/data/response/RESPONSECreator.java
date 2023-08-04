@@ -7,14 +7,13 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Outcoming;
 import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.util.ByteFixValues;
-import tnt.egts.parser.util.ByteFixedPositions;
 import tnt.egts.parser.util.ProcessingResultCodeConstants;
 import tnt.egts.parser.util.ArrayUtils;
 
 
 @Service
 @Slf4j
-public class ResponseCreateImpl implements ResponseNormalCreate {
+public class RESPONSECreator implements ResponseNormalCreate {
 
 
     byte[] tmpPid = new byte[2];
@@ -31,8 +30,8 @@ public class ResponseCreateImpl implements ResponseNormalCreate {
 
         tmpPid[0] = income[7];
         tmpPid[1] = income[8];
-        BodyData_RESPONSE bdr =
-                BodyData_RESPONSE.builder()
+        RESPONSE bdr =
+                RESPONSE.builder()
                         .headBody(ArrayUtils.getSubArrayFromTo(income,
                                 0, ByteFixValues.HEAD_MIN_LENGTH))
                         .pr(ProcessingResultCodeConstants.EGTS_PC_OK).build();

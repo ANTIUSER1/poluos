@@ -23,7 +23,7 @@ class RESPONSEHelper {
     @Autowired
     private APPDATAService appdataService;
 
-    BodyData_RESPONSE modify(BodyData_RESPONSE bdr, byte resultCode) {
+    RESPONSE modify(RESPONSE bdr, byte resultCode) {
         log.info("Response data to BNSO creation -- update process start" +
                  "\n " + bdr);
 
@@ -49,14 +49,14 @@ class RESPONSEHelper {
     }
 
 
-    private BodyData_RESPONSE createResponseBodyFinal(BodyData_RESPONSE bdr) {
+    private RESPONSE createResponseBodyFinal(RESPONSE bdr) {
         byte[] rbFinal = ArrayUtils.joinArrays(bdr.getHeadBody(), bdr.getResponseBody());
         bdr.setResponseBody(rbFinal);
         return bdr;
     }
 
 
-    private BodyData_RESPONSE createCRC16(BodyData_RESPONSE bdr) {
+    private RESPONSE createCRC16(RESPONSE bdr) {
         log.info("CRC16 create for  " + bdr + " start");
         short crcV16 = (short) crc.calculate16(bdr.getResponseBody());
         byte[] checkSumm = ArrayUtils.shortToByteArray(crcV16);
@@ -66,7 +66,7 @@ class RESPONSEHelper {
         return bdr;
     }
 
-    private BodyData_RESPONSE createResponse(BodyData_RESPONSE bdr) {
+    private RESPONSE createResponse(RESPONSE bdr) {
         byte[] responseBody = new byte[3];
         responseBody[0] = tmpPid[0];
         responseBody[1] = tmpPid[1];
@@ -81,7 +81,7 @@ class RESPONSEHelper {
         return bdr;
     }
 
-   void outputHeader(BodyData_RESPONSE bdr){
+   void outputHeader(RESPONSE bdr){
         System.out.println("    HEADER");
         byte[] out=bdr.getHeadBody();
         ByteBuffer bbf=ByteBuffer.wrap( out);
@@ -102,7 +102,7 @@ class RESPONSEHelper {
 
 
    }
-    private byte[] createSFRD(BodyData_RESPONSE bdr) {
+    private byte[] createSFRD(RESPONSE bdr) {
 outputHeader(bdr);
 
        byte[] inSFRD= appdataService.getAppDataRD();
@@ -114,7 +114,7 @@ outputHeader(bdr);
        return new byte[1];
     }
 
-    private BodyData_RESPONSE createCRC8(BodyData_RESPONSE bdr) {
+    private RESPONSE createCRC8(RESPONSE bdr) {
         log.info("CRC8 create for  " + bdr + " start");
         byte crcV8 = (byte) crc.calculate8(bdr.getHeadBody());
         byte[] hb = ArrayUtils.addByteToTail(bdr.getHeadBody(), crcV8);
@@ -123,26 +123,26 @@ outputHeader(bdr);
         return bdr;
     }
 
-    private BodyData_RESPONSE createHeadBody(BodyData_RESPONSE bdr) {
+    private RESPONSE createHeadBody(RESPONSE bdr) {
       //  bdr.getHeadBody()[1]++;
         bdr.getHeadBody()[7] = 1;
         bdr.getHeadBody()[8] = 1;
         return bdr;
     }
 
-    private BodyData_RESPONSE changeDataResponseType(BodyData_RESPONSE bdr, byte resultCode) {
+    private RESPONSE changeDataResponseType(RESPONSE bdr, byte resultCode) {
         bdr.getHeadBody()[ByteFixedPositions.PACKAGE_TYPE_INDEX] =0  ;
         //resultCode
         return bdr;
     }
 
-    private BodyData_RESPONSE changeDataFDL(BodyData_RESPONSE bdr) {
+    private RESPONSE changeDataFDL(RESPONSE bdr) {
         bdr.getHeadBody()[5] = 3;
         bdr.getHeadBody()[6] = 0;
         return bdr;
     }
 
-    private BodyData_RESPONSE changeDataBodyLength(BodyData_RESPONSE bdr) {
+    private RESPONSE changeDataBodyLength(RESPONSE bdr) {
         bdr.getHeadBody()[ByteFixedPositions.HEAD_LENGTH_INDEX] =
                 ByteFixValues.HEAD_MIN_LENGTH;
         return bdr;

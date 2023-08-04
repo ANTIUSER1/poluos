@@ -29,6 +29,7 @@ public class HeaderCreator implements ConvertIncomingData {
                 .packageHead(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos+1))
                 .content(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos))
                 .build();
+        headerService.setPackageHead(hd.getPackageHead());
         headerService.setHeaderContent(hd.getContent());
         log.info(hcsPos + "  Finish parsing incoming data header normally  " +
                  "\n" + hd);
