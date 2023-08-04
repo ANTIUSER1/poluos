@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.data.Incoming;
+import tnt.egts.parser.data.header.HeaderService;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.data.ConvertIncomingData;
@@ -21,6 +22,9 @@ import java.util.Map;
 public class APPDATACreator implements ConvertIncomingData {
 
     @Autowired
+    private HeaderService headerService;
+
+    @Autowired
     private APPDATAHelper helper;
     private int startAPPDATA;
 
@@ -33,22 +37,28 @@ public class APPDATACreator implements ConvertIncomingData {
     public Incoming create(byte[] income)
             throws IncorrectDataException, NumberArrayDataException {
         prepareData(income);
-
         byte[] incomeApp=ArrayUtils.getFixedLengthSubArray(income,
                 startAPPDATA , fdlPos);
-
+System.out.println("||||||||||||||||||||||  incomeApp LRENN "+incomeApp.length);
         System.out.println(startAPPDATA+
                 " ===startAPPDATA  *******  "+ArrayUtils.arrayPrintToScreen(incomeApp)+"\n");
 
-        String appDataFlags=ArrayUtils.byteToBinary(incomeApp[0]);
-        System.out.println(  " ***flags  "+appDataFlags);
-        optionTypes(appDataFlags);
-      
+//        String appDataFlags=ArrayUtils.byteToBinary(incomeApp[0]);
+//        System.out.println(  " ***flags  "+appDataFlags);
+//        optionTypes(appDataFlags);
+
         APPDATA bda = APPDATA.builder()
+                .head(headerService.getHeaderContent())
                 .content(incomeApp)
                 .flags(appDataOptions)
                 .build();
         helper.modify(bda);
+
+//        System.out.println("//     //   appdata head \n  "+ArrayUtils.arrayPrintToScreen(  bda.getHead()));
+//        System.out.println("///////////   appdata content \n  "+ArrayUtils.arrayPrintToScreen(  bda.getContent()));
+//        System.out.println("//   /////////   appdata RD  \n  "+ArrayUtils.arrayPrintToScreen(  bda.getRecordData()));
+//        System.out.println("   ||||    RD len    " +bda.getRecordData().length+
+//                           "  /////////   "+bda.getRecLength());
         log.info("BodyData_APPDATA created \n" + bda+"\n ");
         return bda;
 
@@ -65,7 +75,7 @@ public class APPDATACreator implements ConvertIncomingData {
     private void prepareData(byte[] income) throws NumberArrayDataException {
         startAPPDATA = ByteFixedPositions.getAPPDATAStart(income);
         fdl = ByteFixValues.getFDLByteValue(income, startAPPDATA);
-   fdlPos = ByteFixValues.getFDLNumberValue(fdl);
+        fdlPos = ByteFixValues.getFDLNumberValue(fdl);
     }
 
 }

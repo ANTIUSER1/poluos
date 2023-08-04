@@ -4,16 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import tnt.egts.parser.data.ConvertIncomingData;
 import tnt.egts.parser.data.appdata.APPDATA;
-import tnt.egts.parser.data.response.BodyData_RESPONSE;
 import tnt.egts.parser.data.header.HeaderData;
+import tnt.egts.parser.data.response.BodyData_RESPONSE;
 import tnt.egts.parser.data.validation.ReadFDLValidate;
 import tnt.egts.parser.data.validation.ResponseNormalCreate;
 import tnt.egts.parser.errors.ConnectionException;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
-import tnt.egts.parser.data.ConvertIncomingData;
-import tnt.egts.parser.util.*;
+import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -47,13 +48,15 @@ public class ReceiverData implements Runnable {
 
     @Override
     public void run() {
+        log.info("work on request start");
         try {
             byte[] income = receiveData();
             if (income == null) {
                 log.error("Null data received");
                 return;
             }
-            response(income, responseCode);
+            log.info("work on request finish");
+      //      response(income, responseCode);
         } catch (IOException | IncorrectDataException e) {
             log.info("Receiving broken  " + e.getCause());
             throw new ConnectionException(e.getMessage());
@@ -65,12 +68,12 @@ public class ReceiverData implements Runnable {
     private byte[] receiveData() throws IOException, NumberArrayDataException {
         log.info("Receiving starts ");
         byte[] income = receive();
-        log.info("Received: " + income.length + " bytes {"
-                 + ArrayUtils.arrayPrintToScreen(income) + "}");
-        if (income.length ==0) {
+        if (income.length == 0) {
             log.error("Incoming data is too small ");
             return null;
         }
+        log.info("Received: " + income.length + " bytes {"
+                 + ArrayUtils.arrayPrintToScreen(income) + "}");
 
         short pid = calcPID(income);
         log.info("PID: [" + income[7] + "  " + income[8] + "] ( " + pid + " ) ");
@@ -84,19 +87,26 @@ public class ReceiverData implements Runnable {
     private void incomingsCreate(byte[] income) throws NumberArrayDataException {
 
         log.info("Incoming data wrapping start");
-        HeaderData hd;
-        APPDATA appData;
-        System.out.println(responseCode+"   ***000000000   " + (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK));
-      //  if (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK) {
-            hd = (HeaderData) headerCreator.create(income);
-       // }
+        HeaderData hd = createHeadData(income);
+      //  APPDATA appdata = createAppData(income);
 
-
-
-        if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] ==
-            ByteFixValues.TYPE_APPDATA && readFDLValidate.readFDL(income))
-            appData = (APPDATA) appDataCreator.create(income);
         log.info("Incoming data wrapping finish");
+    }
+
+    private APPDATA createAppData(byte[] income) {
+        APPDATA appData = null;
+//        if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] ==
+//            ByteFixValues.TYPE_APPDATA && readFDLValidate.readFDL(income))
+//            appData = (APPDATA) appDataCreator.create(income);
+        return appData;
+    }
+
+    private HeaderData createHeadData(byte[] income) throws NumberArrayDataException {
+        HeaderData hd = null;
+        // if (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK) {
+        hd = (HeaderData) headerCreator.create(income);
+        // }
+        return hd;
     }
 
 

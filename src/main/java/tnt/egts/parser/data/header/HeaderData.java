@@ -16,6 +16,7 @@ import tnt.egts.parser.data.Incoming;
 public class HeaderData implements Incoming {
 
     private boolean hasOptions;
+    private byte[] packageHead;
     private byte[] content;
 
 

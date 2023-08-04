@@ -1,17 +1,21 @@
 package tnt.egts.parser.data.appdata;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.util.ArrayUtils;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 @Component
 @Slf4j
   class APPDATAHelper {
 
-    int pos=0;
+    @Autowired
+  private   APPDATAService appdataService;
+    private int pos=0;
+
+
     APPDATA   modify(APPDATA appdata){
         appdata.setRecLength(createRecLength(appdata));
         appdata.setRecNum(createRecNum(appdata));
@@ -20,6 +24,8 @@ import java.util.Arrays;
         appdata.setTm(createTM(appdata ));
         appdata.setRst(createRST(appdata ));
         appdata.setRecordData(createRecData(appdata ));
+
+        appdataService.setAppDataRD(appdata.getRecordData());
         return appdata;
     }
 
@@ -40,7 +46,10 @@ import java.util.Arrays;
     }
 
     private byte[] createRecData(APPDATA appdata) {
-        return ArrayUtils.getSubArrayToEnd(appdata.getContent(),pos);
+        byte[] out =ArrayUtils.getSubArrayFromTo(appdata.getContent(),pos,appdata.getRecLength());
+        pos+=appdata.getRecLength();
+        return out;
+//        return ArrayUtils.getSubArrayToEnd(appdata.getContent(),pos);
     }
 
     private byte createRST(APPDATA appdata) {

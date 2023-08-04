@@ -18,16 +18,25 @@ import java.util.Map;
 @ToString
 public class APPDATA implements Incoming {
 
-    private  byte[] content;
+    private byte[] content;
+
+    private byte[] head;
+
     private short recNum;
+
     private short recLength;
 
-private Map<String, Boolean> flags;
-private int oid;
-private int evid;
-private int tm;
-private byte rst;
-private byte[] recordData;
+    private Map<String, Boolean> flags;
+
+    private int oid;
+
+    private int evid;
+
+    private int tm;
+
+    private byte rst;
+
+    private byte[] recordData;
 
 
 }

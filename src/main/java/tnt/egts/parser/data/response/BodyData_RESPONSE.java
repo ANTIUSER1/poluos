@@ -23,6 +23,7 @@ public class BodyData_RESPONSE implements Outcoming {
      * (Processing Result)
      */
     private Byte pr;
+    private  byte rd;
 
 
 }
