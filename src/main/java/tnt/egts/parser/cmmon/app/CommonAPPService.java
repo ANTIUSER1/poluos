@@ -1,13 +1,15 @@
-package tnt.egts.parser.data.cmmon.app;
+package tnt.egts.parser.cmmon.app;
 
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
-import tnt.egts.parser.data.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.cmmon.IncomeIdentCreate;
+import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.util.ArrayUtils;
 
 @Service
-public class CommonAPPService {
+public class CommonAPPService implements IncomeIdentCreate {
 
+    @Override
     public CommonAPPDATA create(IncomeDataStorage storage)   {
 
         AppDataOptions opt=AppDataOptions.builder().build();;

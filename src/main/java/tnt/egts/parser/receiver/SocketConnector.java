@@ -1,8 +1,10 @@
-package tnt.egts.parser.controllers.receiver;
+package tnt.egts.parser.receiver;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -11,8 +13,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Slf4j
-@Component
-public class SocketConnector {
+@Service(StringFixedBeanNames.EGTS_CONNECTOR_BEAN)
+public class SocketConnector implements SCoonnect {
 
     @Autowired
     private ReceiverData receiverData;

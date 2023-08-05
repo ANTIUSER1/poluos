@@ -1,4 +1,4 @@
-package tnt.egts.parser.controllers.receiver;
+package tnt.egts.parser.receiver;
 
 
 import lombok.extern.slf4j.Slf4j;

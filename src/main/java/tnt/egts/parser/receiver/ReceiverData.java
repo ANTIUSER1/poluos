@@ -1,13 +1,13 @@
-package tnt.egts.parser.controllers.receiver;
+package tnt.egts.parser.receiver;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.data.ConvertIncomingData;
-import tnt.egts.parser.data.cmmon.app.CommonAPPDATA;
-import tnt.egts.parser.data.cmmon.app.CommonAPPService;
-import tnt.egts.parser.data.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.cmmon.app.CommonAPPDATA;
+import tnt.egts.parser.cmmon.app.CommonAPPService;
+import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.data.appdata.APPDATA;
 import tnt.egts.parser.data.header.HeaderData;

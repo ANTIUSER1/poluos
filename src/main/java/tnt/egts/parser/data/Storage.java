@@ -1,6 +1,6 @@
 package tnt.egts.parser.data;
 
-import tnt.egts.parser.data.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 
 public interface Storage {
 

@@ -1,9 +1,8 @@
-package tnt.egts.parser.data.cmmon.store;
+package tnt.egts.parser.cmmon.store;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.stereotype.Component;
 
 
 @Builder

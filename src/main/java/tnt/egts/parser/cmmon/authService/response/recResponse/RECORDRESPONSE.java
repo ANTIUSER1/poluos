@@ -1,9 +1,9 @@
-package tnt.egts.parser.data.authService.recordResponse;
+package tnt.egts.parser.cmmon.authService.response.recResponse;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import tnt.egts.parser.data.authService.Authentication;
+import tnt.egts.parser.cmmon.authService.Authentication;
 
 @Data
 @Builder
