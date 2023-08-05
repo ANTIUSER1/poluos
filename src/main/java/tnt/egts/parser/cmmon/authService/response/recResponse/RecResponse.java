@@ -3,12 +3,12 @@ package tnt.egts.parser.cmmon.authService.response.recResponse;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import tnt.egts.parser.cmmon.authService.Authentication;
+import tnt.egts.parser.cmmon.Authentication;
 
 @Data
 @Builder
 @ToString
-public class RECORDRESPONSE implements Authentication {
+public class RecResponse implements Authentication {
 
     /**
      * CRN

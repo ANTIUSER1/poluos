@@ -1,18 +1,19 @@
 package tnt.egts.parser.cmmon.app;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.IncomeIdentCreate;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.util.ArrayUtils;
 
 @Service
+@Slf4j
 public class CommonAPPService implements IncomeIdentCreate {
 
     @Override
     public CommonAPPDATA create(IncomeDataStorage storage)   {
-
-        AppDataOptions opt=AppDataOptions.builder().build();;
+        log.info("Storage  income appdata   Data start");
         short rl= recLength(storage.getPackagSFRD());
         short rn= recNum(storage.getPackagSFRD());
         CommonAPPDATA appdata=CommonAPPDATA.builder()
@@ -21,6 +22,7 @@ public class CommonAPPService implements IncomeIdentCreate {
                 .recordLength(rl)
                 .build();
 
+        log.info("Storage  income appdata   Data finish");
         return appdata;
     }
 

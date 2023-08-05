@@ -1,4 +1,4 @@
-package tnt.egts.parser.cmmon.authService;
+package tnt.egts.parser.cmmon;
 
 public interface CreateAuth {
 

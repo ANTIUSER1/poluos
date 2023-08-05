@@ -9,7 +9,8 @@ import tnt.egts.parser.cmmon.IncomeIdent;
 @Data
 @Builder
 @ToString
-public class CommonAPPDATA  implements IncomeIdent {
+public class CommonAPPDATA  implements IncomeIdent  {
+
 
     /**
      * RL

@@ -4,10 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import tnt.egts.parser.data.ConvertIncomingData;
 import tnt.egts.parser.cmmon.app.CommonAPPDATA;
 import tnt.egts.parser.cmmon.app.CommonAPPService;
+import tnt.egts.parser.cmmon.hd.Head;
+import tnt.egts.parser.cmmon.hd.HeadService;
+import tnt.egts.parser.cmmon.store.ComponentsStoring;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.data.ConvertIncomingData;
 import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.data.appdata.APPDATA;
 import tnt.egts.parser.data.header.HeaderData;
@@ -34,7 +37,13 @@ public class ReceiverData implements Runnable {
     private Socket socket;
 
     @Autowired
+    private ComponentsStoring componentsStoring;
+
+    @Autowired
     private Storage storage;
+
+    @Autowired
+    private HeadService headService;
 
     @Autowired
     private CommonAPPService commonAPPService;
@@ -64,20 +73,17 @@ public class ReceiverData implements Runnable {
     public void run() {
         log.info("work on request start");
         try {
-            byte[] income = receiveData();
+            byte[] income = receive();
+            //receiveData(); //
             if (income == null) {
                 log.error("Null data received");
                 return;
             }
-            System.out.println("\n\n Creating RESPONSE NEXT\n ");
-
-dataTransform(income);
-
-
+            dataTransform(income);
             /**
              * possibly omit in future --- will be seen
              */
-          //  response(income, responseCode);
+            //  response(income, responseCode);
             log.info("work on request finish");
         } catch (IOException | IncorrectDataException e) {
             log.info("Receiving broken  " + e.getCause());
@@ -88,14 +94,17 @@ dataTransform(income);
     }
 
     private void dataTransform(byte[] income) throws NumberArrayDataException {
+        log.info("Storage  income Data start");
+        IncomeDataStorage store = storage.create(income);
 
-       IncomeDataStorage store= storage.create(income);
-        System.out.println(store);
-        CommonAPPDATA cnd=commonAPPService.create(store);
-
-        System.out.println( );
-        System.out.println(cnd );
-        System.out.println( );
+        CommonAPPDATA cnd = commonAPPService.create(store);
+        componentsStoring.append(cnd);
+        Head head = (Head) headService.create(store);
+        componentsStoring.append(head);
+        System.out.println();
+        System.out.println(componentsStoring);
+        System.out.println();
+        log.info("Storage  income Data finish");
     }
 
     private byte[] receiveData() throws IOException, NumberArrayDataException {

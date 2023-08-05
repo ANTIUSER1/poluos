@@ -8,7 +8,7 @@ import tnt.egts.parser.cmmon.IncomeIdent;
 @Builder
 @Data
 @ToString
-public class AppDataOptions implements IncomeIdent {
+public class AppDataOptions implements IncomeIdent  {
 
     /**
      * OID
