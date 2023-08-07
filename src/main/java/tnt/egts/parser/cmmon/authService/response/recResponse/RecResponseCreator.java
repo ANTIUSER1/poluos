@@ -1,18 +1,15 @@
 package tnt.egts.parser.cmmon.authService.response.recResponse;
 
-import tnt.egts.parser.cmmon.Authentication;
-import tnt.egts.parser.cmmon.CreateAuth;
+import org.springframework.stereotype.Service;
+import tnt.egts.parser.cmmon.OutcomeIdent;
+import tnt.egts.parser.cmmon.OutcomeIdentCreate;
+import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 
-
-public class RecResponseCreator implements CreateAuth {
+@Service
+public class RecResponseCreator implements OutcomeIdentCreate {
 
     @Override
-    public Authentication create(byte[] income) {
-        RecResponse recResp= RecResponse.builder()
-
-
-                .build();
-
-        return null;
+    public OutcomeIdent create(IncomeDataStorage storage) {
+        return  SrRecResponse.builder().build();
     }
 }

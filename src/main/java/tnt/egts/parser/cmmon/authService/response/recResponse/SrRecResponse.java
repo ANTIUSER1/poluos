@@ -4,11 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 import tnt.egts.parser.cmmon.Authentication;
+import tnt.egts.parser.cmmon.OutcomeIdent;
 
 @Data
 @Builder
 @ToString
-public class RecResponse implements Authentication {
+public class SrRecResponse implements OutcomeIdent {
 
     /**
      * CRN

@@ -31,4 +31,18 @@ public class IncomeDataStorage {
      */
     private short crc16;
 
+    /**
+     * FLD
+     */
+    private short frameDataLength;
+    /**
+     * PID
+     */
+    private short packetIdentifier;
+
+    /**
+     * PT
+     */
+    private  byte packetType;
+
 }
