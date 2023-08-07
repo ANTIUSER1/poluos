@@ -45,4 +45,8 @@ public class CommonAPPDATA  implements IncomeIdent  {
     private byte[] recordData;
 
 
+    @Override
+    public void createData() {
+
+    }
 }

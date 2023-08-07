@@ -25,4 +25,9 @@ public class SrRecResponse implements OutcomeIdent {
      * data for export to BNSO
      */
     private byte[] data;
+
+    @Override
+    public void createData() {
+
+    }
 }

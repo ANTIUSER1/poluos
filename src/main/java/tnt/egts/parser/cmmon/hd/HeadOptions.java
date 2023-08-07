@@ -18,4 +18,9 @@ public class HeadOptions  implements IncomeIdent  {
 
     /** TTL */
     private byte timeToLive;
+
+    @Override
+    public void createData() {
+
+    }
 }

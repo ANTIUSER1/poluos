@@ -25,4 +25,8 @@ public class AppDataOptions implements IncomeIdent  {
      */
     private int time;
 
+    @Override
+    public void createData() {
+
+    }
 }

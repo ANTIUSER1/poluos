@@ -26,4 +26,8 @@ public class ProtocolTypeResponse implements OutcomeIdent {
      */
     private SeparateRecord  separateRecord;
 
+    @Override
+    public void createData() {
+
+    }
 }

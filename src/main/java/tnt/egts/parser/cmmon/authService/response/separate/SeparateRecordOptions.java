@@ -23,4 +23,9 @@ public class SeparateRecordOptions   implements OutcomeIdent {
      * TM
      */
     private  int time;
+
+    @Override
+    public void createData() {
+
+    }
 }

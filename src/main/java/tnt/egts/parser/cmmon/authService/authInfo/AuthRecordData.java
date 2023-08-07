@@ -22,4 +22,8 @@ public class AuthRecordData  implements OutcomeIdent {
     private short subRecordLength;
 private SrRecResponse srRecResponse;
 
+    @Override
+    public void createData() {
+
+    }
 }

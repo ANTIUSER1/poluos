@@ -32,6 +32,8 @@ public class HeadService implements IncomeIdentCreate {
                 .headOptions((HeadOptions) hoService.create(storage))
                 .crc8((byte) ByteFixedPositions.getHCSIndex(income))
                 .build();
+
+
         log.info("Storage  income head Data finish");
         return head;
     }

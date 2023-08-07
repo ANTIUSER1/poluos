@@ -28,6 +28,8 @@ public class Head implements IncomeIdent  {
     /** PID */
     private short packetIdentifier;
 
+    private byte[] data;
+
     /** options */
     private HeadOptions headOptions;
 
@@ -37,7 +39,8 @@ public class Head implements IncomeIdent  {
     private byte crc8;
 
 
+    @Override
+    public void createData() {
 
-
-
+    }
 }

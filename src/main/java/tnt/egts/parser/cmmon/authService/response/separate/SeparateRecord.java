@@ -46,4 +46,9 @@ private SeparateRecordOptions options;
      * RD
      */
     private AuthRecordData recordData;
+
+    @Override
+    public void createData() {
+
+    }
 }
