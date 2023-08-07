@@ -6,12 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentCreate;
-import tnt.egts.parser.cmmon.app.CommonAPPDATA;
 import tnt.egts.parser.cmmon.app.CommonAPPService;
-import tnt.egts.parser.cmmon.authService.authInfo.AuthRecordData;
-import tnt.egts.parser.cmmon.authService.authInfo.AuthRecordDataService;
-import tnt.egts.parser.cmmon.authService.response.recResponse.RecResponseService;
-import tnt.egts.parser.cmmon.hd.Head;
 import tnt.egts.parser.cmmon.hd.HeadService;
 import tnt.egts.parser.cmmon.store.ComponentsStoring;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
@@ -39,10 +34,11 @@ import java.net.Socket;
 @Slf4j
 public class ReceiverData implements Runnable {
 
-    private Socket socket;
-@Autowired
-AuthRecordDataService testIF;
+    @Autowired
+    @Qualifier ("pt")
+    OutcomeIdentCreate testIF;
 
+    private Socket socket;
 
     @Autowired
     private ComponentsStoring componentsStoring;
@@ -117,10 +113,11 @@ AuthRecordDataService testIF;
         System.out.println("TESTIF");
         System.out.println("TESTIF");
 
-        OutcomeIdent testOO=testIF.create(store);
-
+        OutcomeIdent testOO = testIF.create(store);
 
         System.out.println(testOO);
+
+        // 3--- 6---
         System.out.println();
         System.out.println();
         System.out.println();
