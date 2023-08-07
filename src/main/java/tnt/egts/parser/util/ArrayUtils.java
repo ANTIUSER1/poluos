@@ -64,7 +64,7 @@ public class ArrayUtils {
     }
 
     public static byte[] shortToByteArray(short N) {
-        return new byte[]{(byte) (N >> 8), (byte) (N & 255)};
+         return new byte[]{(byte) (N >> 8), (byte) (N & 255)};
     }
 
     public static byte[] inverse(byte[] data) {
@@ -79,6 +79,14 @@ public class ArrayUtils {
         byte[] out = new byte[data.length + 1];
         System.arraycopy(data, 0, out, 0, data.length);
         out[out.length - 1] = b;
+        return out;
+    }
+    public static byte[] addByteToStart(byte[] data, byte b) {
+        byte[] out = new byte[data.length + 1];
+       // System.arraycopy(data, 1, out, 0, data.length);
+
+        out[0] = b;
+        for(int k=1;k<out.length;k++)out[k]=data[k-1];
         return out;
     }
 

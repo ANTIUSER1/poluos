@@ -17,10 +17,11 @@ public class AuthRecordDataService implements OutcomeIdentCreate {
     @Override
     public OutcomeIdent create(IncomeDataStorage storage) throws NumberArrayDataException {
         SrRecResponse srRecResponse= (SrRecResponse) srResp.create(storage);
-        AuthRecordData ard=AuthRecordData.builder()
+        AuthRecordData out=AuthRecordData.builder() 
                 .subRecordLength((short) 3)
                 .srRecResponse(srRecResponse)
                 .build();
-        return ard;
+        out.createData();
+        return out;
     }
 }

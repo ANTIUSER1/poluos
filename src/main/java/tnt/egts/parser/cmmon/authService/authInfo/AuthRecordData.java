@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.ToString;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.authService.response.recResponse.SrRecResponse;
+import tnt.egts.parser.util.ArrayUtils;
+
+import java.nio.ByteBuffer;
 
 @Builder
 @Data
@@ -21,9 +24,13 @@ public class AuthRecordData  implements OutcomeIdent {
      */
     private short subRecordLength;
 private SrRecResponse srRecResponse;
+private byte[] data;
 
     @Override
     public void createData() {
-
+data= ByteBuffer.wrap(ArrayUtils.shortToByteArray(subRecordLength)).array();
+data=ArrayUtils.inverse(data);
+data=ArrayUtils.joinArrays(data, srRecResponse.getData());
+data=ArrayUtils.addByteToStart(data,subRecordType);
     }
 }

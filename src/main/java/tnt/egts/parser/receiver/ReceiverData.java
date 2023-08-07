@@ -8,6 +8,8 @@ import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentCreate;
 import tnt.egts.parser.cmmon.app.CommonAPPDATA;
 import tnt.egts.parser.cmmon.app.CommonAPPService;
+import tnt.egts.parser.cmmon.authService.authInfo.AuthRecordData;
+import tnt.egts.parser.cmmon.authService.authInfo.AuthRecordDataService;
 import tnt.egts.parser.cmmon.authService.response.recResponse.RecResponseService;
 import tnt.egts.parser.cmmon.hd.Head;
 import tnt.egts.parser.cmmon.hd.HeadService;
@@ -39,7 +41,7 @@ public class ReceiverData implements Runnable {
 
     private Socket socket;
 @Autowired
-RecResponseService testIF;
+AuthRecordDataService testIF;
 
 
     @Autowired
