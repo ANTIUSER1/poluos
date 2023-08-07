@@ -4,8 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import tnt.egts.parser.cmmon.OutcomeIdent;
+import tnt.egts.parser.cmmon.OutcomeIdentCreate;
 import tnt.egts.parser.cmmon.app.CommonAPPDATA;
 import tnt.egts.parser.cmmon.app.CommonAPPService;
+import tnt.egts.parser.cmmon.authService.response.recResponse.RecResponseService;
 import tnt.egts.parser.cmmon.hd.Head;
 import tnt.egts.parser.cmmon.hd.HeadService;
 import tnt.egts.parser.cmmon.store.ComponentsStoring;
@@ -35,6 +38,9 @@ import java.net.Socket;
 public class ReceiverData implements Runnable {
 
     private Socket socket;
+@Autowired
+RecResponseService testIF;
+
 
     @Autowired
     private ComponentsStoring componentsStoring;
@@ -97,12 +103,27 @@ public class ReceiverData implements Runnable {
         log.info("Storage  income Data start");
         IncomeDataStorage store = storage.create(income);
 
-        CommonAPPDATA cnd = commonAPPService.create(store);
-        componentsStoring.append(cnd);
-        Head head = (Head) headService.create(store);
-        componentsStoring.append(head);
+//        CommonAPPDATA cnd = commonAPPService.create(store);
+//        componentsStoring.append(cnd);
+//        Head head = (Head) headService.create(store);
+//        componentsStoring.append(head);
+//        System.out.println();
+//        System.out.println(componentsStoring);
         System.out.println();
-        System.out.println(componentsStoring);
+        System.out.println();
+        System.out.println("TESTIF");
+        System.out.println("TESTIF");
+        System.out.println("TESTIF");
+
+        OutcomeIdent testOO=testIF.create(store);
+
+
+        System.out.println(testOO);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
         System.out.println();
         log.info("Storage  income Data finish");
     }
