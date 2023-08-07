@@ -5,7 +5,7 @@ import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentCreate;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 
-@Service
+@Service("sr")
 public class RecResponseService implements OutcomeIdentCreate {
 
     @Override

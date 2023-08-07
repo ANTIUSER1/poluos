@@ -1,6 +1,7 @@
 package tnt.egts.parser.cmmon.authService.response.ptResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.IncomeIdent;
 import tnt.egts.parser.cmmon.IncomeIdentCreate;
@@ -16,6 +17,11 @@ public class ProtocolTypeResponseService implements OutcomeIdentCreate {
 
 @Autowired
 private  SeparateRecordService separateService;
+
+
+    @Autowired
+    @Qualifier ("authRecord")
+    private OutcomeIdentCreate creator;
     @Override
     public OutcomeIdent create(IncomeDataStorage storage) throws NumberArrayDataException {
         SeparateRecord separate= (SeparateRecord) separateService.create(storage);
