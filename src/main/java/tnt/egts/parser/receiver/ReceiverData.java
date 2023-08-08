@@ -8,6 +8,7 @@ import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentCreate;
 import tnt.egts.parser.cmmon.app.CommonAPPService;
 import tnt.egts.parser.cmmon.hd.HeadService;
+import tnt.egts.parser.cmmon.sendBack.DoResponse;
 import tnt.egts.parser.cmmon.store.ComponentsStoring;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.data.ConvertIncomingData;
@@ -39,7 +40,7 @@ public class ReceiverData implements Runnable {
     OutcomeIdentCreate testIF;
 
     private Socket socket;
-
+   private OutcomeIdent outcomeData;
     @Autowired
     private ComponentsStoring componentsStoring;
 
@@ -84,17 +85,33 @@ public class ReceiverData implements Runnable {
                 return;
             }
             dataTransform(income);
+            sendResponse();
             /**
              * possibly omit in future --- will be seen
              */
             //  response(income, responseCode);
             log.info("work on request finish");
         } catch (IOException | IncorrectDataException e) {
-            log.info("Receiving broken  " + e.getCause());
-            throw new ConnectionException(e.getMessage());
-        } catch (NumberArrayDataException e) {
-            throw new RuntimeException(e);
+            log.info("Receiving broken  "  );e.printStackTrace();
+        } catch (  Exception e ) {
+            log.error("Error while data transform");
         }
+    }
+
+    private void sendResponse() {
+        DoResponse resp= (DoResponse) outcomeData;
+        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData()));
+        OutputStream output = null;
+        try {
+            output = socket.getOutputStream();
+
+        output.write( resp.getData());
+        log.info("Sending back response to BNSO finish. ");
+        output.close();} catch (IOException e) {
+       log.error("Error while response to  attempt");
+       e.printStackTrace();
+    }
+
     }
 
     private void dataTransform(byte[] income) throws NumberArrayDataException {
@@ -107,22 +124,14 @@ public class ReceiverData implements Runnable {
 //        componentsStoring.append(head);
 //        System.out.println();
 //        System.out.println(componentsStoring);
-        System.out.println();
-        System.out.println();
-        System.out.println("TESTIF");
-        System.out.println("TESTIF");
+
         System.out.println("TESTIF");
 
-        OutcomeIdent testOO = testIF.create(store);
+        outcomeData = testIF.create(store);
 
-        System.out.println(testOO);
+        System.out.println(outcomeData);
 
-        // 3--- 6---
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
+
         System.out.println();
         log.info("Storage  income Data finish");
     }
