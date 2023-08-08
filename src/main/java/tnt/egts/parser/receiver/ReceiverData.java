@@ -35,7 +35,7 @@ import java.net.Socket;
 public class ReceiverData implements Runnable {
 
     @Autowired
-    @Qualifier ("pt")
+    @Qualifier ("readyToSend")
     OutcomeIdentCreate testIF;
 
     private Socket socket;
