@@ -18,7 +18,7 @@ public class SeparateRecordService implements OutcomeIdentCreate {
 
 
     @Override
-    public OutcomeIdent create(IncomeDataStorage storage) throws NumberArrayDataException {
+    public OutcomeIdent create(IncomeDataStorage storage ) throws NumberArrayDataException {
         AuthRecordData ars = (AuthRecordData) creator.create(storage);
         SeparateRecord out = SeparateRecord.builder()
                 .authRecordData(ars)

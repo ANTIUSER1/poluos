@@ -9,7 +9,7 @@ import tnt.egts.parser.errors.NumberArrayDataException;
 public class SeparateRecordOptionsService implements OutcomeIdentCreate {
 
     @Override
-    public OutcomeIdent create(IncomeDataStorage storage) throws NumberArrayDataException {
+    public OutcomeIdent create(IncomeDataStorage storage ) throws NumberArrayDataException {
         return null;
     }
 }

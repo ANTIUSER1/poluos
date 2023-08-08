@@ -9,7 +9,7 @@ import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 public class SrRecordResponseService implements OutcomeIdentCreate {
 
     @Override
-    public OutcomeIdent create(IncomeDataStorage storage) {
+    public OutcomeIdent create(IncomeDataStorage storage ) {
         SrRecordResponse out= SrRecordResponse.builder()
                 .confirmRN((short) 10)
                 .build();

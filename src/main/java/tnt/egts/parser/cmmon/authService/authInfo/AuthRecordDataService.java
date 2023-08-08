@@ -17,8 +17,8 @@ public class AuthRecordDataService implements OutcomeIdentCreate {
     private OutcomeIdentCreate creator;
 
     @Override
-    public OutcomeIdent create(IncomeDataStorage storage) throws NumberArrayDataException {
-        SrRecordResponse srRecResponse= (SrRecordResponse) creator.create(storage);
+    public OutcomeIdent create(IncomeDataStorage storage ) throws NumberArrayDataException {
+        SrRecordResponse srRecResponse= (SrRecordResponse) creator.create(storage );
         AuthRecordData out=AuthRecordData.builder() 
                 .subRecordLength((short) 3)
                 .srRecResponse(srRecResponse)
