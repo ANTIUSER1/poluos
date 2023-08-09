@@ -41,6 +41,23 @@ System.out.println();
 System.out.println();
         short crc8 = (short) crc.calculate8(out.getProperPackageHeader());
         short crc16 = (short) crc.calculate16(out.getSfrd());
+
+        System.out.println( " ********************   " );
+        System.out.println( " ********************   " );
+        System.out.println( " ********************   " );
+        System.out.println( " CRC16::   "+crc16);
+        System.out.println( " out.getSfrd()::   "+ArrayUtils.arrayPrintToScreen(out.getSfrd()));
+        System.out.println( " out.getSfrd() lrn::   "+out.getSfrd().length);
+        System.out.println( " CRC16::   "+crc16);
+        System.out.println( " CRC16 AS Arr::   "+ArrayUtils.arrayPrintToScreen(
+                ArrayUtils.shortToByteArray(crc16)
+        ));
+        System.out.println( " CRC16::   "+crc16);
+        System.out.println( " ********************   " );
+        System.out.println( " ********************   " );
+        System.out.println( " ********************   " );
+        System.out.println( " ********************   " );
+
         out.getResponseHead()[9] = 0;//tmp
         byte[] crc16Array = ArrayUtils.shortToByteArray(crc16);
         crc16Array = ArrayUtils.inverse(crc16Array);
@@ -49,13 +66,13 @@ System.out.println();
        data [10] = (byte) crc8;
         data = ArrayUtils.joinArrays(data, crc16Array);
         out.setData(data);
-        System.out.println();
-        System.out.println();
-        System.out.println("DATA: "+data[10] +" HEX: " +Long.toHexString(crc8));
-        System.out.println(ArrayUtils.arrayPrintToScreen(data));
-        System.out.println("CRC8: "+crc8);
-        System.out.println();
-        System.out.println();
+//        System.out.println();
+//        System.out.println();
+//        System.out.println("DATA: "+data[10] +" HEX: " +Long.toHexString(crc8));
+//        System.out.println(ArrayUtils.arrayPrintToScreen(data));
+//        System.out.println("CRC8: "+crc8);
+//        System.out.println();
+//        System.out.println();
 
         log.info("Response data generate finish: "+out);
 

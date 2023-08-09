@@ -9,6 +9,7 @@ import tnt.egts.parser.cmmon.OutcomeIdentCreate;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
 import tnt.egts.parser.cmmon.sendBack.DoResponse;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
@@ -46,6 +47,9 @@ public class ReceiverData implements Runnable {
     //**********************************************************
 
     @Autowired
+    CRC crc;
+
+    @Autowired
     private ByteAnalizer byteAnalizer;
 //
 //    @Autowired
@@ -70,8 +74,8 @@ public class ReceiverData implements Runnable {
         log.info("work on request start");
         try {
             byte[] income = receive();
-            if (income == null) {
-                log.error("Null data received");
+            if (income == null || income.length==0) {
+                log.error("Null data received, or income data is empty");
                 return;
             }
 
@@ -79,6 +83,7 @@ public class ReceiverData implements Runnable {
             //receiveData ; //
             dataTransform(income, responseCode);
             sendResponse();
+
             msgNO++;msgNO= (byte) (msgNO % 100);
             log.info("work on request finish. step: "+msgNO  );
         } catch (IOException | IncorrectDataException e) {
@@ -96,13 +101,83 @@ public class ReceiverData implements Runnable {
         OutputStream output = null;
         try {
             output = socket.getOutputStream();
-  output.write(resp.getData());
+            output.write(resp.getData());
             log.info("Sending back response to BNSO finish. ");
-            output.close();
+            testOutSendData(resp.getData());
+//            output.close();
         } catch (IOException e) {
             log.error("Error while response to  attempt");
             e.printStackTrace();
         }
+    }
+
+    private void testOutSendData(byte[] data) {
+        System.out.println();
+        System.out.println("************** TEST  OUTPUT  " +
+                           "*********************");
+        System.out.println();
+        System.out.println("OUTPUT:  " +ArrayUtils.arrayPrintToScreen(data)+
+                           " LENGTH: "+data.length);
+        System.out.println();
+        System.out.println();
+        byte bt=data[3];
+        System.out.println("  HL: "+bt);
+        byte[] inf=ArrayUtils.getFixedLengthSubArray(data,0, bt);
+        System.out.println( "HEAD:  "+ArrayUtils.arrayPrintToScreen(inf));
+
+        bt=data[9];
+        System.out.println("PT:   "+bt);
+
+        byte[] fdl=new byte[2];
+        fdl[0]=data[6];
+        fdl[1]=data[5];
+        short fdlDat;
+        try {
+            fdlDat=ArrayUtils.byteArrayToShort(fdl);
+        } catch (NumberArrayDataException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("FDL:  "+ArrayUtils.arrayPrintToScreen(fdl)+ "  AS" +
+                           "  NUM:  "+fdlDat + "  EXPETED: " +(data.length-data[3]-2) );
+
+
+        byte[] pid=new byte[2];
+        pid[0]=data[8];
+        pid[1]=data[7];
+        short pidDat;
+        try {
+            pidDat=ArrayUtils.byteArrayToShort(pid);
+        } catch (NumberArrayDataException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("PID:  "+ArrayUtils.arrayPrintToScreen(pid)+ "  AS" +
+                           "  NUM:  "+pidDat);
+
+        bt=data[  data[3]-1];
+        System.out.println("HCS:   "+bt);
+
+        byte[] sfrd =ArrayUtils.getFixedLengthSubArray(data, data[3] ,fdlDat);
+        System.out.println( "  sfrd: "+ArrayUtils.arrayPrintToScreen(sfrd)+
+                            "  LEN: "+sfrd.length);
+
+        long crc16=   crc.calculate16(sfrd);
+       short crcShort= (short) crc16;
+        byte[] crcArr=ArrayUtils.shortToByteArray(crcShort);
+         System.out.println("C CRC16:: "+crc16+"  HEX  "+Long.toHexString(crc16));
+        System.out.println("CRC-short:  "+crcShort +"  as arr:  "+ArrayUtils.arrayPrintToScreen(crcArr)+ "   HEX:  "+Integer.toHexString(crcShort));
+//testCRC16();
+        System.out.println();
+        System.out.println("****************TEST");
+        System.out.println();
+    }
+
+    private void testCRC16() {
+        byte[] tb= {2,5};
+        System.out.println("***========CRC-16 test =============");
+        long crc16= crc.calculate16(tb);
+        System.out.println(" crc-16  16:  "+crc16+" HEX:  "+Integer.toHexString((int) crc16));
+        System.out.println("***========CRC-16 test =============");
+
     }
 
     private void dataTransform(byte[] income, byte code) throws NumberArrayDataException {
