@@ -63,6 +63,7 @@ public class ReceiverData implements Runnable {
 //    private ReadFDLValidate readFDLValidate;
 
     private byte responseCode;
+   private volatile byte msgNO;
 
     @Override
     public void run() {
@@ -73,27 +74,29 @@ public class ReceiverData implements Runnable {
                 log.error("Null data received");
                 return;
             }
-responseCode= byteAnalizer.analize(income);
+
+//responseCode= byteAnalizer.analize(income);
             //receiveData ; //
             dataTransform(income, responseCode);
             sendResponse();
-            log.info("work on request finish");
+            msgNO++;msgNO= (byte) (msgNO % 100);
+            log.info("work on request finish. step: "+msgNO  );
         } catch (IOException | IncorrectDataException e) {
             log.info("Receiving broken  ");
             e.printStackTrace();
         } catch (Exception e) {
             log.error("Error while data transform");
+            e.printStackTrace();
         }
     }
 
     private void sendResponse() {
         DoResponse resp = (DoResponse) outcomeData;
-        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData()));
+        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData())+ " of length "+resp.getData().length);
         OutputStream output = null;
         try {
             output = socket.getOutputStream();
-
-            output.write(resp.getData());
+  output.write(resp.getData());
             log.info("Sending back response to BNSO finish. ");
             output.close();
         } catch (IOException e) {
@@ -113,13 +116,7 @@ responseCode= byteAnalizer.analize(income);
 //        System.out.println();
 //        System.out.println(componentsStoring);
 
-        System.out.println("TESTIF");
-
         outcomeData = outcomeIdentCreate.create(store,code);
-
-        System.out.println(outcomeData);
-
-        System.out.println();
         log.info("Storage  income Data finish");
     }
 
@@ -189,10 +186,15 @@ responseCode= byteAnalizer.analize(income);
     }
 
     private byte[] receive() throws IOException {
+        log.info("Read from socket start");
         DataInputStream in = new DataInputStream(socket.getInputStream());
         int dataSize = in.available();
         byte[] out = new byte[dataSize];
         in.read(out);
+
+        log.info("Income data: "+ArrayUtils.arrayPrintToScreen(out)
+        +"  of length "+out.length);
+        log.info("Read from socket finish");
         return out;
 
     }

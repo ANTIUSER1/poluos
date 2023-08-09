@@ -60,7 +60,6 @@ byte[] data;
         data=ArrayUtils.addByteToTail(data, sourceServicceType);
         data=ArrayUtils.addByteToTail(data, recipientServicceType);
         data=ArrayUtils.joinArrays(data,authRecordData.getData());
-        System.out.println(data.length);
 
     }
 }

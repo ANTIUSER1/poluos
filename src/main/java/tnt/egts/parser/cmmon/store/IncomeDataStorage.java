@@ -3,6 +3,7 @@ package tnt.egts.parser.cmmon.store;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import tnt.egts.parser.util.ArrayUtils;
 
 
 @Builder
@@ -15,6 +16,9 @@ public class IncomeDataStorage {
      * only PackageHead
      */
     private byte[] packageHeader;
+
+
+
 
     /**
      * Services frame data (SFRD)

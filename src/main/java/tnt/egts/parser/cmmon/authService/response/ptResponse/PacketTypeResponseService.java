@@ -1,5 +1,6 @@
 package tnt.egts.parser.cmmon.authService.response.ptResponse;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 
 @Service("pt")
+@Slf4j
 public class PacketTypeResponseService implements OutcomeIdentCreate {
 
 
@@ -19,6 +21,7 @@ public class PacketTypeResponseService implements OutcomeIdentCreate {
 
     @Override
     public OutcomeIdent create(IncomeDataStorage storage ) throws NumberArrayDataException {
+        log.info("Storage Packet Type data start");
         SeparateRecord sr= (SeparateRecord) creator.create(storage);
              PacketTypeResponse out =PacketTypeResponse.builder()
                      .responsePacketID(storage.getPacketIdentifier())
@@ -26,6 +29,7 @@ public class PacketTypeResponseService implements OutcomeIdentCreate {
                      .separateRecord(sr)
                 .build();
         out.createData();
+        log.info("Storage Packet Type data finish: "+out);
         return out;
     }
 }

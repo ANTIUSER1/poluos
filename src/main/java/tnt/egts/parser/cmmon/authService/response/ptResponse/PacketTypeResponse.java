@@ -33,11 +33,25 @@ public class PacketTypeResponse implements OutcomeIdent {
 
     @Override
     public void createData() {
-        data=ArrayUtils.shortToByteArray((short) separateRecord.getData().length);
+        System.out.println("PT RESPONSE: "+responsePacketID );
+        System.out.println("PT RESPONSE: "+responsePacketID );
+        System.out.println("PT RESPONSE: "+responsePacketID );
+        System.out.println("PT RESPONSE: "+responsePacketID );
+
+      data =  ArrayUtils.shortToByteArray(responsePacketID);
+      data=ArrayUtils.addByteToTail(data, (byte) 0) ;
+
+        data=ArrayUtils.joinArrays( data,
+               ArrayUtils.shortToByteArray((short) separateRecord.getData().length) );
 //        data = ArrayUtils.shortToByteArray(responsePacketID);
+        System.out.println("DDDD");
+        System.out.println("--"+separateRecord.getData().length);
+        System.out.println("--"+ArrayUtils.arrayPrintToScreen(data));
+        System.out.println("--");
+        System.out.println("DDDD");
         data = ArrayUtils.inverse(data);
+
         data = ArrayUtils.addByteToTail(data, processingResult);
         data=ArrayUtils.joinArrays(data, separateRecord.getData());
-        System.out.println(data.length);
     }
 }

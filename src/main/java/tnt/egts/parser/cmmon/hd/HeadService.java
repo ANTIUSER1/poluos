@@ -21,7 +21,7 @@ public class HeadService implements IncomeIdentCreate {
         log.info("Storage  income head Data start");
         byte[] income=storage.getPackageHeader();
 
-        Head head=Head.builder()
+        Head out=Head.builder()
                 .protocolVersion(income[0])
                 .securityKeyID(income[1])
                 .flag(income[2])
@@ -32,10 +32,8 @@ public class HeadService implements IncomeIdentCreate {
                 .headOptions((HeadOptions) hoService.create(storage))
                 .crc8((byte) ByteFixedPositions.getHCSIndex(income))
                 .build();
-
-
-        log.info("Storage  income head Data finish");
-        return head;
+        log.info("Storage  income head Data finish: "+out);
+        return out;
     }
 
 

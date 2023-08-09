@@ -29,14 +29,14 @@ public class HeadOptionsService implements IncomeIdentCreate {
         }
         byte[] data =
                 ArrayUtils.getFixedLengthSubArray(storage.getPackageHeader(), 10, 5);
-         HeadOptions ho = HeadOptions.builder().build();
+         HeadOptions out = HeadOptions.builder().build();
             short pra = createPRA(data);
-            ho.setPeerAddres(pra);
+            out.setPeerAddres(pra);
             short rca = createRCA(data);
-            ho.setRecipientAddress(rca);
-            ho.setTimeToLive(data[4]);
-        log.info("Storage  income head options Data finish");
-        return ho;
+            out.setRecipientAddress(rca);
+            out.setTimeToLive(data[4]);
+        log.info("Storage  income head options Data finish: "+out);
+        return out;
     }
 
     private short createRCA(byte[] income) throws NumberArrayDataException {

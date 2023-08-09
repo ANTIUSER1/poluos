@@ -16,7 +16,7 @@ public class SrRecordResponse implements OutcomeIdent {
     /**
      * CRN
      */
-    private  short confirmRN;
+    private short confirmRN;
 
     /**
      * RST
@@ -30,9 +30,9 @@ public class SrRecordResponse implements OutcomeIdent {
 
     @Override
     public void createData() {
-data =  ByteBuffer.wrap(ArrayUtils.shortToByteArray(confirmRN)).array();
-data=ArrayUtils.inverse(data);
-data=ArrayUtils.addByteToTail(data,recStatus);
-        System.out.println(data.length);
+        data = ByteBuffer.wrap(ArrayUtils.shortToByteArray(confirmRN)).array();
+        data = ArrayUtils.inverse(data);
+        data = ArrayUtils.addByteToTail(data, recStatus);
+
     }
 }

@@ -34,6 +34,5 @@ public class AuthRecordData implements OutcomeIdent {
         data = ArrayUtils.inverse(data);
         data = ArrayUtils.joinArrays(data, srRecResponse.getData());
         data = ArrayUtils.addByteToStart(data, subRecordType);
-        System.out.println(data.length);
     }
 }
