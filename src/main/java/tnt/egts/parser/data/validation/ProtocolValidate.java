@@ -14,7 +14,7 @@ public interface ProtocolValidate {
      * @param income
      * @return
      */
-    boolean validProtocolType(byte[] income);
+    boolean validPackageType(byte[] income);
 
     /**
      * [2] index bits 6, 7 must be 00

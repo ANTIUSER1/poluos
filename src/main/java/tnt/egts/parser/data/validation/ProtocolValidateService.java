@@ -16,8 +16,9 @@ public class ProtocolValidateService implements ProtocolValidate {
     }
 
     @Override
-    public boolean validProtocolType(byte[] income) {
-        return income[9]==1 ||  income[9]==2 ;
+    public boolean validPackageType(byte[] income) {
+        return income[ByteFixedPositions.PACKAGE_TYPE_INDEX]==1
+               ||  income[ByteFixedPositions.PACKAGE_TYPE_INDEX]==2 ;
     }
 
     @Override

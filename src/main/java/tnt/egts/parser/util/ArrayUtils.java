@@ -53,7 +53,7 @@ public class ArrayUtils {
         byte[] out = new byte[dataFirst.length + dataSecond.length];
         System.arraycopy(dataFirst, 0, out, 0, dataFirst.length);
         if (out.length - dataFirst.length >= 0)
-            System.arraycopy(dataSecond, dataFirst.length - dataFirst.length, out, dataFirst.length, out.length - dataFirst.length);
+            System.arraycopy(dataSecond, 0, out, dataFirst.length, out.length - dataFirst.length);
         return out;
     }
 
@@ -64,7 +64,7 @@ public class ArrayUtils {
     }
 
     public static byte[] shortToByteArray(short N) {
-         return new byte[]{(byte) (N >> 8), (byte) (N & 255)};
+        return new byte[]{(byte) (N >> 8), (byte) (N & 255)};
     }
 
     public static byte[] inverse(byte[] data) {
@@ -81,37 +81,37 @@ public class ArrayUtils {
         out[out.length - 1] = b;
         return out;
     }
+
     public static byte[] addByteToStart(byte[] data, byte b) {
         byte[] out = new byte[data.length + 1];
-       // System.arraycopy(data, 1, out, 0, data.length);
+        // System.arraycopy(data, 1, out, 0, data.length);
 
         out[0] = b;
-        for(int k=1;k<out.length;k++)out[k]=data[k-1];
+        System.arraycopy(data, 0, out, 1, out.length - 1);
         return out;
     }
 
     public static byte[] getSubArrayFromTo(byte[] inData, int from, int to) {
         if (inData.length == 0 || from >= to || from < 0 || to < 0)
-            throw new IllegalArgumentException("array borders error");
+            throw new IllegalArgumentException("Array borders error: Given " + "array: " + arrayPrintToScreen(inData));
         byte[] outData = new byte[to - from];
-        System.arraycopy(inData, from, outData, from - from, to - from);
+        System.arraycopy(inData, from, outData, 0, to - from);
         return outData;
     }
 
-    public static byte[] getFixedLengthSubArray(byte[] inData, int from,
-                                                int length) {
+    public static byte[] getFixedLengthSubArray(byte[] inData, int from, int length) {
         if (inData.length == 0 || from < 0 || from + length > inData.length - 1)
-            throw new IllegalArgumentException("array borders error");
+            throw new IllegalArgumentException("array borders error: Given " + "array: " + arrayPrintToScreen(inData));
         byte[] outData = new byte[length];
-        System.arraycopy(inData, from, outData, from - from, from + length - from);
+        System.arraycopy(inData, from, outData, 0, from + length - from);
         return outData;
     }
 
     public static byte[] getSubArrayToEnd(byte[] inData, int from) {
         if (inData.length == 0 || from < 0 || from > inData.length - 1)
-            throw new IllegalArgumentException("array borders error");
+            throw new IllegalArgumentException("array borders error: Given " + "array: " + arrayPrintToScreen(inData));
         byte[] outData = new byte[inData.length - from];
-        System.arraycopy(inData, from, outData, from - from, inData.length - from);
+        System.arraycopy(inData, from, outData, 0, inData.length - from);
         return outData;
     }
 
@@ -124,6 +124,8 @@ public class ArrayUtils {
 
 
     public static long[] byteArrayToLongArray(byte[] data) {
+        if (data.length != 8)
+            throw new IllegalArgumentException("array borders error: Given " + "array: " + arrayPrintToScreen(data));
         long[] out = new long[data.length];
         for (int k = 0; k < data.length; k++) {
             out[k] = data[k] & 0xff;
@@ -132,58 +134,51 @@ public class ArrayUtils {
     }
 
     public static long byteArrayToLong(byte[] data) throws NumberArrayDataException {
-        if (data.length != 8) throw new NumberArrayDataException("Invalid " +
-                                                                 "incoming data" +
-                                                                 " " + arrayPrintToScreen(data));
+        if (data.length != 8)
+            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
         ByteBuffer bbf = ByteBuffer.wrap(data);
         return bbf.getLong(0);
     }
 
     public static long byteArrayInverseToLong(byte[] data) throws NumberArrayDataException {
-        if (data.length != 8) throw new NumberArrayDataException("Invalid " +
-                                                                 "incoming data" +
-                                                                 " " + arrayPrintToScreen(data));
+        if (data.length != 8)
+            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
         data = inverse(data);
         ByteBuffer bbf = ByteBuffer.wrap(data);
         return bbf.getLong(0);
     }
 
     public static int byteArrayToInt(byte[] data) throws NumberArrayDataException {
-        if (data.length != 4) throw new NumberArrayDataException("Invalid " +
-                                                                 "incoming data" +
-                                                                 " " + arrayPrintToScreen(data));
+        if (data.length != 4)
+            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
         ByteBuffer bbf = ByteBuffer.wrap(data);
         return bbf.getInt(0);
     }
 
     public static int byteArrayInverseToInt(byte[] data) throws NumberArrayDataException {
-        if (data.length != 4) throw new NumberArrayDataException("Invalid " +
-                                                                 "incoming data" +
-                                                                 " " + arrayPrintToScreen(data));
+        if (data.length != 4)
+            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
         data = inverse(data);
         ByteBuffer bbf = ByteBuffer.wrap(data);
         return bbf.getInt(0);
     }
 
     public static short byteArrayToShort(byte[] data) throws NumberArrayDataException {
-        if (data.length != 2) throw new NumberArrayDataException("Invalid " +
-                                                                 "incoming data" +
-                                                                 " " + arrayPrintToScreen(data));
+        if (data.length != 2)
+            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
 
         ByteBuffer bbf = ByteBuffer.wrap(data);
         return bbf.getShort(0);
     }
 
     public static short byteArrayInverseToShort(byte[] data) throws NumberArrayDataException {
-        if (data.length != 2) throw new NumberArrayDataException("Invalid " +
-                                                                 "incoming data" +
-                                                                 " " + arrayPrintToScreen(data));
+        if (data.length != 2)
+            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
 
         data = inverse(data);
         ByteBuffer bbf = ByteBuffer.wrap(data);
         return bbf.getShort(0);
     }
-
 
     public static boolean arraysEquals(byte[] data1, byte[] data2) {
         ByteBuffer bbf1 = ByteBuffer.wrap(data1);

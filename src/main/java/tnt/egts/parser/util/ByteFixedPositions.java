@@ -10,6 +10,7 @@ public class ByteFixedPositions {
 
     /**
      * index of input byte array where is the PRV (Protocol Version) information
+     *  bit 0
      */
     public static final int PACKAGE_PRV_INDEX = 0;
 
@@ -33,6 +34,11 @@ public class ByteFixedPositions {
      *  HCS  index   information
      */
     public static final int PACKAGE_HCS_MAX_INDEX = 11;
+
+    /**
+     *  Array  of  CRC16 data [CRC16 is type of short]
+     */
+    public static final int CRC_16_LENGTH = 2;
 
     public static  int FDL_START_INDEX=5;
     public static  int PID_START_INDEX=7;

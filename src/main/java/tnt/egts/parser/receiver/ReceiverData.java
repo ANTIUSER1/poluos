@@ -87,10 +87,10 @@ public class ReceiverData implements Runnable {
             msgNO++;msgNO= (byte) (msgNO % 100);
             log.info("work on request finish. step: "+msgNO  );
         } catch (IOException | IncorrectDataException e) {
-            log.info("Receiving broken  ");
+            log.info("Receiving broken:  "+e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            log.error("Error while data transform");
+            log.error("Error while data transform: "+e.getMessage());
             e.printStackTrace();
         }
     }
