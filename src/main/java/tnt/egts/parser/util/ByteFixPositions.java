@@ -3,9 +3,9 @@ package tnt.egts.parser.util;
 /**
  * positions && types of incoming array constants
  */
-public class ByteFixedPositions {
+public class ByteFixPositions {
 
-    private ByteFixedPositions() {
+    private ByteFixPositions() {
     }
 
     /**

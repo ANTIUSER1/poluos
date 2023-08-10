@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.data.validation.CRCValidate;
 import tnt.egts.parser.data.validation.DataLengthValidate;
-import tnt.egts.parser.data.validation.ProtocolValidate;
+import tnt.egts.parser.data.validation.PackageValidate;
+import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.ProcessingResultCodeConstants;
 
 @Service
@@ -21,34 +23,36 @@ public class ByteAnalizer {
     private DataLengthValidate dataLengthValidate;
 
     @Autowired
-    private ProtocolValidate protocolValidate;
+    private PackageValidate packageValidate;
 
 
     public byte analize(byte[] income) {
 
-        log.error(" Validation incoming data start   ");
+        log.error(" Validation incoming data start.  {"+ ArrayUtils.arrayPrintToScreen(income)+" } ");
         if (invalidPackageType(income)) {
-            log.error("Invalid  package Type  {TYPE INCOMES: "+income[9]+"}");
+            log.error("Invalid  package Type  {TYPE INCOMES: "
+                      + income[ByteFixPositions.PACKAGE_TYPE_INDEX]
+                      +"}");
             return ProcessingResultCodeConstants.EGTS_PC_INC_HEADERFORM;
-        } else if (invalidProtocolPRF(income)) {
-            log.error("Invalid  PRF data ");
+        } else if (invalidPackagePRF(income)) {
+            log.error("Invalid  PRF data   " );
             return ProcessingResultCodeConstants.EGTS_PC_UNS_PROTOCOL;
-        } else if (invalidProtocolPRV(income)) {
+        } else if (invalidPackagePRV(income)) {
             log.error("Invalid  PRV data ");
             return ProcessingResultCodeConstants.EGTS_PC_UNS_PROTOCOL;
         } else if (invalidPackageLength(income)) {
             log.error("Invalid  package  length ");
             return ProcessingResultCodeConstants.EGTS_PC_INVDATALEN;
-        } else if (invalidDataLength(income)) {
+        } else if (invalidHeadLength(income)) {
             log.error("Invalid  header length ");
             return ProcessingResultCodeConstants.EGTS_PC_INVDATALEN;
-        } else if (incorrectCRC8(income)) {
+        } else if (invalidCRC8(income)) {
             log.error("Invalid CRC header  ");
             return ProcessingResultCodeConstants.EGTS_PC_HEADER_CRCERROR;
-        } else if (incorrectCRC16(income)) {
+        } else if (invalidCRC16(income)) {
             log.error("Invalid CRC Data  ");
             return ProcessingResultCodeConstants.EGTS_PC_DATACRC_ERRR;
-        } else if (incorrectDataLength(income)) {
+        } else if (invalidDataLength(income)) {
             log.error("Invalid SFRD length  ");
             return ProcessingResultCodeConstants.EGTS_PC_INVDATALEN;
         }
@@ -57,31 +61,31 @@ public class ByteAnalizer {
     }
 
     private boolean invalidPackageType(byte[] income) {
-        return !protocolValidate.validPackageType(income);
+        return !packageValidate.validPackageType(income);
     }
 
-    private boolean invalidProtocolPRF(byte[] income) {
-        return !protocolValidate.validPRF(income);
+    private boolean invalidPackagePRF(byte[] income) {
+        return !packageValidate.validPRF(income);
     }
 
-    private boolean invalidProtocolPRV(byte[] income) {
-        return !protocolValidate.validPRV(income);
+    private boolean invalidPackagePRV(byte[] income) {
+        return !packageValidate.validPRV(income);
     }
 
 
-    private boolean incorrectCRC16(byte[] income) {
+    private boolean invalidCRC16(byte[] income) {
         return !crcValidate.CRC16Correct(income);
     }
 
-    private boolean incorrectCRC8(byte[] income) {
+    private boolean invalidCRC8(byte[] income) {
         return !crcValidate.CRC8Correct(income);
     }
 
-    private boolean invalidDataLength(byte[] income) {
+    private boolean invalidHeadLength(byte[] income) {
          return !dataLengthValidate.validHeaderLength(income);
     }
 
-    private boolean incorrectDataLength(byte[] income) {
+    private boolean invalidDataLength(byte[] income) {
         return !dataLengthValidate.validDataLength(income);
     }
 

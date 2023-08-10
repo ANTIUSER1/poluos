@@ -7,7 +7,7 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
-import tnt.egts.parser.util.ByteFixedPositions;
+import tnt.egts.parser.util.ByteFixPositions;
 
 @Service
 @Slf4j
@@ -19,7 +19,7 @@ public class IncomeDataStorageService implements Storage {
     @Override
     public IncomeDataStorage create(byte[] income) throws NumberArrayDataException {
         log.info("Backup data generate start");
-        int hcsPos = ByteFixedPositions.getHCSIndex(income);
+        int hcsPos = ByteFixPositions.getHCSIndex(income);
         IncomeDataStorage out=IncomeDataStorage.builder()
                 .fullPacket(income)
                 .packageHeader(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos + 1))

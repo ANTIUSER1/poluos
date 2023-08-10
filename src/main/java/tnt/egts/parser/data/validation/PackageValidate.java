@@ -1,6 +1,6 @@
 package tnt.egts.parser.data.validation;
 
-public interface ProtocolValidate {
+public interface PackageValidate {
 
     /**
      * [0] index must be 0x01

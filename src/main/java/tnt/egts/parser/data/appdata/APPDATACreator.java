@@ -9,7 +9,7 @@ import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixValues;
-import tnt.egts.parser.util.ByteFixedPositions;
+import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.util.HashMap;
@@ -75,7 +75,7 @@ System.out.println("\n \n \n \n ");
     }
 
     private void prepareData(byte[] income) throws NumberArrayDataException {
-        startAPPDATA = ByteFixedPositions.getAPPDATAStart(income);
+        startAPPDATA = ByteFixPositions.getAPPDATAStart(income);
         fdl = ByteFixValues.getFDLByteValue(income, startAPPDATA);
         fdlPos = ByteFixValues.getFDLNumberValue(fdl);
 

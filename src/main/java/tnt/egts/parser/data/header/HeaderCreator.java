@@ -9,7 +9,7 @@ import tnt.egts.parser.data.appdata.APPDATAService;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixValues;
-import tnt.egts.parser.util.ByteFixedPositions;
+import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
 
@@ -25,9 +25,9 @@ public class HeaderCreator implements ConvertIncomingData {
     @Override
     public Incoming create(byte[] income) throws IncorrectDataException {
         log.info("Start parsing incoming data");
-        int hcsPos = ByteFixedPositions.getHCSIndex(income);
+        int hcsPos = ByteFixPositions.getHCSIndex(income);
         HeaderData hd = HeaderData.builder()
-                .hasOptions(income[ByteFixedPositions.HEAD_LENGTH_INDEX] == ByteFixValues.HEAD_MAX_LENGTH)
+                .hasOptions(income[ByteFixPositions.HEAD_LENGTH_INDEX] == ByteFixValues.HEAD_MAX_LENGTH)
 
                 .packageHead(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos+1))
                 .content(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos))

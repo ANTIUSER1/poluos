@@ -42,6 +42,10 @@ public class ByteFixValues {
      * the main signed data type
      */
     public static final int TYPE_SIGNED_APPDATA = 2;
+    /**
+     * Preffix length
+     */
+    public static final int PRF_LENGTH = 2;
 
     /**
      * minimal appdata length information
@@ -56,8 +60,8 @@ public class ByteFixValues {
 
     public static byte[] getFDLByteValue(byte[] income, int startAPPDATA) {
         byte[] fdl = ArrayUtils.getSubArrayFromTo(income,
-                ByteFixedPositions.FDL_START_INDEX,
-                ByteFixedPositions.FDL_START_INDEX + 2);
+                ByteFixPositions.FDL_START_INDEX,
+                ByteFixPositions.FDL_START_INDEX + 2);
         return ArrayUtils.inverse(fdl);
     }
     public static short getFDLNumberValue(byte[] byteValue) throws NumberArrayDataException {

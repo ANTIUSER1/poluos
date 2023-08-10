@@ -7,8 +7,7 @@ import tnt.egts.parser.cmmon.IncomeIdent;
 import tnt.egts.parser.cmmon.IncomeIdentCreate;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
-import tnt.egts.parser.util.ArrayUtils;
-import tnt.egts.parser.util.ByteFixedPositions;
+import tnt.egts.parser.util.ByteFixPositions;
 
 @Service
 @Slf4j
@@ -30,7 +29,7 @@ public class HeadService implements IncomeIdentCreate {
                 .frameDataLength(storage.getFrameDataLength())
                 .packetIdentifier(storage.getPacketIdentifier())
                 .headOptions((HeadOptions) hoService.create(storage))
-                .crc8((byte) ByteFixedPositions.getHCSIndex(income))
+                .crc8((byte) ByteFixPositions.getHCSIndex(income))
                 .build();
         log.info("Storage  income head Data finish: "+out);
         return out;

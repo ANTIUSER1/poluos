@@ -7,7 +7,7 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.appdata.APPDATAService;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixValues;
-import tnt.egts.parser.util.ByteFixedPositions;
+import tnt.egts.parser.util.ByteFixPositions;
 
 import java.nio.ByteBuffer;
 
@@ -134,7 +134,7 @@ class RESPONSEHelper {
     }
 
     private RESPONSE changeDataResponseType(RESPONSE bdr, byte resultCode) {
-        bdr.getPackageHead()[ByteFixedPositions.PACKAGE_TYPE_INDEX] =0  ;
+        bdr.getPackageHead()[ByteFixPositions.PACKAGE_TYPE_INDEX] =0  ;
         //resultCode
         return bdr;
     }
@@ -146,7 +146,7 @@ class RESPONSEHelper {
     }
 
     private RESPONSE changeDataBodyLength(RESPONSE bdr) {
-        bdr.getPackageHead()[ByteFixedPositions.HEAD_LENGTH_INDEX] =
+        bdr.getPackageHead()[ByteFixPositions.HEAD_LENGTH_INDEX] =
                 ByteFixValues.HEAD_MIN_LENGTH;
         return bdr;
     }
