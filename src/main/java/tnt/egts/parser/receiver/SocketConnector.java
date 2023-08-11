@@ -17,6 +17,8 @@ import java.util.concurrent.Executors;
 public class SocketConnector implements SCoonnect {
 
     @Autowired
+    private boolean isValidatePacket;
+    @Autowired
     private ReceiverData receiverData;
 
     @Autowired
@@ -27,6 +29,7 @@ public class SocketConnector implements SCoonnect {
         ExecutorService execService = Executors.newFixedThreadPool(threadCount);
         while (true) {
             log.info("Socket connects to " + port);
+            log.info("Validation income data enabled: " + isValidatePacket);
             Socket socket = serverSocket.accept();
             receiverData.setSocket(socket);
             execService.submit(receiverData);

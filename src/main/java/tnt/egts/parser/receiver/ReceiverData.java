@@ -5,19 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.cmmon.OutcomeIdent;
-import tnt.egts.parser.cmmon.OutcomeIdentCreate;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
 import tnt.egts.parser.cmmon.sendBack.DoResponse;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
-import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 
-import java.io.DataInputStream;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 @Component
@@ -28,15 +28,18 @@ public class ReceiverData implements Runnable {
     @Qualifier ("readyToSend")
     OutcomeIdentFinalCreate outcomeIdentCreate;
 
-    private Socket socket;
+    @Autowired
+    CRC crc;
 
-    private OutcomeIdent outcomeData;
+    @Autowired
+    private boolean isValidatePacket;
+
+    private Socket socket;
 
 //    @Autowired
 //    private ComponentsStoring componentsStoring;
 
-    @Autowired
-    private Storage storage;
+    private OutcomeIdent outcomeData;
 
 //    @Autowired
 //    private HeadService headService;
@@ -47,7 +50,7 @@ public class ReceiverData implements Runnable {
     //**********************************************************
 
     @Autowired
-    CRC crc;
+    private Storage storage;
 
     @Autowired
     private ByteAnalizer byteAnalizer;
@@ -67,44 +70,50 @@ public class ReceiverData implements Runnable {
 //    private ReadFDLValidate readFDLValidate;
 
     private byte responseCode;
-   private volatile byte msgNO;
+
+    private volatile byte msgNO;
 
     @Override
     public void run() {
         log.info("work on request start");
         try {
             byte[] income = receive();
-            if (income == null || income.length==0) {
+            if (income == null || income.length == 0) {
                 log.error("Null data received, or income data is empty");
                 return;
             }
+            log.info("Received data from BNSO. Data length: " + income.length);
+            log.debug("DATA:\n  " + ArrayUtils.arrayPrintToScreen(income));
+            // System.out.println("  RECEIVED  "+ ArrayUtils
+            // .arrayPrintToScreen(income));
+            // System.out.println("  RECEIVED  "+ income.length);
 
-//responseCode= byteAnalizer.analize(income);
+            if (isValidatePacket)
+                responseCode = byteAnalizer.analize(income);
+
             //receiveData ; //
-            dataTransform(income, responseCode);
-            sendResponse();
-
-            msgNO++;msgNO= (byte) (msgNO % 100);
-            log.info("work on request finish. step: "+msgNO  );
-        } catch (IOException | IncorrectDataException e) {
-            log.info("Receiving broken:  "+e.getMessage());
-            e.printStackTrace();
+            ///*******************
+            //dataTransform(income, responseCode);
+            //sendResponse();
+//
+            msgNO++;
+            msgNO = (byte) (msgNO % 100);
+            log.info("work on request finish. step: " + msgNO);
         } catch (Exception e) {
-            log.error("Error while data transform: "+e.getMessage());
-            e.printStackTrace();
+            log.error("Error while data transform: " + e.getMessage());
+               e.printStackTrace();
         }
     }
 
     private void sendResponse() {
         DoResponse resp = (DoResponse) outcomeData;
-        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData())+ " of length "+resp.getData().length);
+        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData()) + " of length " + resp.getData().length);
         OutputStream output = null;
         try {
             output = socket.getOutputStream();
             output.write(resp.getData());
             log.info("Sending back response to BNSO finish. ");
             testOutSendData(resp.getData());
-//            output.close();
         } catch (IOException e) {
             log.error("Error while response to  attempt");
             e.printStackTrace();
@@ -116,55 +125,54 @@ public class ReceiverData implements Runnable {
         System.out.println("************** TEST  OUTPUT  " +
                            "*********************");
         System.out.println();
-        System.out.println("OUTPUT:  " +ArrayUtils.arrayPrintToScreen(data)+
-                           " LENGTH: "+data.length);
+        System.out.println("OUTPUT:  " + ArrayUtils.arrayPrintToScreen(data) +
+                           " LENGTH: " + data.length);
         System.out.println();
         System.out.println();
-        byte bt=data[3];
-        System.out.println("  HL: "+bt);
-        byte[] inf=ArrayUtils.getFixedLengthSubArray(data,0, bt);
-        System.out.println( "HEAD:  "+ArrayUtils.arrayPrintToScreen(inf));
+        byte bt = data[3];
+        System.out.println("  HL: " + bt);
+//        byte[] inf=ArrayUtils.getFixedLengthSubArray(data,0, bt);
+//        System.out.println( "HEAD:  "+ArrayUtils.arrayPrintToScreen(inf));
 
-        bt=data[9];
-        System.out.println("PT:   "+bt);
+        bt = data[9];
+        System.out.println("PT:   " + bt);
 
-        byte[] fdl=new byte[2];
-        fdl[0]=data[6];
-        fdl[1]=data[5];
+        byte[] fdl = new byte[2];
+        fdl[0] = data[6];
+        fdl[1] = data[5];
         short fdlDat;
         try {
-            fdlDat=ArrayUtils.byteArrayToShort(fdl);
+            fdlDat = ArrayUtils.byteArrayToShort(fdl);
         } catch (NumberArrayDataException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("FDL:  "+ArrayUtils.arrayPrintToScreen(fdl)+ "  AS" +
-                           "  NUM:  "+fdlDat + "  EXPETED: " +(data.length-data[3]-2) );
+        System.out.println("FDL:  " + ArrayUtils.arrayPrintToScreen(fdl) + "  AS" +
+                           "  NUM:  " + fdlDat + "  EXPETED: " + (data.length - data[3] - 2));
 
-
-        byte[] pid=new byte[2];
-        pid[0]=data[8];
-        pid[1]=data[7];
+        byte[] pid = new byte[2];
+        pid[0] = data[8];
+        pid[1] = data[7];
         short pidDat;
         try {
-            pidDat=ArrayUtils.byteArrayToShort(pid);
+            pidDat = ArrayUtils.byteArrayToShort(pid);
         } catch (NumberArrayDataException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("PID:  "+ArrayUtils.arrayPrintToScreen(pid)+ "  AS" +
-                           "  NUM:  "+pidDat);
+        System.out.println("PID:  " + ArrayUtils.arrayPrintToScreen(pid) + "  AS" +
+                           "  NUM:  " + pidDat);
 
-        bt=data[  data[3]-1];
-        System.out.println("HCS:   "+bt);
+//        bt=data[  data[3]-1];
+//        System.out.println("HCS:   "+bt);
 
-        byte[] sfrd =ArrayUtils.getFixedLengthSubArray(data, data[3] ,fdlDat);
-        System.out.println( "  sfrd: "+ArrayUtils.arrayPrintToScreen(sfrd)+
-                            "  LEN: "+sfrd.length);
+        byte[] sfrd = ArrayUtils.getFixedLengthSubArray(data, data[3], fdlDat);
+        System.out.println("  sfrd: " + ArrayUtils.arrayPrintToScreen(sfrd) +
+                           "  LEN: " + sfrd.length);
 
-        long crc16=   crc.calculate16(sfrd);
-       short crcShort= (short) crc16;
-        byte[] crcArr=ArrayUtils.shortToByteArray(crcShort);
-         System.out.println("C CRC16:: "+crc16+"  HEX  "+Long.toHexString(crc16));
-        System.out.println("CRC-short:  "+crcShort +"  as arr:  "+ArrayUtils.arrayPrintToScreen(crcArr)+ "   HEX:  "+Integer.toHexString(crcShort));
+        long crc16 = crc.calculate16(sfrd);
+        short crcShort = (short) crc16;
+        byte[] crcArr = ArrayUtils.shortToByteArray(crcShort);
+        System.out.println("C CRC16:: " + crc16 + "  HEX  " + Long.toHexString(crc16));
+        System.out.println("CRC-short:  " + crcShort + "  as arr:  " + ArrayUtils.arrayPrintToScreen(crcArr) + "   HEX:  " + Integer.toHexString(crcShort));
 //testCRC16();
         System.out.println();
         System.out.println("****************TEST");
@@ -172,10 +180,10 @@ public class ReceiverData implements Runnable {
     }
 
     private void testCRC16() {
-        byte[] tb= {2,5};
+        byte[] tb = {2, 5};
         System.out.println("***========CRC-16 test =============");
-        long crc16= crc.calculate16(tb);
-        System.out.println(" crc-16  16:  "+crc16+" HEX:  "+Integer.toHexString((int) crc16));
+        long crc16 = crc.calculate16(tb);
+        System.out.println(" crc-16  16:  " + crc16 + " HEX:  " + Integer.toHexString((int) crc16));
         System.out.println("***========CRC-16 test =============");
 
     }
@@ -191,86 +199,66 @@ public class ReceiverData implements Runnable {
 //        System.out.println();
 //        System.out.println(componentsStoring);
 
-        outcomeData = outcomeIdentCreate.create(store,code);
+        outcomeData = outcomeIdentCreate.create(store, code);
         log.info("Storage  income Data finish");
     }
 
-//    private byte[] receiveData() throws IOException, NumberArrayDataException {
-//        log.info("Receiving starts ");
-//        byte[] income = receive();
-//        if (income.length == 0) {
-//            log.error("Incoming data is too small ");
-//            return null;
-//        }
-//        log.info("Received: " + income.length + " bytes {"
-//                 + ArrayUtils.arrayPrintToScreen(income) + "}");
-//
-//        short pid = calcPID(income);
-//        log.info("PID: [" + income[7] + "  " + income[8] + "] ( " + pid + " ) ");
-//        responseCode = byteAnalizer.analize(income);
-//        log.info(" Response. CODDE " + responseCode);
-//        incomingsCreate(income);
-//        log.info("Receiving finish ");
-//        return income;
-//    }
-
-//    private void incomingsCreate(byte[] income) throws NumberArrayDataException {
-//
-//        log.info("Incoming data wrapping start");
-//        HeaderData hd = createHeadData(income);
-//        APPDATA appdata = createAppData(income);
-//
-//        log.info("Incoming data wrapping finish");
-//    }
-//
-//    private APPDATA createAppData(byte[] income) throws NumberArrayDataException {
-//        APPDATA appData = null;
-//        if (income[ByteFixedPositions.PACKAGE_TYPE_INDEX] ==
-//            ByteFixValues.TYPE_APPDATA && readFDLValidate.readFDL(income))
-//            appData = (APPDATA) appDataCreator.create(income);
-//        return appData;
-//    }
-//
-//    private HeaderData createHeadData(byte[] income) throws NumberArrayDataException {
-//        HeaderData hd = null;
-//        // if (responseCode == ProcessingResultCodeConstants.EGTS_PC_OK) {
-//        hd = (HeaderData) headerCreator.create(income);
-//        // }
-//        return hd;
-//    }
-
-//    private void response(byte[] income, byte code) throws IOException {
-//        RESPONSE bdr = (RESPONSE) responseNormal.createNormalResponse(income, code);
-//        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(bdr.getResponseBody()));
-//        OutputStream output = socket.getOutputStream();
-//        output.write(bdr.getResponseBody());
-//        log.info("Sending back response to BNSO finish. ");
-//        output.close();
-//    }
-//
-//
-//    private short calcPID(byte[] income) {
-//        byte[] pid = new byte[2];
-//        pid[0] = income[8];
-//        pid[1] = income[7];
-//        return ArrayUtils.calcShortFromArray(pid);
-//    }
 
     public void setSocket(Socket socket) {
-        this.socket = socket;
+        this.socket = socket;   }
+
+    private byte[] receive() throws IOException, NumberArrayDataException {
+        int dsize;
+        byte[] resTest;
+        byte[] result;
+        BufferedInputStream in =
+                new BufferedInputStream( socket.getInputStream() );
+//in.mark(6000);
+
+        resTest = readFromStream(16);
+        if (resTest.length < 4) {
+            log.error("Invalid length  :  " + resTest.length);
+            return new byte[0];
+        } else if (resTest.length < 16) {
+            log.error("Invalid length :  " + resTest.length);
+            return new byte[0];
+        } else {
+            // int hl=;
+            byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5
+                    , 2);
+            short fdl = ArrayUtils.byteArrayInverseToShort(shortArray);
+            dsize = resTest[3] + fdl + 2;
+            System.out.println("HL: " + resTest[3]);
+            System.out.println("fdl: " + fdl);
+            System.out.println("dsize: " + dsize);
+            System.out.println("3 " + resTest[3]);
+            System.out.println(" 0, 1 " + shortArray[0] + "   " + shortArray[1]);
+            System.out.println(" 5, 6 " + resTest[5] + "   " + resTest[6]);
+            System.out.println("resTest.length:: " + resTest.length);
+            System.out.println("DSIZE:: " + dsize);
+
+         //    in.reset();
+//in.skip(-resTest.length);
+            result = new byte[dsize-resTest.length];
+            in.read(result );
+result=ArrayUtils.joinArrays(resTest,result);
+//            if(result.length<dsize ) {
+//                log.error("Invalid length :  " + result.length);
+//                return new byte[0];
+//            }
+        }
+        System.out.println(": rr:::   " + ArrayUtils.arrayPrintToScreen
+     (result));
+        System.out.println();
+        System.out.println("=============");
+        return  result;
     }
 
-    private byte[] receive() throws IOException {
-        log.info("Read from socket start");
-        DataInputStream in = new DataInputStream(socket.getInputStream());
-        int dataSize = in.available();
-        byte[] out = new byte[dataSize];
-        in.read(out);
 
-        log.info("Income data: "+ArrayUtils.arrayPrintToScreen(out)
-        +"  of length "+out.length);
-        log.info("Read from socket finish");
-        return out;
-
+    private byte[] readFromStream(int length) throws IOException {
+        byte[] result = new byte[length];
+        InputStream inTest = socket.getInputStream();
+        inTest.read(result);
+        return result;
     }
 }

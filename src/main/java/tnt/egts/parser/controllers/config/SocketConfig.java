@@ -16,6 +16,9 @@ public class SocketConfig {
     @Value("${socket.host}")
     private  String host;
 
+    @Value("${validate}")
+    public boolean validatePacket;
+
     public int threadCount() {
         return threads;
     }
@@ -28,5 +31,10 @@ public class SocketConfig {
     @Bean
     public String socketHost() {
         return host;
+    }
+
+    @Bean
+    public boolean isValidatePacket() {
+        return validatePacket;
     }
 }

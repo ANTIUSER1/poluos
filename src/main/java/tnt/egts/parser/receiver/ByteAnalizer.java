@@ -35,10 +35,10 @@ public class ByteAnalizer {
                       +"}");
             return ProcessingResultCodeConstants.EGTS_PC_INC_HEADERFORM;
         } else if (invalidPackagePRF(income)) {
-            log.error("Invalid  PRF data   " );
+            log.error("Invalid  PRF data.   Byte:  " +income[2]+  " ( "+Integer.toBinaryString(income[2])+ " )");
             return ProcessingResultCodeConstants.EGTS_PC_UNS_PROTOCOL;
         } else if (invalidPackagePRV(income)) {
-            log.error("Invalid  PRV data ");
+            log.error("Invalid  PRV data .   Byte:  " +income[2]+  " ( "+Integer.toBinaryString(income[2])+ " )");
             return ProcessingResultCodeConstants.EGTS_PC_UNS_PROTOCOL;
         } else if (invalidPackageLength(income)) {
             log.error("Invalid  package  length ");

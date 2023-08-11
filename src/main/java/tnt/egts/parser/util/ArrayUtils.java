@@ -16,7 +16,19 @@ public class ArrayUtils {
     }
 
     public static String arrayPrintToScreen(byte[] data) {
-        return Arrays.toString(data);
+        String hex=arrayAsHEX(data) ;
+        return Arrays.toString(data)+" \n [" +
+               hex+
+               "] of length "+data.length;
+    }
+
+    public static String arrayAsHEX(byte[] data) {
+        StringBuffer out=new StringBuffer(' ');
+        for(Byte b: data){
+            int n= b&0xff;
+            out.append("0x").append(Integer.toHexString(n)).append(' ');
+        }
+        return out.toString();
     }
 
     public static String arrayPrintToScreen(long[] data) {

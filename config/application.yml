@@ -4,6 +4,7 @@ socket:
 
 
 threads: 50
+validate: true
 
 logging:
   file.name: logs/-egts-parser-data.log

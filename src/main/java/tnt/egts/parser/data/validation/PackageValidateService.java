@@ -26,6 +26,7 @@ public class PackageValidateService implements PackageValidate {
         String bits =
                 ArrayUtils.byteToBinary(income[ByteFixPositions.PACKAGE_PRF_INDEX]);
         bits = bits.substring(bits.length() - ByteFixValues.PRF_LENGTH);
+        System.out.println("MMM BBBBBBB Bits: "+bits+ "  expected "+ByteFixValues.PACKAGE_PRF_VALUE);
         return bits.equals(ByteFixValues.PACKAGE_PRF_VALUE);
     }
 
