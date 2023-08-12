@@ -17,7 +17,8 @@ public class ArrayUtils {
 
     public static String arrayPrintToScreen(byte[] data) {
         String hex=arrayAsHEX(data) ;
-        return Arrays.toString(data)+" \n [" +
+        return "Data: \n "+
+                Arrays.toString(data)+" \n [" +
                hex+
                "] of length "+data.length;
     }
@@ -25,7 +26,7 @@ public class ArrayUtils {
     public static String arrayAsHEX(byte[] data) {
         StringBuffer out=new StringBuffer(' ');
         for(Byte b: data){
-            int n= b&0xff;
+            int n= b & 0xff;
             out.append("0x").append(Integer.toHexString(n)).append(' ');
         }
         return out.toString();
@@ -113,7 +114,8 @@ public class ArrayUtils {
 
     public static byte[] getFixedLengthSubArray(byte[] inData, int from, int length) {
         if (inData.length == 0 || from < 0 || from + length > inData.length - 1)
-            throw new IllegalArgumentException("array borders error: Given " + "array: " + arrayPrintToScreen(inData));
+            throw new IllegalArgumentException("array borders error: Given " + "array: " + arrayPrintToScreen(inData)+ "\n from: "+from
+            +" length: "+length+" \n ");
         byte[] outData = new byte[length];
         System.arraycopy(inData, from, outData, 0, from + length - from);
         return outData;

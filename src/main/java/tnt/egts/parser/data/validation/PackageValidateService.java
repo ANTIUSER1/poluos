@@ -1,11 +1,13 @@
 package tnt.egts.parser.data.validation;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.util.ByteFixValues;
 import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.ArrayUtils;
 
 @Service
+@Slf4j
 public class PackageValidateService implements PackageValidate {
 
     @Override
@@ -26,7 +28,6 @@ public class PackageValidateService implements PackageValidate {
         String bits =
                 ArrayUtils.byteToBinary(income[ByteFixPositions.PACKAGE_PRF_INDEX]);
         bits = bits.substring(bits.length() - ByteFixValues.PRF_LENGTH);
-        System.out.println("MMM BBBBBBB Bits: "+bits+ "  expected "+ByteFixValues.PACKAGE_PRF_VALUE);
         return bits.equals(ByteFixValues.PACKAGE_PRF_VALUE);
     }
 

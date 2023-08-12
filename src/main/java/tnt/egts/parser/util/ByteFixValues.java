@@ -4,6 +4,8 @@ import tnt.egts.parser.errors.NumberArrayDataException;
 
 public class ByteFixValues {
 
+    public static final short CRC16_VALUE_SIZE = 2;
+
     private ByteFixValues() {
     }
 

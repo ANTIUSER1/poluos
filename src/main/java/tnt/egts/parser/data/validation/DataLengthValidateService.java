@@ -33,8 +33,9 @@ public class DataLengthValidateService implements DataLengthValidate {
 
     @Override
     public boolean validPackageLength(byte[] income) {
-        return income.length  == calcPacageHead(income)+
-               calcFDLFromIncome(income);
+       int pl= calcPacageHead(income)+
+                                calcFDLFromIncome(income)+ByteFixValues.CRC16_VALUE_SIZE;
+        return pl==income.length;
     }
 
     private   int calcPacageHead(byte[] income){

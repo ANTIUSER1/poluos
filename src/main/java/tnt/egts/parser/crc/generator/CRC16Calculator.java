@@ -16,7 +16,7 @@ public class CRC16Calculator {
                 crc ^= ((crc & 0xFF) << 5) & 0xffff;
             }/*w ww  .j av a 2  s  .com*/
             crc &= 0xffff;
-            System.out.println(crc+ "HEX: "+Long.toHexString(crc));
+        System.out.println(crc+ " HEX: "+Long.toHexString(crc));
             return crc;
 
         }

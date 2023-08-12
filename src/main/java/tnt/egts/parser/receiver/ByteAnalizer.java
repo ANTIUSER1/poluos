@@ -32,7 +32,7 @@ public class ByteAnalizer {
         if (invalidPackageType(income)) {
             log.error("Invalid  package Type  {TYPE INCOMES: "
                       + income[ByteFixPositions.PACKAGE_TYPE_INDEX]
-                      +"}");
+                      +" ; expected 1 or 2 }");
             return ProcessingResultCodeConstants.EGTS_PC_INC_HEADERFORM;
         } else if (invalidPackagePRF(income)) {
             log.error("Invalid  PRF data.   Byte:  " +income[2]+  " ( "+Integer.toBinaryString(income[2])+ " )");
@@ -41,22 +41,24 @@ public class ByteAnalizer {
             log.error("Invalid  PRV data .   Byte:  " +income[2]+  " ( "+Integer.toBinaryString(income[2])+ " )");
             return ProcessingResultCodeConstants.EGTS_PC_UNS_PROTOCOL;
         } else if (invalidPackageLength(income)) {
-            log.error("Invalid  package  length ");
+            log.error("Invalid  package length ");
             return ProcessingResultCodeConstants.EGTS_PC_INVDATALEN;
         } else if (invalidHeadLength(income)) {
             log.error("Invalid  header length ");
             return ProcessingResultCodeConstants.EGTS_PC_INVDATALEN;
         } else if (invalidCRC8(income)) {
-            log.error("Invalid CRC header  ");
+            log.error("Invalid CRC-8 header  ");
             return ProcessingResultCodeConstants.EGTS_PC_HEADER_CRCERROR;
-        } else if (invalidCRC16(income)) {
-            log.error("Invalid CRC Data  ");
+        } else
+            if (invalidCRC16(income)) {
+            log.error("Invalid CRC-16 Data  ");
             return ProcessingResultCodeConstants.EGTS_PC_DATACRC_ERRR;
-        } else if (invalidDataLength(income)) {
+        }
+            else if (invalidDataLength(income)) {
             log.error("Invalid SFRD length  ");
             return ProcessingResultCodeConstants.EGTS_PC_INVDATALEN;
         }
-        log.error(" Validation incoming data finish   ");
+        log.info(" Validation incoming data finish   ");
         return 0;
     }
 
