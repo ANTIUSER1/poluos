@@ -237,7 +237,8 @@ public class ReceiverData implements Runnable {
         byte[] result;
         BufferedInputStream in =
                 new BufferedInputStream( socket.getInputStream() );
-//in.mark(6000);
+
+
 
         resTest = readFromStream(16);
         if (resTest.length < 4) {
@@ -247,10 +248,17 @@ public class ReceiverData implements Runnable {
             log.error("Invalid length :  " + resTest.length);
             return new byte[0];
         } else {
-            // int hl=;
-            byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5
+             byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5
                     , 2);
             short fdl = ArrayUtils.byteArrayInverseToShort(shortArray);
+            if(resTest[3]*fdl==0) {
+                log.error("Data are invalid in received package from "+socket.getRemoteSocketAddress());
+                log.error(" Details: the Value of HeaderLength is 0 or " +
+                          "the length of SFRD is 0 ");
+                throw  new IncorrectDataException(
+                        "Processing terminated unexpectedly due to a broken data packet "
+                );
+            }
             dsize = resTest[3] + fdl + 2;
             System.out.println("HL: " + resTest[3]);
             System.out.println("fdl: " + fdl);
