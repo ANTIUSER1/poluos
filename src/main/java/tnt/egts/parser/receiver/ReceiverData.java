@@ -73,9 +73,9 @@ public class ReceiverData implements Runnable {
 
     private int responseCode;
 
-    private volatile byte msgNO;
+    private volatile long msgNO;
 
-    private volatile byte errorN0;
+    private volatile long errorN0;
 
     @Override
     public void run() {
@@ -111,8 +111,8 @@ public class ReceiverData implements Runnable {
             sendResponse();
 //
             msgNO++;
-            msgNO = (byte) (msgNO % 100);
-            log.info("work on request finish. step: " + msgNO);
+            log.info("work on request finish. Correct steps: " + msgNO
+            +"; errors: "+errorN0);
         } catch (Exception e) {
             log.error("Error while data transform: " + e.getMessage());
                e.printStackTrace();
