@@ -10,6 +10,7 @@ import tnt.egts.parser.cmmon.sendBack.DoResponse;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
+import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
@@ -70,9 +71,11 @@ public class ReceiverData implements Runnable {
 //    @Autowired
 //    private ReadFDLValidate readFDLValidate;
 
-    private byte responseCode;
+    private int responseCode;
 
     private volatile byte msgNO;
+
+    private volatile byte errorN0;
 
     @Override
     public void run() {
@@ -80,29 +83,31 @@ public class ReceiverData implements Runnable {
                  "  start");
         try {
             byte[] income = receive();
-            if (income == null || income.length == 0) {
-                log.error("Null data received, or income data is empty");
-                return;
+            if (income == null || income.length == 0) {errorN0++;
+                log.error("Null data received, or income data is empty"+socket.getRemoteSocketAddress());
+                throw  new IncorrectDataException(
+                        "Processing can not be proceed on empty data "
+                );
+
             }
-            System.out.println("***** "  + ArrayUtils.arrayPrintToScreen(income) +"\n");
-
-           //  income=fakeByte(income );
-
-            System.out.println("##### "  + ArrayUtils.arrayPrintToScreen(income) +"\n");
-
-            log.info("Received data from BNSO. Data length: " + income.length);
+            //  income=fakeByte(income );
+              log.info("Received data from BNSO. Data length: " + income.length);
             log.debug("DATA:\n  " + ArrayUtils.arrayPrintToScreen(income)+"\n");
-            // System.out.println("  RECEIVED  "+ ArrayUtils
-            // .arrayPrintToScreen(income));
-            // System.out.println("  RECEIVED  "+ income.length);
 
-            if (isValidatePacket)
-                responseCode = byteAnalizer.analize(income);
+            if (isValidatePacket){
+                responseCode =   byteAnalizer.analize(income);
+                if(responseCode<0){errorN0++;
+                    log.error("Data are invalid in received package from "+socket.getRemoteSocketAddress());
+                    throw  new IncorrectDataException(
+                            "Processing terminated unexpectedly due to a broken data packet "
+                );}
+            }
+
             log.info("Response code " + responseCode);
 
             //receiveData ; //
             ///*******************
-            dataTransform(income, responseCode);
+            dataTransform(income, (byte) responseCode);
             sendResponse();
 //
             msgNO++;

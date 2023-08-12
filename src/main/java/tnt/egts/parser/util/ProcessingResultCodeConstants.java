@@ -15,197 +15,202 @@ public class ProcessingResultCodeConstants {
     /**
      * data processing finished ok
      */
-    public  static final byte EGTS_PC_OK = 0;
+    public  static final int EGTS_PC_OK = 0;
 
     /**
      * data processing in progress
      */
-    public  static final byte EGTS_PC_IN_PROGRESS = 1;
+    public  static final int EGTS_PC_IN_PROGRESS = 1;
     /**
      * Unsupported protocol
      */
-    public  static final byte EGTS_PC_UNS_PROTOCOL = (byte) 128;
+    public  static final int EGTS_PC_UNS_PROTOCOL =  128;
     /**
      * Decoding error
      */
-    public  static final byte EGTS_PC_DECRYPT_ERROR = (byte) 129;
+    public  static final int EGTS_PC_DECRYPT_ERROR =   129;
 
     /**
      *  processing denied
      */
-    public  static final byte EGTS_PC_PROC_DENIED = (byte) 130;
+    public  static final int EGTS_PC_PROC_DENIED =   130;
 
     /**
      * incorrect header format
      */
-    public  static final byte EGTS_PC_INC_HEADERFORM = (byte) 131;
+    public  static final int EGTS_PC_INC_HEADERFORM =   131;
 
     /**
      * incorrect data format
      */
-    public  static final byte EGTS_PC_INC_DATAFORM = (byte) 132;
+    public  static final int EGTS_PC_INC_DATAFORM =   132;
 
     /**
      * unsupported type
      */
-    public  static final byte EGTS_PC_UNS_TYPE = (byte) 133;
+    public  static final int EGTS_PC_UNS_TYPE =   133;
 
     /**
      * incorrect params number
      */
-    public  static final byte EGTS_PC_NOTEN_PARAMS = (byte) 134;
+    public  static final int EGTS_PC_NOTEN_PARAMS =   134;
 
     /**
      * Re-processing attempt
      */
-    public  static final byte EGTS_PC_DBL_PROC = (byte) 135;
+    public  static final int EGTS_PC_DBL_PROC =   135;
     /**
      * source  processing denied
      */
-    public  static final byte EGTS_PC_SRC_DENIED = (byte) 136;
+    public  static final int EGTS_PC_SRC_DENIED =   136;
 
 
     /**
      * header crc error
      */
-    public  static final byte EGTS_PC_HEADER_CRCERROR = (byte) 137;
+    public  static final int EGTS_PC_HEADER_CRCERROR =   137;
 
 
     /**
      * data crc error
      */
-    public  static final byte EGTS_PC_DATACRC_ERRR = (byte) 138;
+    public  static final int EGTS_PC_DATACRC_ERRR =   138;
 
 
     /**
      * incorrect data length
      */
-    public  static final byte EGTS_PC_INVDATALEN = (byte) 139;
+    public  static final int EGTS_PC_INVDATALEN =   139;
 
     /**
      * ROUTE NOT FOUND
      */
-    public  static final byte EGTS_PC_ROUTE_NFOUND = (byte) 140;
+    public  static final int EGTS_PC_ROUTE_NFOUND =   140;
 
     /**
      * ROUTE closed
      */
-    public  static final byte EGTS_PC_ROUTE_CLOSED = (byte) 141;
+    public  static final int EGTS_PC_ROUTE_CLOSED =   141;
 
     /**
      * ROUTE denied
      */
-    public  static final byte EGTS_PC_ROUTE_DENIED = (byte) 142;
+    public  static final int EGTS_PC_ROUTE_DENIED =   142;
 
     /**
      * incorrect address
      */
-    public  static final byte EGTS_PC_INVADDR = (byte) 143;
+    public  static final int EGTS_PC_INVADDR =   143;
 
     /**
      * data-retranslation number expired
      */
-    public  static final byte EGTS_PC_TTLEXPIRED = (byte) 144;
+    public  static final int EGTS_PC_TTLEXPIRED =   144;
 
     /**
      * no confirmation
      */
-    public  static final byte EGTS_PC_NO_ACK = (byte) 145;
+    public  static final int EGTS_PC_NO_ACK =   145;
 
     /**
      * object not found
      */
-    public  static final byte EGTS_PC_OBJ_NFOUND = (byte) 146;
+    public  static final int EGTS_PC_OBJ_NFOUND =   146;
 
     /**
      * event not found
      */
-    public  static final byte EGTS_PC_EVNT_NFOUND = (byte) 147;
+    public  static final int EGTS_PC_EVNT_NFOUND =   147;
 
     /**
      * service not found
      */
-    public  static final byte EGTS_PC_SRVC_NFOUND = (byte) 148;
+    public  static final int EGTS_PC_SRVC_NFOUND =   148;
 
     /**
      * service not denied
      */
-    public  static final byte EGTS_PC_SRVC_DENIED = (byte) 149;
+    public  static final int EGTS_PC_SRVC_DENIED =   149;
 
     /**
      * service unknown
      */
-    public  static final byte EGTS_PC_SRVC_UNKN = (byte) 150;
+    public  static final int EGTS_PC_SRVC_UNKN =   150;
 
     /**
      * authorization denied
      */
-    public  static final byte EGTS_PC_AUTH_DENIED = (byte) 151;
+    public  static final int EGTS_PC_AUTH_DENIED =   151;
 
     /**
      * object allready exists
      */
-    public  static final byte EGTS_PC_ALLREADY_EXISTS = (byte) 152;
+    public  static final int EGTS_PC_ALLREADY_EXISTS =   152;
 
     /**
      * id not found
      */
-    public  static final byte EGTS_PC_ID_NFOUND = (byte) 153;
+    public  static final int EGTS_PC_ID_NFOUND =   153;
 
     /**
      * incorrect date/time
      */
-    public  static final byte EGTS_PC_INC_DATE_TIME = (byte) 154;
+    public  static final int EGTS_PC_INC_DATE_TIME =   154;
 
     /**
      * io error
      */
-    public  static final byte EGTS_PC_IO_ERROR = (byte) 155;
+    public  static final int EGTS_PC_IO_ERROR =   155;
 
     /**
      * Insufficient resources
      */
-    public  static final byte EGTS_PC_NO_RES_AVAIL = (byte) 156;
+    public  static final int EGTS_PC_NO_RES_AVAIL =   156;
 
     /**
      * module inner fault
      */
-    public  static final byte EGTS_PC_MODULE_FAULT = (byte) 157;
+    public  static final int EGTS_PC_MODULE_FAULT =   157;
 
     /**
      * module power supply fault
      */
-    public  static final byte EGTS_PC_MODULE_PWR_FLT = (byte) 158;
+    public  static final int EGTS_PC_MODULE_PWR_FLT =   158;
 
     /**
      * module processor fault
      */
-    public  static final byte EGTS_PC_MODULE_PROC_FLT = (byte) 159;
+    public  static final int EGTS_PC_MODULE_PROC_FLT =   159;
 
     /**
      * module software fault
      */
-    public  static final byte EGTS_PC_MODULE_SW_FLT = (byte) 160;
+    public  static final int EGTS_PC_MODULE_SW_FLT =   160;
 
     /**
      * module inner program fault
      */
-    public  static final byte EGTS_PC_MODULE_FW_FLT = (byte) 161;
+    public  static final int EGTS_PC_MODULE_FW_FLT =   161;
 
     /**
      * module io fault
      */
-    public  static final byte EGTS_PC_MODULE_IO_FLT = (byte) 162;
+    public  static final int EGTS_PC_MODULE_IO_FLT =   162;
 
     /**
      * module inner memory fault
      */
-    public  static final byte EGTS_PC_MODULE_MEM_FLT = (byte) 163;
+    public  static final int EGTS_PC_MODULE_MEM_FLT =   163;
 
     /**
      * module test fault
      */
-    public  static final byte EGTS_PC_MODULE_TEST_FLT = (byte) 164;
+    public  static final int EGTS_PC_MODULE_TEST_FLT =   164;
+
+    /**
+     * Critical Error
+     */
+    public  static final int EGTS_PC_CRITICAL_ERROR =   -1;
 
 
 

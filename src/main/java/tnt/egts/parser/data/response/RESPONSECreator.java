@@ -37,7 +37,7 @@ public class RESPONSECreator implements ResponseNormalCreate {
         RESPONSE bdr =
                 RESPONSE.builder()
                         .packageHead(appdataService.getPackageHead())
-                        .pr(ProcessingResultCodeConstants.EGTS_PC_OK).build();
+                        .pr((byte) ProcessingResultCodeConstants.EGTS_PC_OK).build();
 
         log.info("Response data to BNSO creation finish:" + "\n " + bdr);
         return bdr;

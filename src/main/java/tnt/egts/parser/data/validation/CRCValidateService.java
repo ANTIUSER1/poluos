@@ -22,7 +22,7 @@ public class CRCValidateService implements CRCValidate {
     }
 
     @Override
-    public boolean CRC16Correct(byte[] income) { 
+    public boolean CRC16Correct(byte[] income) {
 
         byte[] dataOnly = ArrayUtils.getSubArrayFromTo(income,
                 income[ByteFixPositions.HEAD_LENGTH_INDEX], income.length - 2);

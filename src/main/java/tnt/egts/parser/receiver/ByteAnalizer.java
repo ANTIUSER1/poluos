@@ -4,6 +4,7 @@ package tnt.egts.parser.receiver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tnt.egts.parser.data.validation.ByteValidate;
 import tnt.egts.parser.data.validation.CRCValidate;
 import tnt.egts.parser.data.validation.DataLengthValidate;
 import tnt.egts.parser.data.validation.PackageValidate;
@@ -25,11 +26,18 @@ public class ByteAnalizer {
     @Autowired
     private PackageValidate packageValidate;
 
+    @Autowired
+    private ByteValidate byteValidate;
 
-    public byte analize(byte[] income) {
+    public int analize(byte[] income) {
 
         log.error(" Validation incoming data start.  {"+ ArrayUtils.arrayPrintToScreen(income)+" } ");
-        if (invalidPackageType(income)) {
+       if(invalidHeadLengthValue(income)) {
+           log.error("Invalid  HEAD VALUE   "  + income[ByteFixPositions.HEAD_LENGTH_INDEX]
+                     +" ; expected 11 or 16 " +
+                     "}");
+           return ProcessingResultCodeConstants.EGTS_PC_CRITICAL_ERROR;
+       }else    if (invalidPackageType(income)) {
             log.error("Invalid  package Type  {TYPE INCOMES: "
                       + income[ByteFixPositions.PACKAGE_TYPE_INDEX]
                       +" ; expected 1 or 2 }");
@@ -60,6 +68,10 @@ public class ByteAnalizer {
         }
         log.info(" Validation incoming data finish   ");
         return 0;
+    }
+
+    private boolean invalidHeadLengthValue(byte[] income) {
+        return !byteValidate.validHLByte(income);
     }
 
     private boolean invalidPackageType(byte[] income) {
