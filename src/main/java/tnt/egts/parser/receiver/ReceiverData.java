@@ -56,9 +56,6 @@ public class ReceiverData implements Runnable {
     @Autowired
     private ByteAnalizer byteAnalizer;
 
-//
-//    @Autowired
-//    private ReadFDLValidate readFDLValidate;
 
     private int responseCode;
 
