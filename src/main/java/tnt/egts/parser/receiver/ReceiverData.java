@@ -55,17 +55,7 @@ public class ReceiverData implements Runnable {
 
     @Autowired
     private ByteAnalizer byteAnalizer;
-//
-//    @Autowired
-//    @Qualifier (StringFixedBeanNames.HEADER_CREATOR_BEAN)
-//    private ConvertIncomingData headerCreator;
-//
-//    @Autowired
-//    @Qualifier (StringFixedBeanNames.APP_DATA_CREATOR_BEAN)
-//    private ConvertIncomingData appDataCreator;
-//
-//    @Autowired
-//    private ResponseNormalCreate responseNormal;
+
 //
 //    @Autowired
 //    private ReadFDLValidate readFDLValidate;
@@ -133,7 +123,7 @@ public class ReceiverData implements Runnable {
             output = socket.getOutputStream();
             output.write(resp.getData());
             log.info("Sending back response to BNSO finish. ");
-            testOutSendData(resp.getData());
+           // testOutSendData(resp.getData());
         } catch (IOException e) {
             log.error("Error while response to  attempt");
             e.printStackTrace();
@@ -212,13 +202,6 @@ public class ReceiverData implements Runnable {
         log.info("Storage  income Data start");
         IncomeDataStorage store = storage.create(income);
 
-//        CommonAPPDATA cnd = commonAPPService.create(store);
-//        componentsStoring.append(cnd);
-//        Head head = (Head) headService.create(store);
-//        componentsStoring.append(head);
-//        System.out.println();
-//        System.out.println(componentsStoring);
-
         outcomeData = outcomeIdentCreate.create(store, code);
         log.info("Storage  income Data finish");
     }
@@ -256,15 +239,6 @@ public class ReceiverData implements Runnable {
                 );
             }
             dsize = resTest[3] + fdl + 2;
-//            System.out.println("HL: " + resTest[3]);
-//            System.out.println("fdl: " + fdl);
-//            System.out.println("dsize: " + dsize);
-//            System.out.println("3 " + resTest[3]);
-//            System.out.println(" 0, 1 " + shortArray[0] + "   " + shortArray[1]);
-//            System.out.println(" 5, 6 " + resTest[5] + "   " + resTest[6]);
-//            System.out.println("resTest.length:: " + resTest.length);
-//            System.out.println("DSIZE:: " + dsize);
-
 
             result = new byte[dsize - resTest.length];
             in.read(result);
@@ -274,11 +248,7 @@ public class ReceiverData implements Runnable {
                 return new byte[0];
             }
         }
-        System.out.println(": rr:::   " + ArrayUtils.arrayPrintToScreen
-                (result));
-        System.out.println();
-        System.out.println("=============");
-        return result;
+       return result;
     }
 
 
