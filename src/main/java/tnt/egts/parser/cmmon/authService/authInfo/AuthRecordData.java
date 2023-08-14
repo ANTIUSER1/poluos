@@ -4,7 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 import tnt.egts.parser.cmmon.OutcomeIdent;
-import tnt.egts.parser.cmmon.authService.response.recResponse.SrRecordResponse;
+
+import tnt.egts.parser.response.recResponse.SrRecordResponse;
 import tnt.egts.parser.util.ArrayUtils;
 
 import java.nio.ByteBuffer;

@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentCreate;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
-import tnt.egts.parser.cmmon.authService.response.ptResponse.PacketTypeResponse;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.errors.NumberArrayDataException;
+import tnt.egts.parser.response.ptResponse.PacketTypeResponse;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.StringFixedBeanNames;
 

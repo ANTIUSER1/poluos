@@ -1,4 +1,4 @@
-package tnt.egts.parser.cmmon.authService.response.separate;
+package tnt.egts.parser.response.separate;
 
 import lombok.Builder;
 import lombok.Data;

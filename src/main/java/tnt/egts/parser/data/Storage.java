@@ -5,7 +5,7 @@ import tnt.egts.parser.errors.NumberArrayDataException;
 
 public interface Storage {
 
-    IncomeDataStorage create(byte[] income) throws NumberArrayDataException;
+     IncomeDataStorage create(byte[] income) throws NumberArrayDataException;
 
 
 }

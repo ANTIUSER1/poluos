@@ -1,4 +1,4 @@
-package tnt.egts.parser.cmmon.authService.response.recResponse;
+package tnt.egts.parser.response.recResponse;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
