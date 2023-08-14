@@ -19,7 +19,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 
 @Component
@@ -79,28 +78,25 @@ public class ReceiverData implements Runnable {
 
     @Override
     public void run() {
-        log.info("work on request from "+socket.getRemoteSocketAddress()+
+        log.info("work on request from " + socket.getRemoteSocketAddress() +
                  "  start");
         try {
             byte[] income = receive();
-            if (income == null || income.length == 0) {errorN0++;
-                log.error("Null data received, or income data is empty"+socket.getRemoteSocketAddress());
-                throw  new IncorrectDataException(
-                        "Processing can not be proceed on empty data "
-                );
 
-            }
+            throwReceivedInfoGlobalError(income);
             //  income=fakeByte(income );
-              log.info("Received data from BNSO. Data length: " + income.length);
-            log.debug("DATA:\n  " + ArrayUtils.arrayPrintToScreen(income)+"\n");
+            log.info("Received data from BNSO. Data length: " + income.length);
+            log.debug("DATA:\n  " + ArrayUtils.arrayPrintToScreen(income) + "\n");
 
-            if (isValidatePacket){
-                responseCode =   byteAnalizer.analize(income);
-                if(responseCode<0){errorN0++;
-                    log.error("Data are invalid in received package from "+socket.getRemoteSocketAddress());
-                    throw  new IncorrectDataException(
+            if (isValidatePacket) {
+                responseCode = byteAnalizer.analize(income);
+                if (responseCode < 0) {
+                    errorN0++;
+                    log.error("Data are invalid in received package from " + socket.getRemoteSocketAddress());
+                    throw new IncorrectDataException(
                             "Processing terminated unexpectedly due to a broken data packet "
-                );}
+                    );
+                }
             }
 
             log.info("Response code " + responseCode);
@@ -112,20 +108,20 @@ public class ReceiverData implements Runnable {
 //
             msgNO++;
             log.info("work on request finish. Correct steps: " + msgNO
-            +"; errors: "+errorN0);
+                     + "; errors: " + errorN0);
         } catch (Exception e) {
             log.error("Error while data transform: " + e.getMessage());
-               e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
-    private byte[] fakeByte(byte[] income ) {
-        income[2]=4;
-        income[ByteFixPositions.PACKAGE_TYPE_INDEX ]=1;
-        byte[] head=ArrayUtils.getFixedLengthSubArray(income,0,10);
-        System.out.println("HEAD:  "+ArrayUtils.arrayPrintToScreen(head)+" " +
-                           "CRC8: "+crc.calculate8(head));
-        income[10]= (byte) crc.calculate8(head);
+    private byte[] fakeByte(byte[] income) {
+        income[2] = 4;
+        income[ByteFixPositions.PACKAGE_TYPE_INDEX] = 1;
+        byte[] head = ArrayUtils.getFixedLengthSubArray(income, 0, 10);
+        System.out.println("HEAD:  " + ArrayUtils.arrayPrintToScreen(head) + " " +
+                           "CRC8: " + crc.calculate8(head));
+        income[10] = (byte) crc.calculate8(head);
         return income;
     }
 
@@ -229,16 +225,15 @@ public class ReceiverData implements Runnable {
 
 
     public void setSocket(Socket socket) {
-        this.socket = socket;   }
+        this.socket = socket;
+    }
 
     private byte[] receive() throws IOException, NumberArrayDataException {
         int dsize;
         byte[] resTest;
         byte[] result;
         BufferedInputStream in =
-                new BufferedInputStream( socket.getInputStream() );
-
-
+                new BufferedInputStream(socket.getInputStream());
 
         resTest = readFromStream(16);
         if (resTest.length < 4) {
@@ -248,42 +243,42 @@ public class ReceiverData implements Runnable {
             log.error("Invalid length :  " + resTest.length);
             return new byte[0];
         } else {
-             byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5
+            byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5
                     , 2);
             short fdl = ArrayUtils.byteArrayInverseToShort(shortArray);
-            if(resTest[3]*fdl==0) {
-                log.error("Data are invalid in received package from "+socket.getRemoteSocketAddress());
+            if (resTest[3]  <=0 || fdl<= 0   ) {
+                errorN0++;
+                log.error("Data are invalid in received package from " + socket.getRemoteSocketAddress());
                 log.error(" Details: the Value of HeaderLength is 0 or " +
                           "the length of SFRD is 0 ");
-                throw  new IncorrectDataException(
+                throw new IncorrectDataException(
                         "Processing terminated unexpectedly due to a broken data packet "
                 );
             }
             dsize = resTest[3] + fdl + 2;
-            System.out.println("HL: " + resTest[3]);
-            System.out.println("fdl: " + fdl);
-            System.out.println("dsize: " + dsize);
-            System.out.println("3 " + resTest[3]);
-            System.out.println(" 0, 1 " + shortArray[0] + "   " + shortArray[1]);
-            System.out.println(" 5, 6 " + resTest[5] + "   " + resTest[6]);
-            System.out.println("resTest.length:: " + resTest.length);
-            System.out.println("DSIZE:: " + dsize);
+//            System.out.println("HL: " + resTest[3]);
+//            System.out.println("fdl: " + fdl);
+//            System.out.println("dsize: " + dsize);
+//            System.out.println("3 " + resTest[3]);
+//            System.out.println(" 0, 1 " + shortArray[0] + "   " + shortArray[1]);
+//            System.out.println(" 5, 6 " + resTest[5] + "   " + resTest[6]);
+//            System.out.println("resTest.length:: " + resTest.length);
+//            System.out.println("DSIZE:: " + dsize);
 
-         //    in.reset();
-//in.skip(-resTest.length);
-            result = new byte[dsize-resTest.length];
-            in.read(result );
-result=ArrayUtils.joinArrays(resTest,result);
-//            if(result.length<dsize ) {
-//                log.error("Invalid length :  " + result.length);
-//                return new byte[0];
-//            }
+
+            result = new byte[dsize - resTest.length];
+            in.read(result);
+            result = ArrayUtils.joinArrays(resTest, result);
+            if(result.length<dsize ) {
+                log.error("Invalid length :  " + result.length);
+                return new byte[0];
+            }
         }
         System.out.println(": rr:::   " + ArrayUtils.arrayPrintToScreen
-     (result));
+                (result));
         System.out.println();
         System.out.println("=============");
-        return  result;
+        return result;
     }
 
 
@@ -291,6 +286,20 @@ result=ArrayUtils.joinArrays(resTest,result);
         byte[] result = new byte[length];
         InputStream inTest = socket.getInputStream();
         inTest.read(result);
+throwReceivedInfoGlobalError(result);
         return result;
+    }
+
+    private void throwReceivedInfoGlobalError(byte[] income){
+
+        if (income == null || income.length < 3 || income.length < 7) {
+            errorN0++;
+            log.error("Null data received, or income data is empty" + socket.getRemoteSocketAddress());
+            throw new IncorrectDataException(
+                    "Processing can not be proceed on corrupt data " +
+                    ArrayUtils.arrayPrintToScreen(income)+ "\n"
+            );
+
+        }
     }
 }
