@@ -3,12 +3,15 @@ package tnt.egts.parser.cmmon.sendBack;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.util.ArrayUtils;
 
 @Builder
 @Data
-@ToString
+@ToString 
+@Slf4j
 public class DoResponse implements OutcomeIdent {
 
     private byte[] responseHead;
@@ -22,6 +25,7 @@ public class DoResponse implements OutcomeIdent {
 
     @Override
     public void createData() {
+        log.info("Create Answer data start");
         short sffdLength= (short) sfrd.length;
         byte[] sfrdArray=ArrayUtils.shortToByteArray(sffdLength);
         responseHead[9]=code;
@@ -29,5 +33,8 @@ public class DoResponse implements OutcomeIdent {
          properPackageHeader=ArrayUtils.getFixedLengthSubArray(responseHead,0
                  , responseHead.length-1);
         data= ArrayUtils.joinArrays(responseHead, sfrd);
+
+        log.info("Answer Data: \n "+ArrayUtils.arrayPrintToScreen(data)+" \n");
+        log.info("Create Answer data finish");
     }
 }

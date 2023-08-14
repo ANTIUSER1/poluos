@@ -1,14 +1,11 @@
-
-#spring.profiles: standart
+#spring.profiles: andr
 socket:
   host: 127.0.0.1
-  port: 5555
+  port: 7777
 
-threads: 50
-validate: true
 
 logging:
-  file.name: logs/-egts-parser-data.log
+  file.name: logs/-egts-parser-data-andr.log
   file.max-size: 1MB
 
   level:
@@ -17,3 +14,6 @@ logging:
   pattern:
     console: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
     file: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+
+threads: 30
+validate: true

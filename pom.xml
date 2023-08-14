@@ -58,7 +58,7 @@
 								<resource>
 									<directory>config</directory>
 									<includes>
-										<include>application.yml</include>
+										<include>*.yml</include>
 									</includes>
 								</resource>
 							</resources>

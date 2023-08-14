@@ -40,6 +40,7 @@ public class ReceiverData implements Runnable {
 //    @Autowired
 //    private ComponentsStoring componentsStoring;
 
+   // @Autowired
     private OutcomeIdent outcomeData;
 
 //    @Autowired
@@ -119,6 +120,7 @@ public class ReceiverData implements Runnable {
         try {
             output = socket.getOutputStream();
             output.write(resp.getData());
+
             log.info("Sending back response to BNSO finish. ");
            // testOutSendData(resp.getData());
         } catch (IOException e) {
@@ -232,7 +234,8 @@ public class ReceiverData implements Runnable {
                 log.error(" Details: the Value of HeaderLength is 0 or " +
                           "the length of SFRD is 0 ");
                 throw new IncorrectDataException(
-                        "Processing terminated unexpectedly due to a broken data packet "
+                        "Processing terminated unexpectedly due to a broken data packet "+
+                        ArrayUtils.arrayPrintToScreen(resTest)+ "\n"
                 );
             }
             dsize = resTest[3] + fdl + 2;
