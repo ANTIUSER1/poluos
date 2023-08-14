@@ -11,10 +11,11 @@ public class ArrayUtils {
     private ArrayUtils() {
     }
 
-    public static <T> String arrayPrintToScreen(T[] data) {
-        return Arrays.toString(data);
-    }
-
+    /**
+     * output array to screen
+     * @param data
+     * @return
+     */
     public static String arrayPrintToScreen(byte[] data) {
         String hex=arrayAsHEX(data) ;
         return "Data: \n "+
@@ -23,6 +24,11 @@ public class ArrayUtils {
                "] of length "+data.length;
     }
 
+    /**
+     * byte exposing in hex type
+     * @param data
+     * @return
+     */
     public static String arrayAsHEX(byte[] data) {
         StringBuffer out=new StringBuffer(' ');
         for(Byte b: data){
@@ -32,36 +38,21 @@ public class ArrayUtils {
         return out.toString();
     }
 
-    public static String arrayPrintToScreen(long[] data) {
-        StringBuffer out = new StringBuffer();
-        for (int k = 0; k < data.length; k++) {
-            out.append(" v[" + k + "]=" + data[k] + "  ");
-        }
-        return out.toString();
-    }
-
-    public static short calcShortFromArray(byte[] data) {
-        if (data.length == 2) {
-            ByteBuffer buffer = ByteBuffer.wrap(data);
-            return buffer.getShort();
-        } else {
-            System.out.println("Data is not short value ");
-            throw new IllegalArgumentException("Data is not short value ");
-        }
-    }
-
-    public static Byte[] convertToObject(byte[] data) {
-        Byte[] result = new Byte[data.length];
-        for (int k = 0; k < data.length; k++) {
-            result[k] = data[k];
-        }
-        return result;
-    }
-
+    /**
+     * exposes byte as binary string
+     * @param value
+     * @return
+     */
     public static String byteToBinary(byte value) {
         return String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace(' ', '0');
     }
 
+    /**
+     * join two arrays
+     * @param dataFirst
+     * @param dataSecond
+     * @return
+     */
     public static byte[] joinArrays(byte[] dataFirst, byte[] dataSecond) {
         byte[] out = new byte[dataFirst.length + dataSecond.length];
         System.arraycopy(dataFirst, 0, out, 0, dataFirst.length);
@@ -70,16 +61,16 @@ public class ArrayUtils {
         return out;
     }
 
-    public static byte[] convertToByteArray(long[] data) {
-        byte[] out = new byte[data.length];
-        for (int k = 0; k < data.length; k++) out[k] = (byte) data[k];
-        return out;
-    }
 
     public static byte[] shortToByteArray(short N) {
         return new byte[]{(byte) (N >> 8), (byte) (N & 255)};
     }
 
+    /**
+     * inverse array
+     * @param data
+     * @return
+     */
     public static byte[] inverse(byte[] data) {
         byte[] out = new byte[data.length];
         for (int k = 0; k < data.length; k++) {
@@ -88,6 +79,12 @@ public class ArrayUtils {
         return out;
     }
 
+    /**
+     * add one bye to given array at tail
+     * @param data
+     * @param b
+     * @return
+     */
     public static byte[] addByteToTail(byte[] data, byte b) {
         byte[] out = new byte[data.length + 1];
         System.arraycopy(data, 0, out, 0, data.length);
@@ -95,6 +92,12 @@ public class ArrayUtils {
         return out;
     }
 
+    /**
+     * add one bye to given array at start
+     * @param data
+     * @param b
+     * @return
+     */
     public static byte[] addByteToStart(byte[] data, byte b) {
         byte[] out = new byte[data.length + 1];
         // System.arraycopy(data, 1, out, 0, data.length);
@@ -104,6 +107,13 @@ public class ArrayUtils {
         return out;
     }
 
+    /**
+     * slice subarray  from start pos to finish pos
+     * @param inData
+     * @param from
+     * @param length
+     * @return
+     */
     public static byte[] getSubArrayFromTo(byte[] inData, int from, int to) {
         if (inData.length == 0 || from >= to || from < 0 || to < 0)
             throw new IllegalArgumentException("Array borders error: Given " + "array: " + arrayPrintToScreen(inData));
@@ -112,6 +122,13 @@ public class ArrayUtils {
         return outData;
     }
 
+    /**
+     * slice subarray of given length from start pos
+     * @param inData
+     * @param from
+     * @param length
+     * @return
+     */
     public static byte[] getFixedLengthSubArray(byte[] inData, int from, int length) {
         if (inData.length == 0 || from < 0 || from + length > inData.length - 1)
             throw new IllegalArgumentException("array borders error: Given " + "array: " + arrayPrintToScreen(inData)+ "\n from: "+from
@@ -121,6 +138,12 @@ public class ArrayUtils {
         return outData;
     }
 
+    /**
+     * get tail of given array from given pos
+     * @param inData
+     * @param from
+     * @return
+     */
     public static byte[] getSubArrayToEnd(byte[] inData, int from) {
         if (inData.length == 0 || from < 0 || from > inData.length - 1)
             throw new IllegalArgumentException("array borders error: Given " + "array: " + arrayPrintToScreen(inData));
@@ -130,11 +153,6 @@ public class ArrayUtils {
     }
 
 
-    public static byte[] rndByte(int length) {
-        byte[] out = new byte[length];
-        for (int k = 0; k < length; k++) out[k] = (byte) (1000 * Math.random());
-        return out;
-    }
 
 
     public static long[] byteArrayToLongArray(byte[] data) {
@@ -187,13 +205,18 @@ public class ArrayUtils {
 
     public static short byteArrayInverseToShort(byte[] data) throws NumberArrayDataException {
         if (data.length != 2)
-            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
-
+            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data)); 
         data = inverse(data);
         ByteBuffer bbf = ByteBuffer.wrap(data);
         return bbf.getShort(0);
     }
 
+    /**
+     * test when arrays has equals data
+     * @param data1
+     * @param data2
+     * @return true if  arrays has equals data
+     */
     public static boolean arraysEquals(byte[] data1, byte[] data2) {
         ByteBuffer bbf1 = ByteBuffer.wrap(data1);
         ByteBuffer bbf2 = ByteBuffer.wrap(data2);

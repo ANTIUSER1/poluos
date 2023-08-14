@@ -17,9 +17,6 @@ public class IncomeDataStorage {
      */
     private byte[] packageHeader;
 
-
-
-
     /**
      * Services frame data (SFRD)
      */

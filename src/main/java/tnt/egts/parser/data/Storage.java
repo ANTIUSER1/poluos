@@ -7,4 +7,5 @@ public interface Storage {
 
     IncomeDataStorage create(byte[] income) throws NumberArrayDataException;
 
+
 }
