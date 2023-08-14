@@ -50,7 +50,7 @@ public class SeparateRecord implements OutcomeIdent {
 byte[] data;
 
     @Override
-    public void createData() {
+    public void prepareAuthData() {
         data= ArrayUtils.inverse(ArrayUtils.shortToByteArray((short) authRecordData.getData().length));
         data=ArrayUtils.inverse(data);
         byte[] rn=ArrayUtils.shortToByteArray(recordNumber);

@@ -29,7 +29,7 @@ public class AuthRecordData implements OutcomeIdent {
     private byte[] data;
 
     @Override
-    public void createData() {
+    public void prepareAuthData() {
         data = ByteBuffer.wrap(ArrayUtils.shortToByteArray(subRecordLength)).array();
         data = ArrayUtils.inverse(data);
         data = ArrayUtils.joinArrays(data, srRecResponse.getData());

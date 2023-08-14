@@ -10,10 +10,12 @@ import tnt.egts.parser.cmmon.sendBack.DoResponse;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
+import tnt.egts.parser.data.analysis.ByteAnalizerService;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -21,41 +23,37 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+/**
+ * Main receiver class
+ * in run method receive process initialized
+ * if validate flag in config == true the income data will be validate
+ */
 @Component
 @Slf4j
 public class ReceiverData implements Runnable {
 
     @Autowired
-    @Qualifier ("readyToSend")
+    @Qualifier (StringFixedBeanNames.AUTH_RESPONSE_SEND_BEAN)
     OutcomeIdentFinalCreate outcomeIdentCreate;
 
     @Autowired
     CRC crc;
 
+    /**
+     * flag to activate/deactivate validation incoming data
+     */
     @Autowired
     private boolean isValidatePacket;
 
     private Socket socket;
 
-//    @Autowired
-//    private ComponentsStoring componentsStoring;
-
-   // @Autowired
-    private OutcomeIdent outcomeData;
-
-//    @Autowired
-//    private HeadService headService;
-//
-//    @Autowired
-//    private CommonAPPService commonAPPService;
-
-    //**********************************************************
+    private OutcomeIdent outcomeAuthData;
 
     @Autowired
     private Storage storage;
 
     @Autowired
-    private ByteAnalizer byteAnalizer;
+    private ByteAnalizerService byteAnalizer;
 
 
     private int responseCode;
@@ -68,15 +66,13 @@ public class ReceiverData implements Runnable {
     public void run() {
         log.info("work on request from " + socket.getRemoteSocketAddress() +
                  "  start");
+        log.info("local server runs on address/port "+socket.getLocalAddress());
         try {
             byte[] income = receive();
-
             throwReceivedInfoGlobalError(income);
-            //  income=fakeByte(income );
             log.info("Received data from BNSO. Data length: " + income.length);
             log.debug("DATA:\n  " + ArrayUtils.arrayPrintToScreen(income) + "\n");
-
-            if (isValidatePacket) {
+             if (isValidatePacket) {
                 responseCode = byteAnalizer.analize(income);
                 if (responseCode < 0) {
                     errorN0++;
@@ -114,7 +110,7 @@ public class ReceiverData implements Runnable {
     }
 
     private void sendResponse() {
-        DoResponse resp = (DoResponse) outcomeData;
+        DoResponse resp = (DoResponse) outcomeAuthData;
         log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData()) + " of length " + resp.getData().length);
         OutputStream output = null;
         try {
@@ -201,7 +197,7 @@ public class ReceiverData implements Runnable {
         log.info("Storage  income Data start");
         IncomeDataStorage store = storage.create(income);
 
-        outcomeData = outcomeIdentCreate.create(store, code);
+        outcomeAuthData = outcomeIdentCreate.createAuthResponse(store, code);
         log.info("Storage  income Data finish");
     }
 

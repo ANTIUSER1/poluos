@@ -24,7 +24,7 @@ public class DoResponse implements OutcomeIdent {
     private byte code;
 
     @Override
-    public void createData() {
+    public void prepareAuthData() {
         log.info("Create Answer data start");
         short sffdLength= (short) sfrd.length;
         byte[] sfrdArray=ArrayUtils.shortToByteArray(sffdLength);

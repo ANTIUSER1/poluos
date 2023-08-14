@@ -26,7 +26,7 @@ public class SeparateRecordService implements OutcomeIdentCreate {
         SeparateRecord out = SeparateRecord.builder()
                 .authRecordData(ars)
                 .build();
-        out.createData();
+        out.prepareAuthData();
         log.info("Storage  separate Data finish: "+out);
         return out;
     }

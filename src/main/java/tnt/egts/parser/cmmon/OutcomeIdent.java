@@ -1,7 +1,13 @@
 package tnt.egts.parser.cmmon;
 
+/**
+ * preparing data for responses
+ */
 public interface OutcomeIdent {
 
-    void createData();
+    /**
+     * preparing data for auth-response
+     */
+    void prepareAuthData();
 
 }

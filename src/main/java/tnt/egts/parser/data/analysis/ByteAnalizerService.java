@@ -1,4 +1,4 @@
-package tnt.egts.parser.receiver;
+package tnt.egts.parser.data.analysis;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import tnt.egts.parser.util.ProcessingResultCodeConstants;
 
 @Service
 @Slf4j
-public class ByteAnalizer {
+public class ByteAnalizerService implements ByteAnalizer {
 
 
     @Autowired

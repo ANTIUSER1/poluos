@@ -1,5 +1,9 @@
 package tnt.egts.parser.data.analysis;
 
+/**
+ * Flags enum controller
+ * use for control bit flags? placed in some bytes
+ */
 public enum BitFlags {
     HOPTIONS_EXISTS, HOPTIONS_NOT_EXISTS,
     USE_COMPRESSION,  NO_USE_COMPRESSION,

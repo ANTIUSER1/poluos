@@ -12,10 +12,11 @@ import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service ("readyToSend")
+@Service (StringFixedBeanNames.AUTH_RESPONSE_SEND_BEAN)
 @Slf4j
-public class DoResponseService implements OutcomeIdentFinalCreate {
+public class DoAuthResponseService implements OutcomeIdentFinalCreate {
 
     @Autowired
     @Qualifier ("pt")
@@ -25,7 +26,7 @@ public class DoResponseService implements OutcomeIdentFinalCreate {
     private CRC crc;
 
     @Override
-    public OutcomeIdent create(IncomeDataStorage storage, byte code) throws NumberArrayDataException {
+    public OutcomeIdent createAuthResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException {
         log.info("Response data generate start");
         PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
 
@@ -34,7 +35,7 @@ public class DoResponseService implements OutcomeIdentFinalCreate {
                 .sfrd(pt.getData()).code(code)
                 .responseHead(storage.getPackageHeader())
                 .build();
-        out.createData();
+        out.prepareAuthData();
 System.out.println("   from out T PT:  "+out );
 System.out.println();
 System.out.println();

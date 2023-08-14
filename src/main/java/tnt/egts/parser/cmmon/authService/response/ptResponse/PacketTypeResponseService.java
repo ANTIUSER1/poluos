@@ -28,7 +28,7 @@ public class PacketTypeResponseService implements OutcomeIdentCreate {
                      .processingResult((byte) 0)
                      .separateRecord(sr)
                 .build();
-        out.createData();
+        out.prepareAuthData();
         log.info("Storage Packet Type data finish: "+out);
         return out;
     }

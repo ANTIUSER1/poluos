@@ -32,7 +32,7 @@ public class PacketTypeResponse implements OutcomeIdent {
     private byte[] data;
 
     @Override
-    public void createData() {
+    public void prepareAuthData() {
         System.out.println("PT RESPONSE: "+responsePacketID );
         System.out.println("PT RESPONSE: "+responsePacketID );
         System.out.println("PT RESPONSE: "+responsePacketID );

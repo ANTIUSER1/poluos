@@ -3,7 +3,17 @@ package tnt.egts.parser.cmmon;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 
+/**
+ * finalization formatting data for response
+ */
 public interface OutcomeIdentFinalCreate {
 
-    OutcomeIdent   create(IncomeDataStorage storage, byte code) throws NumberArrayDataException;
+    /**
+     * create final data for auth-response
+     * @param storage
+     * @param code
+     * @return
+     * @throws NumberArrayDataException
+     */
+    OutcomeIdent createAuthResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException;
 }
