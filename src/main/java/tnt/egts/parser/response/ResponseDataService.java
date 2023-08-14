@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
-import tnt.egts.parser.cmmon.sendBack.DoResponse;
-import tnt.egts.parser.cmmon.sendBack.DoResponse;
+import tnt.egts.parser.cmmon.sendBack.DoPrepareResponse;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
@@ -33,7 +32,7 @@ public class ResponseDataService  implements ResponseData{
     private OutcomeIdent outcomeAuthData;
 
     public void sendResponse() {
-        DoResponse resp = (DoResponse) outcomeAuthData;
+        DoPrepareResponse resp = (DoPrepareResponse) outcomeAuthData;
         log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData()) + " of length " + resp.getData().length);
         OutputStream output = null;
         try {

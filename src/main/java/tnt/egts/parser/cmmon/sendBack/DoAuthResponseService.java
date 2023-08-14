@@ -31,7 +31,7 @@ public class DoAuthResponseService implements OutcomeIdentFinalCreate {
         PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
 
         System.out.println("    PP PT:  "+pt.getResponsePacketID());
-        DoResponse out = DoResponse.builder()
+        DoPrepareResponse out = DoPrepareResponse.builder()
                 .sfrd(pt.getData()).code(code)
                 .responseHead(storage.getPackageHeader())
                 .build();

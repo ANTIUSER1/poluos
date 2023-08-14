@@ -10,9 +10,10 @@ import tnt.egts.parser.util.ArrayUtils;
 
 @Builder
 @Data
-@ToString 
+@ToString
+@Service("prepareResponse")
 @Slf4j
-public class DoResponse implements OutcomeIdent {
+public class DoPrepareResponse implements OutcomeIdent {
 
     private byte[] responseHead;
     /**
@@ -21,7 +22,7 @@ public class DoResponse implements OutcomeIdent {
     private byte[] properPackageHeader;
     private   byte[] sfrd;
     private   byte[] data;
-    private byte code;
+    private byte code=0;
 
     @Override
     public void prepareAuthData() {

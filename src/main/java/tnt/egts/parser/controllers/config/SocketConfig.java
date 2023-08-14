@@ -37,4 +37,7 @@ public class SocketConfig {
     public boolean isValidatePacket() {
         return validatePacket;
     }
+
+    @Bean
+    public  byte code(){return 0;}
 }

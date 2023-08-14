@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
-import tnt.egts.parser.cmmon.sendBack.DoResponse;
+import tnt.egts.parser.cmmon.sendBack.DoPrepareResponse;
 import tnt.egts.parser.cmmon.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
@@ -33,6 +33,9 @@ import java.net.Socket;
 public class ReceiverData implements Runnable {
 
     @Autowired
+    @Qualifier("prepareResponse")
+    private OutcomeIdent preparingOutcomeAuthData;
+    @Autowired
     @Qualifier (StringFixedBeanNames.AUTH_RESPONSE_SEND_BEAN)
     OutcomeIdentFinalCreate outcomeIdentCreate;
 
@@ -47,7 +50,6 @@ public class ReceiverData implements Runnable {
 
     private Socket socket;
 
-    private OutcomeIdent outcomeAuthData;
 
     @Autowired
     private Storage storage;
@@ -110,7 +112,7 @@ public class ReceiverData implements Runnable {
     }
 
     private void sendResponse() {
-        DoResponse resp = (DoResponse) outcomeAuthData;
+        DoPrepareResponse resp = (DoPrepareResponse) preparingOutcomeAuthData;
         log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData()) + " of length " + resp.getData().length);
         OutputStream output = null;
         try {
@@ -197,7 +199,7 @@ public class ReceiverData implements Runnable {
         log.info("Storage  income Data start");
         IncomeDataStorage store = storage.create(income);
 
-        outcomeAuthData = outcomeIdentCreate.createAuthResponse(store, code);
+        preparingOutcomeAuthData = outcomeIdentCreate.createAuthResponse(store, code);
         log.info("Storage  income Data finish");
     }
 
