@@ -1,4 +1,4 @@
-package tnt.egts.parser.cmmon.hd;
+package tnt.egts.parser.data.incomeData.hd.head;
 
 import lombok.Builder;
 import lombok.Data;
