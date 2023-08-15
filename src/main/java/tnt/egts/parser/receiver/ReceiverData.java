@@ -91,7 +91,7 @@ public class ReceiverData implements Runnable {
                 }
             }
             log.info("Response code " + responseCode);
-             dataTransform(income, (byte) responseCode); 
+             dataTransform(income, (byte) responseCode);
             responseData.sendResponse(socket,store ,preparingOutcomeAuthData,
                     (byte) responseCode);
             msgNO++;
