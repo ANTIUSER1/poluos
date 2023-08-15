@@ -2,7 +2,6 @@ package tnt.egts.parser.util;
 
 public class StringFixedBeanNames {
 
-
     private StringFixedBeanNames() {
     }
 
@@ -12,6 +11,10 @@ public class StringFixedBeanNames {
     public  static final String RESPONSE_DATA_BEAN= "responseDataService";
     public  static final String AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN =
             "finalAuthResponseSend";
+
+
+    public static final String TELEDATA_RESPONSE_SERVICE_BEAN =
+            "teleDataResponseService";
 
     public static final String AUTH_RESPONSE_SERVICE_BEAN = "authResponseService";
 }

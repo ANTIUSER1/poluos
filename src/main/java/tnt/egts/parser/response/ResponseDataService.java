@@ -5,81 +5,60 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.OutcomeIdent;
-import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
+import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.data.store.PackageType;
+import tnt.egts.parser.errors.InvalidDataTypeException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.net.Socket;
 
-@Service(StringFixedBeanNames.RESPONSE_DATA_BEAN)
+@Service (StringFixedBeanNames.RESPONSE_DATA_BEAN)
 @Slf4j
-public class ResponseDataService  implements ResponseData{
-
-//    @Autowired
-//    @Qualifier (StringFixedBeanNames.AUTH_RESPONSE_SEND_BEAN)
-//    OutcomeIdentFinalCreate outcomeIdentCreate;
+public class ResponseDataService implements ResponseData {
 
     @Autowired
     CRC crc;
 
-
-//
-//    @Autowired
-//    @Qualifier("prepareResponse")
-//    private OutcomeIdent preparingOutcomeAuthData;
-
-
-//    @Autowired
-//    @Qualifier (StringFixedBeanNames.AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
-//    OutcomeIdentFinalCreate outcomeIdentCreate;
+    @Autowired
+    @Qualifier (StringFixedBeanNames.AUTH_RESPONSE_SERVICE_BEAN)
+    private ResponseData authResponse;
 
     @Autowired
-    @Qualifier(StringFixedBeanNames.AUTH_RESPONSE_SERVICE_BEAN)
-private ResponseData authResponse;
-    public void sendResponse( Socket socket, IncomeDataStorage store,
-                              OutcomeIdent preparingOutcomeData, byte code) throws NumberArrayDataException {
+    @Qualifier (StringFixedBeanNames.TELEDATA_RESPONSE_SERVICE_BEAN)
+    private ResponseData teleDataResponse;
 
-        System.out.println("|||||| \n "+store.getType().name()+" \n ||||| ");
-        System.out.println("|||||| \n "+store.getType().name()+" \n ||||| ");
-        System.out.println("|||||| \n "+store.getType().name()+" \n ||||| ");
-        System.out.println("|||||| \n "+store.getType().name()+" \n ||||| ");
-       if(store.getType().equals(PackageType.AUTH_SERVICE)){
-authResponse.sendResponse(socket,store,preparingOutcomeData,code);
-           // testOutSendData(resp.getData());
-//           preparingOutcomeData =
-//                   outcomeIdentCreate.createAuthResponse(store, code);
-//           preparingOutcomeData.prepareAuthData();
-//           log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(preparingOutcomeData.getData()) + " of length " + preparingOutcomeData.getData().length);
-//           OutputStream output = null;
-//           try {
-//               output = socket.getOutputStream();
-//               output.write(preparingOutcomeData.getData());
-//               log.info("Sending back response to BNSO finish. ");
-//               // testOutSendData(resp.getData());
-//           } catch (IOException e) {
-//               log.error("Error while response to  attempt");
-//               e.printStackTrace();
-//           }
-       testOutSendData(preparingOutcomeData.getData());
-       }
+    public void sendResponse(Socket socket, IncomeDataStorage store,
+                             OutcomeIdent  preparingOutcomeData, byte code) throws NumberArrayDataException {
+
+        System.out.println("|||||| \n " + store.getType().name() + " \n ||||| ");
+        System.out.println("|||||| \n " + store.getType().name() + " \n ||||| ");
+        System.out.println("|||||| \n " + store.getType().name() + " \n ||||| ");
+        System.out.println("|||||| \n " + store.getType().name() + " \n ||||| ");
+        if (store.getType().equals(PackageType.AUTH_SERVICE)) {
+            authResponse.sendResponse(socket, store, preparingOutcomeData, code);
+        }else  if(store.getType().equals(PackageType.TELEDATA_SERVICE)){
+            teleDataResponse.sendResponse(socket,store,preparingOutcomeData,code);
+        }else{
+            throw  new InvalidDataTypeException("Incoming request has unknown" +
+                                                " data type. ");
+        }
+        testOutSendData(preparingOutcomeData.getData());
     }
 
     private void testOutSendData(byte[] data) {
         System.out.println();
-        System.out.println("************** TEST  OUTPUT  " +
-                           "*********************");
+        System.out.println("************** TEST  OUTPUT  " + "*********************");
         System.out.println();
-        System.out.println("OUTPUT:  " + ArrayUtils.arrayPrintToScreen(data) +
-                           " LENGTH: " + data.length);
+        System.out.println("OUTPUT:  " + ArrayUtils.arrayPrintToScreen(data) + " LENGTH: " + data.length);
         System.out.println();
         System.out.println();
         byte bt = data[3];
         System.out.println("  HL: " + bt);
-        byte[] inf=ArrayUtils.getFixedLengthSubArray(data,0, bt);
-        System.out.println( "HEAD:  "+ArrayUtils.arrayPrintToScreen(inf));
+        byte[] inf = ArrayUtils.getFixedLengthSubArray(data, 0, bt);
+        System.out.println("HEAD:  " + ArrayUtils.arrayPrintToScreen(inf));
 
         bt = data[9];
         System.out.println("PT:   " + bt);
@@ -93,8 +72,7 @@ authResponse.sendResponse(socket,store,preparingOutcomeData,code);
         } catch (NumberArrayDataException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("FDL:  " + ArrayUtils.arrayPrintToScreen(fdl) + "  AS" +
-                           "  NUM:  " + fdlDat + "  EXPETED: " + (data.length - data[3] - 2));
+        System.out.println("FDL:  " + ArrayUtils.arrayPrintToScreen(fdl) + "  AS" + "  NUM:  " + fdlDat + "  EXPETED: " + (data.length - data[3] - 2));
 
         byte[] pid = new byte[2];
         pid[0] = data[8];
@@ -105,15 +83,13 @@ authResponse.sendResponse(socket,store,preparingOutcomeData,code);
         } catch (NumberArrayDataException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("PID:  " + ArrayUtils.arrayPrintToScreen(pid) + "  AS" +
-                           "  NUM:  " + pidDat);
+        System.out.println("PID:  " + ArrayUtils.arrayPrintToScreen(pid) + "  AS" + "  NUM:  " + pidDat);
 
 //        bt=data[  data[3]-1];
 //        System.out.println("HCS:   "+bt);
 
         byte[] sfrd = ArrayUtils.getFixedLengthSubArray(data, data[3], fdlDat);
-        System.out.println("  sfrd: " + ArrayUtils.arrayPrintToScreen(sfrd) +
-                           "  LEN: " + sfrd.length);
+        System.out.println("  sfrd: " + ArrayUtils.arrayPrintToScreen(sfrd) + "  LEN: " + sfrd.length);
 
         long crc16 = crc.calculate16(sfrd);
         short crcShort = (short) crc16;

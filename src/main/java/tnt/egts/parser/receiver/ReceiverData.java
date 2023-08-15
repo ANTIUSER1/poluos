@@ -10,7 +10,7 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.data.analysis.ByteAnalizerService;
 import tnt.egts.parser.data.store.IncomeDataStorage;
-import tnt.egts.parser.errors.IncorrectDataException;
+import tnt.egts.parser.errors.InvalidDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.response.ResponseData;
 import tnt.egts.parser.util.ArrayUtils;
@@ -83,7 +83,7 @@ public class ReceiverData implements Runnable {
                 if (responseCode < 0) {
                     errorN0++;
                     log.error("Data are invalid in received package from " + socket.getRemoteSocketAddress());
-                    throw new IncorrectDataException("Processing terminated unexpectedly due to a broken data packet ");
+                    throw new InvalidDataException("Processing terminated unexpectedly due to a broken data packet ");
                 }
             }
             log.info("Response code " + responseCode);
@@ -152,7 +152,7 @@ public class ReceiverData implements Runnable {
                 errorN0++;
                 log.error("Data are invalid in received package from " + socket.getRemoteSocketAddress());
                 log.error(" Details: the Value of HeaderLength is 0 or " + "the length of SFRD is 0 ");
-                throw new IncorrectDataException("Processing terminated unexpectedly due to a broken data packet " + ArrayUtils.arrayPrintToScreen(resTest) + "\n");
+                throw new InvalidDataException("Processing terminated unexpectedly due to a broken data packet " + ArrayUtils.arrayPrintToScreen(resTest) + "\n");
             }
             dsize = resTest[3] + fdl + 2;
 
@@ -173,7 +173,7 @@ public class ReceiverData implements Runnable {
         if (income == null || income.length < 3 || income.length < 7) {
             errorN0++;
             log.error("Null data received, or income data is empty" + socket.getRemoteSocketAddress());
-            throw new IncorrectDataException("Processing can not be proceed on corrupt data " + ArrayUtils.arrayPrintToScreen(income) + "\n");
+            throw new InvalidDataException("Processing can not be proceed on corrupt data " + ArrayUtils.arrayPrintToScreen(income) + "\n");
 
         }
     }
