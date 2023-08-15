@@ -7,6 +7,6 @@ import tnt.egts.parser.errors.NumberArrayDataException;
 import java.net.Socket;
 
 public interface ResponseData {
-    void sendResponse(Socket socket, IncomeDataStorage store , OutcomeIdent preparingOutcomeAuthData,
+    void sendResponse(Socket socket, IncomeDataStorage store , OutcomeIdent preparingOutcomeData,
                       byte code) throws NumberArrayDataException;
 }

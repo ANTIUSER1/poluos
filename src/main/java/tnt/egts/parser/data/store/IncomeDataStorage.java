@@ -43,6 +43,11 @@ public class IncomeDataStorage {
     /**
      * PT
      */
-    private  byte packetType;
+    private  byte packageType;
 
+    public PackageType getType(){
+if (packageType==0) return PackageType.PT_RESPONSE;
+if (packageType==1) return PackageType.AUTH_SERVICE;
+  return PackageType.TELEDATA_SERVICE;
+    }
 }

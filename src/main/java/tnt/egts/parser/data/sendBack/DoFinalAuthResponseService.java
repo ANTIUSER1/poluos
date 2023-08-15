@@ -14,7 +14,7 @@ import tnt.egts.parser.response.ptResponse.PacketTypeResponse;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service (StringFixedBeanNames.AUTH_FINAL_RESPONSE_SEND_BEAN)
+@Service (StringFixedBeanNames.AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
 @Slf4j
 public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
 

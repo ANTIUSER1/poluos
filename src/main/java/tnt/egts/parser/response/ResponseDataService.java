@@ -5,15 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.OutcomeIdent;
-import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
+import tnt.egts.parser.data.store.PackageType;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Socket;
 
 @Service(StringFixedBeanNames.RESPONSE_DATA_BEAN)
@@ -26,33 +24,47 @@ public class ResponseDataService  implements ResponseData{
 
     @Autowired
     CRC crc;
+
+
 //
 //    @Autowired
 //    @Qualifier("prepareResponse")
 //    private OutcomeIdent preparingOutcomeAuthData;
 
 
+//    @Autowired
+//    @Qualifier (StringFixedBeanNames.AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
+//    OutcomeIdentFinalCreate outcomeIdentCreate;
+
     @Autowired
-    @Qualifier (StringFixedBeanNames.AUTH_FINAL_RESPONSE_SEND_BEAN)
-    OutcomeIdentFinalCreate outcomeIdentCreate;
-
-
+    @Qualifier(StringFixedBeanNames.AUTH_RESPONSE_SERVICE_BEAN)
+private ResponseData authResponse;
     public void sendResponse( Socket socket, IncomeDataStorage store,
-                              OutcomeIdent preparingOutcomeAuthData, byte code) throws NumberArrayDataException {
-        preparingOutcomeAuthData =
-                outcomeIdentCreate.createAuthResponse(store, code);
-        preparingOutcomeAuthData.prepareAuthData();
-        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(preparingOutcomeAuthData.getData()) + " of length " + preparingOutcomeAuthData.getData().length);
-        OutputStream output = null;
-        try {
-            output = socket.getOutputStream();
-            output.write(preparingOutcomeAuthData.getData());
-            log.info("Sending back response to BNSO finish. ");
-            // testOutSendData(resp.getData());
-        } catch (IOException e) {
-            log.error("Error while response to  attempt");
-            e.printStackTrace();
-        }
+                              OutcomeIdent preparingOutcomeData, byte code) throws NumberArrayDataException {
+
+        System.out.println("|||||| \n "+store.getType().name()+" \n ||||| ");
+        System.out.println("|||||| \n "+store.getType().name()+" \n ||||| ");
+        System.out.println("|||||| \n "+store.getType().name()+" \n ||||| ");
+        System.out.println("|||||| \n "+store.getType().name()+" \n ||||| ");
+       if(store.getType().equals(PackageType.AUTH_SERVICE)){
+authResponse.sendResponse(socket,store,preparingOutcomeData,code);
+           // testOutSendData(resp.getData());
+//           preparingOutcomeData =
+//                   outcomeIdentCreate.createAuthResponse(store, code);
+//           preparingOutcomeData.prepareAuthData();
+//           log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(preparingOutcomeData.getData()) + " of length " + preparingOutcomeData.getData().length);
+//           OutputStream output = null;
+//           try {
+//               output = socket.getOutputStream();
+//               output.write(preparingOutcomeData.getData());
+//               log.info("Sending back response to BNSO finish. ");
+//               // testOutSendData(resp.getData());
+//           } catch (IOException e) {
+//               log.error("Error while response to  attempt");
+//               e.printStackTrace();
+//           }
+       testOutSendData(preparingOutcomeData.getData());
+       }
     }
 
     private void testOutSendData(byte[] data) {

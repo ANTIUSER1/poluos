@@ -26,7 +26,7 @@ public class IncomeDataStorageService implements Storage {
                 .crc8(income[hcsPos])
                 .packagSFRD(ArrayUtils.getSubArrayToEnd(income,hcsPos+1))
                 .crc16(income[income.length-1])
-                .packetType(income[9])
+                .packageType(income[9])
                 .packetIdentifier(createPID(income))
                 .frameDataLength(createFLD(income))
                 .build();
