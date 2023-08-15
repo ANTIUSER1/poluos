@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
-import tnt.egts.parser.cmmon.sendBack.PrepareedResponseData;
+import tnt.egts.parser.data.sendBack.PrepareedResponseData;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
@@ -91,9 +91,7 @@ public class ReceiverData implements Runnable {
                 }
             }
             log.info("Response code " + responseCode);
-
-             dataTransform(income, (byte) responseCode);
-//          sendResponse( );
+             dataTransform(income, (byte) responseCode); 
             responseData.sendResponse(socket,store ,preparingOutcomeAuthData,
                     (byte) responseCode);
             msgNO++;
@@ -105,6 +103,11 @@ public class ReceiverData implements Runnable {
         }
     }
 
+    /**
+     * use for tests different bytes
+     * @param income
+     * @return
+     */
     private byte[] fakeByte(byte[] income) {
         income[2] = 4;
         income[ByteFixPositions.PACKAGE_TYPE_INDEX] = 1;
@@ -115,100 +118,24 @@ public class ReceiverData implements Runnable {
         return income;
     }
 
-    private void sendResponse() {
-        PrepareedResponseData resp = (PrepareedResponseData) preparingOutcomeAuthData;
-        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData()) + " of length " + resp.getData().length);
-        OutputStream output = null;
-        try {
-            output = socket.getOutputStream();
-            output.write(resp.getData());
 
-            log.info("Sending back response to BNSO finish. ");
-           // testOutSendData(resp.getData());
-        } catch (IOException e) {
-            log.error("Error while response to  attempt");
-            e.printStackTrace();
-        }
-    }
-
-    private void testOutSendData(byte[] data) {
-        System.out.println();
-        System.out.println("************** TEST  OUTPUT  " +
-                           "*********************");
-        System.out.println();
-        System.out.println("OUTPUT:  " + ArrayUtils.arrayPrintToScreen(data) +
-                           " LENGTH: " + data.length);
-        System.out.println();
-        System.out.println();
-        byte bt = data[3];
-        System.out.println("  HL: " + bt);
-//        byte[] inf=ArrayUtils.getFixedLengthSubArray(data,0, bt);
-//        System.out.println( "HEAD:  "+ArrayUtils.arrayPrintToScreen(inf));
-
-        bt = data[9];
-        System.out.println("PT:   " + bt);
-
-        byte[] fdl = new byte[2];
-        fdl[0] = data[6];
-        fdl[1] = data[5];
-        short fdlDat;
-        try {
-            fdlDat = ArrayUtils.byteArrayToShort(fdl);
-        } catch (NumberArrayDataException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("FDL:  " + ArrayUtils.arrayPrintToScreen(fdl) + "  AS" +
-                           "  NUM:  " + fdlDat + "  EXPETED: " + (data.length - data[3] - 2));
-
-        byte[] pid = new byte[2];
-        pid[0] = data[8];
-        pid[1] = data[7];
-        short pidDat;
-        try {
-            pidDat = ArrayUtils.byteArrayToShort(pid);
-        } catch (NumberArrayDataException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("PID:  " + ArrayUtils.arrayPrintToScreen(pid) + "  AS" +
-                           "  NUM:  " + pidDat);
-
-//        bt=data[  data[3]-1];
-//        System.out.println("HCS:   "+bt);
-
-        byte[] sfrd = ArrayUtils.getFixedLengthSubArray(data, data[3], fdlDat);
-        System.out.println("  sfrd: " + ArrayUtils.arrayPrintToScreen(sfrd) +
-                           "  LEN: " + sfrd.length);
-
-        long crc16 = crc.calculate16(sfrd);
-        short crcShort = (short) crc16;
-        byte[] crcArr = ArrayUtils.shortToByteArray(crcShort);
-        System.out.println("C CRC16:: " + crc16 + "  HEX  " + Long.toHexString(crc16));
-        System.out.println("CRC-short:  " + crcShort + "  as arr:  " + ArrayUtils.arrayPrintToScreen(crcArr) + "   HEX:  " + Integer.toHexString(crcShort));
-//testCRC16();
-        System.out.println();
-        System.out.println("****************TEST");
-        System.out.println();
-    }
-
-    private void testCRC16() {
-        byte[] tb = {2, 5};
-        System.out.println("***========CRC-16 test =============");
-        long crc16 = crc.calculate16(tb);
-        System.out.println(" crc-16  16:  " + crc16 + " HEX:  " + Integer.toHexString((int) crc16));
-        System.out.println("***========CRC-16 test =============");
-
+    public void setSocket(Socket socket) {
+        this.socket = socket;
     }
 
     private void dataTransform(byte[] income, byte code) throws NumberArrayDataException {
         log.info("Storage  income Data start");
-          store = storage.create(income);
+        store = storage.create(income);
         preparingOutcomeAuthData = outcomeIdentCreate.createAuthResponse(store, code);
         log.info("Storage  income Data finish");
     }
 
-
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    private byte[] readFromStream(int length) throws IOException {
+        byte[] result = new byte[length];
+        InputStream inTest = socket.getInputStream();
+        inTest.read(result);
+        throwReceivedInfoGlobalError(result);
+        return result;
     }
 
     private byte[] receive() throws IOException, NumberArrayDataException {
@@ -253,13 +180,6 @@ public class ReceiverData implements Runnable {
     }
 
 
-    private byte[] readFromStream(int length) throws IOException {
-        byte[] result = new byte[length];
-        InputStream inTest = socket.getInputStream();
-        inTest.read(result);
-throwReceivedInfoGlobalError(result);
-        return result;
-    }
 
     private void throwReceivedInfoGlobalError(byte[] income){
 

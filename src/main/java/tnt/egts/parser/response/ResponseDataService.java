@@ -47,9 +47,6 @@ public class ResponseDataService  implements ResponseData{
         try {
             output = socket.getOutputStream();
             output.write(preparingOutcomeAuthData.getData());
-System.out.println("UUUUUUUu");
-System.out.println("U  preparingOutcomeAuthData.getData() "+ ArrayUtils.arrayPrintToScreen(preparingOutcomeAuthData.getData()));
-System.out.println("UUUUUUUu");
             log.info("Sending back response to BNSO finish. ");
             // testOutSendData(resp.getData());
         } catch (IOException e) {

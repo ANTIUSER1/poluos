@@ -1,4 +1,4 @@
-package tnt.egts.parser.cmmon.sendBack;
+package tnt.egts.parser.data.sendBack;
 
 import lombok.Builder;
 import lombok.Data;
@@ -32,11 +32,7 @@ public class PrepareedResponseData implements OutcomeIdent {
          properPackageHeader=ArrayUtils.getFixedLengthSubArray(responseHead,0
                  , responseHead.length-1);
         data= ArrayUtils.joinArrays(responseHead, sfrd);
-System.out.println("3333333333333333333333333");
-System.out.println("3333333333333333333333333");
 System.out.println("3  " +ArrayUtils.arrayPrintToScreen(data)+" \n");
-System.out.println("3333333333333333333333333");
-System.out.println("3333333333333333333333333");
         log.info("Answer Data: \n "+ArrayUtils.arrayPrintToScreen(data)+" \n");
         log.info("Create Answer data finish");
     }
