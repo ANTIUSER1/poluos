@@ -28,4 +28,9 @@ public class SeparateRecordOptions   implements OutcomeIdent {
     public void prepareAuthData() {
 
     }
+
+    @Override
+    public byte[] getData() {
+        return new byte[0];
+    }
 }

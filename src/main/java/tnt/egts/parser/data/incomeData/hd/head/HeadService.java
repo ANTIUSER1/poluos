@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.IncomeIdent;
 import tnt.egts.parser.cmmon.IncomeIdentCreate;
-import tnt.egts.parser.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ByteFixPositions;
 

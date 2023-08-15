@@ -4,7 +4,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.IncomeIdentCreate;
-import tnt.egts.parser.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.util.ArrayUtils;
 
 @Service

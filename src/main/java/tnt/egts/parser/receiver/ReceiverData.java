@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
-import tnt.egts.parser.cmmon.sendBack.DoPrepareResponse;
-import tnt.egts.parser.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.cmmon.sendBack.PrepareedResponseData;
+import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.data.analysis.ByteAnalizerService;
 import tnt.egts.parser.errors.IncorrectDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
+import tnt.egts.parser.response.ResponseData;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.StringFixedBeanNames;
@@ -32,16 +33,20 @@ import java.net.Socket;
 @Slf4j
 public class ReceiverData implements Runnable {
 
-    @Autowired
-    @Qualifier("prepareResponse")
+//    @Autowired
+//    @Qualifier("prepareResponse")
     private OutcomeIdent preparingOutcomeAuthData;
+
     @Autowired
-    @Qualifier (StringFixedBeanNames.AUTH_RESPONSE_SEND_BEAN)
+    @Qualifier (StringFixedBeanNames.AUTH_FINAL_RESPONSE_SEND_BEAN)
     OutcomeIdentFinalCreate outcomeIdentCreate;
 
     @Autowired
     CRC crc;
 
+    @Autowired
+    @Qualifier(StringFixedBeanNames.RESPONSE_DATA_BEAN)
+    private ResponseData responseData;
     /**
      * flag to activate/deactivate validation incoming data
      */
@@ -57,6 +62,7 @@ public class ReceiverData implements Runnable {
     @Autowired
     private ByteAnalizerService byteAnalizer;
 
+    private IncomeDataStorage store;
 
     private int responseCode;
 
@@ -84,14 +90,12 @@ public class ReceiverData implements Runnable {
                     );
                 }
             }
-
             log.info("Response code " + responseCode);
 
-            //receiveData ; //
-            ///*******************
-            dataTransform(income, (byte) responseCode);
-            sendResponse();
-//
+             dataTransform(income, (byte) responseCode);
+//          sendResponse( );
+            responseData.sendResponse(socket,store ,preparingOutcomeAuthData,
+                    (byte) responseCode);
             msgNO++;
             log.info("work on request finish. Correct steps: " + msgNO
                      + "; errors: " + errorN0);
@@ -112,7 +116,7 @@ public class ReceiverData implements Runnable {
     }
 
     private void sendResponse() {
-        DoPrepareResponse resp = (DoPrepareResponse) preparingOutcomeAuthData;
+        PrepareedResponseData resp = (PrepareedResponseData) preparingOutcomeAuthData;
         log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData()) + " of length " + resp.getData().length);
         OutputStream output = null;
         try {
@@ -197,8 +201,7 @@ public class ReceiverData implements Runnable {
 
     private void dataTransform(byte[] income, byte code) throws NumberArrayDataException {
         log.info("Storage  income Data start");
-        IncomeDataStorage store = storage.create(income);
-
+          store = storage.create(income);
         preparingOutcomeAuthData = outcomeIdentCreate.createAuthResponse(store, code);
         log.info("Storage  income Data finish");
     }

@@ -1,4 +1,4 @@
-package tnt.egts.parser.cmmon.store;
+package tnt.egts.parser.data.store;
 
 import lombok.Getter;
 import lombok.ToString;

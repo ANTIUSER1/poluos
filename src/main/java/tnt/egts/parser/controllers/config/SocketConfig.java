@@ -38,6 +38,4 @@ public class SocketConfig {
         return validatePacket;
     }
 
-    @Bean
-    public  byte code(){return 0;}
 }

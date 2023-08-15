@@ -10,4 +10,5 @@ public interface OutcomeIdent {
      */
     void prepareAuthData();
 
+    byte[] getData();
 }

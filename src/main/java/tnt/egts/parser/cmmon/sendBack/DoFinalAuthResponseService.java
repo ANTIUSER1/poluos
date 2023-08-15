@@ -7,16 +7,16 @@ import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentCreate;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
-import tnt.egts.parser.cmmon.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.response.ptResponse.PacketTypeResponse;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service (StringFixedBeanNames.AUTH_RESPONSE_SEND_BEAN)
+@Service (StringFixedBeanNames.AUTH_FINAL_RESPONSE_SEND_BEAN)
 @Slf4j
-public class DoAuthResponseService implements OutcomeIdentFinalCreate {
+public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
 
     @Autowired
     @Qualifier ("pt")
@@ -31,7 +31,7 @@ public class DoAuthResponseService implements OutcomeIdentFinalCreate {
         PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
 
         System.out.println("    PP PT:  "+pt.getResponsePacketID());
-        DoPrepareResponse out = DoPrepareResponse.builder()
+        PrepareedResponseData out = PrepareedResponseData.builder()
                 .sfrd(pt.getData()).code(code)
                 .responseHead(storage.getPackageHeader())
                 .build();

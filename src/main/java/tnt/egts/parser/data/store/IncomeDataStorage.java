@@ -1,9 +1,8 @@
-package tnt.egts.parser.cmmon.store;
+package tnt.egts.parser.data.store;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import tnt.egts.parser.util.ArrayUtils;
 
 
 @Builder

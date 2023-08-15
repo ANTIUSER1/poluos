@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
-import tnt.egts.parser.cmmon.sendBack.DoPrepareResponse;
+import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
@@ -16,29 +16,40 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
-@Service
+@Service(StringFixedBeanNames.RESPONSE_DATA_BEAN)
 @Slf4j
 public class ResponseDataService  implements ResponseData{
 
-    @Autowired
-    @Qualifier (StringFixedBeanNames.AUTH_RESPONSE_SEND_BEAN)
-    OutcomeIdentFinalCreate outcomeIdentCreate;
+//    @Autowired
+//    @Qualifier (StringFixedBeanNames.AUTH_RESPONSE_SEND_BEAN)
+//    OutcomeIdentFinalCreate outcomeIdentCreate;
 
     @Autowired
     CRC crc;
+//
+//    @Autowired
+//    @Qualifier("prepareResponse")
+//    private OutcomeIdent preparingOutcomeAuthData;
 
-    private Socket socket;
 
-    private OutcomeIdent outcomeAuthData;
+    @Autowired
+    @Qualifier (StringFixedBeanNames.AUTH_FINAL_RESPONSE_SEND_BEAN)
+    OutcomeIdentFinalCreate outcomeIdentCreate;
 
-    public void sendResponse() {
-        DoPrepareResponse resp = (DoPrepareResponse) outcomeAuthData;
-        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(resp.getData()) + " of length " + resp.getData().length);
+
+    public void sendResponse( Socket socket, IncomeDataStorage store,
+                              OutcomeIdent preparingOutcomeAuthData, byte code) throws NumberArrayDataException {
+        preparingOutcomeAuthData =
+                outcomeIdentCreate.createAuthResponse(store, code);
+        preparingOutcomeAuthData.prepareAuthData();
+        log.info("Sending back response to BNSO start. \n Data: " + ArrayUtils.arrayPrintToScreen(preparingOutcomeAuthData.getData()) + " of length " + preparingOutcomeAuthData.getData().length);
         OutputStream output = null;
         try {
             output = socket.getOutputStream();
-            output.write(resp.getData());
-
+            output.write(preparingOutcomeAuthData.getData());
+System.out.println("UUUUUUUu");
+System.out.println("U  preparingOutcomeAuthData.getData() "+ ArrayUtils.arrayPrintToScreen(preparingOutcomeAuthData.getData()));
+System.out.println("UUUUUUUu");
             log.info("Sending back response to BNSO finish. ");
             // testOutSendData(resp.getData());
         } catch (IOException e) {
@@ -58,8 +69,8 @@ public class ResponseDataService  implements ResponseData{
         System.out.println();
         byte bt = data[3];
         System.out.println("  HL: " + bt);
-//        byte[] inf=ArrayUtils.getFixedLengthSubArray(data,0, bt);
-//        System.out.println( "HEAD:  "+ArrayUtils.arrayPrintToScreen(inf));
+        byte[] inf=ArrayUtils.getFixedLengthSubArray(data,0, bt);
+        System.out.println( "HEAD:  "+ArrayUtils.arrayPrintToScreen(inf));
 
         bt = data[9];
         System.out.println("PT:   " + bt);
