@@ -11,8 +11,9 @@ import tnt.egts.parser.data.validation.PackageValidate;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.ProcessingResultCodeConstants;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service
+@Service(StringFixedBeanNames.BYTE_ANALIZER_FOR_EGTS_ERRORS_BEAN)
 @Slf4j
 public class ByteAnalizerService implements ByteAnalizer {
 

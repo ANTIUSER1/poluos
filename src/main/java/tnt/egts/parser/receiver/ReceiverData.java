@@ -8,13 +8,14 @@ import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.cmmon.OutcomeIdentFinalCreate;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
-import tnt.egts.parser.data.analysis.ByteAnalizerService;
+import tnt.egts.parser.data.analysis.ByteAnalizer;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.InvalidDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.response.ResponseData;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
+import tnt.egts.parser.util.ErrorCodes;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.io.BufferedInputStream;
@@ -59,7 +60,12 @@ public class ReceiverData implements Runnable {
     private Storage storage;
 
     @Autowired
-    private ByteAnalizerService byteAnalizer;
+    @Qualifier (StringFixedBeanNames.BYTE_ANALIZER_FOR_EGTS_ERRORS_BEAN)
+    private ByteAnalizer byteAnalizer;
+
+    @Autowired
+    @Qualifier (StringFixedBeanNames.INCOMING_ARRAY_ANALIZER_BEAN)
+    private ByteAnalizer incomeArrayAnalizer;
 
     private IncomeDataStorage store;
 
@@ -104,6 +110,7 @@ public class ReceiverData implements Runnable {
      * @return
      */
     private byte[] fakeByte(byte[] income) {
+        income[3]=0;
         income[2] = 4;
         income[ByteFixPositions.PACKAGE_TYPE_INDEX] = 1;
         byte[] head = ArrayUtils.getFixedLengthSubArray(income, 0, 10);
@@ -139,30 +146,28 @@ public class ReceiverData implements Runnable {
         BufferedInputStream in = new BufferedInputStream(socket.getInputStream());
 
         resTest = readFromStream(16);
-        if (resTest.length < 4) {
-            log.error("Invalid length  :  " + resTest.length);
-            return new byte[0];
-        } else if (resTest.length < 16) {
+        //fakeByte(resTest);
+        if (incomeArrayAnalizer.analize(resTest) == ErrorCodes.INVALID_ARRAY_LENGTH) {
+            errorN0++;
             log.error("Invalid length :  " + resTest.length);
             return new byte[0];
-        } else {
-            byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5, 2);
-            short fdl = ArrayUtils.byteArrayInverseToShort(shortArray);
-            if (resTest[3] <= 0 || fdl <= 0) {
-                errorN0++;
-                log.error("Data are invalid in received package from " + socket.getRemoteSocketAddress());
-                log.error(" Details: the Value of HeaderLength is 0 or " + "the length of SFRD is 0 ");
-                throw new InvalidDataException("Processing terminated unexpectedly due to a broken data packet " + ArrayUtils.arrayPrintToScreen(resTest) + "\n");
-            }
-            dsize = resTest[3] + fdl + 2;
+        } else if (incomeArrayAnalizer.analize(resTest) == ErrorCodes.INVALID_HEADER_DATA_VALUE) {
+            errorN0++;
+            log.error("Data are invalid in received package from " + socket.getRemoteSocketAddress());
+            log.error(" Details: the Value of HeaderLength is 0 or " + "the length of SFRD is 0 ");
+            throw new InvalidDataException("Processing terminated unexpectedly due to a broken data packet " + ArrayUtils.arrayPrintToScreen(resTest) + "\n");
+        }else{
+        byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5, 2);
+        short    fdl = ArrayUtils.byteArrayInverseToShort(shortArray);
+        dsize = resTest[3] + fdl + 2;
 
-            result = new byte[dsize - resTest.length];
-            in.read(result);
-            result = ArrayUtils.joinArrays(resTest, result);
-            if (result.length < dsize) {
-                log.error("Invalid length :  " + result.length);
-                return new byte[0];
-            }
+        result = new byte[dsize - resTest.length];
+        in.read(result);
+        result = ArrayUtils.joinArrays(resTest, result);
+        if (result.length < dsize) {
+            log.error("Invalid length :  " + result.length);
+            return new byte[0];
+        }
         }
         return result;
     }
