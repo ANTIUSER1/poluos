@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.crc.generator.*;
+import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.ByteFixPositions;
 
 @Service("makeCRC")
 @Slf4j
@@ -24,6 +26,14 @@ public class CRCService implements CRC {
         calculator8.reset();
         calculator8.update(data);
         return calculator8.value();
+    }
+
+    @Override
+    public long calculateHead(byte[] data) {
+        int headLengthIndexIndex = ByteFixPositions.HEAD_LENGTH_INDEX;
+        byte[] onlyHead = ArrayUtils.getSubArrayFromTo(data, 0,
+                data[ByteFixPositions.HEAD_LENGTH_INDEX] - 1);
+      return calculate8(onlyHead);
     }
 
     @Override

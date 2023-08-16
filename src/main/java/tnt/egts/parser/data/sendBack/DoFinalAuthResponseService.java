@@ -12,6 +12,7 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.response.ptResponse.PacketTypeResponse;
 import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
 @Service (StringFixedBeanNames.AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
@@ -27,7 +28,11 @@ public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
 
     @Override
     public OutcomeIdent createAuthResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException {
-        log.info("Response data generate start");
+        int headLengthIndexIndex = ByteFixPositions.HEAD_LENGTH_INDEX;
+
+        int headLen=storage.getPackageHeader().length;
+        int headLen1=storage.getPackageHeader() [headLengthIndexIndex];
+
         PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
 
         System.out.println("    PP PT:  "+pt.getResponsePacketID());
@@ -36,7 +41,7 @@ public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
                 .responseHead(storage.getPackageHeader())
                 .build();
         out.prepareAuthData();
-System.out.println("   from out T PT:  "+out );
+System.out.println(" ******  from out T PT:  "+out );
 //
 //System.out.println();
 //System.out.println();
@@ -45,10 +50,11 @@ System.out.println("   from out T PT:  "+out );
         byte[] mainHead=
                 ArrayUtils.getFixedLengthSubArray(out.getProperPackageHeader(),
                         0,out.getProperPackageHeader().length-1);
-       long crc8 =   crc.calculate8(mainHead);
+       long crc8 =   crc.calculateHead(out.getResponseHead());
         short crc16 = (short) crc.calculate16(out.getSfrd());
 
         System.out.println( " ********************   " );
+        System.out.println( " ******** code   " +code);
         System.out.println( " CRC8::   "+(byte) crc8);
         System.out.println( " CRC16::   "+crc16);
         System.out.println( " out.getSfrd()::   "+ArrayUtils.arrayPrintToScreen(out.getSfrd()));
@@ -65,7 +71,7 @@ System.out.println("   from out T PT:  "+out );
         crc16Array = ArrayUtils.inverse(crc16Array);
 
         byte[] data = out.getData();
-       data [9] = (byte) crc8;
+       data [headLen-1] = (byte) crc8;
         data = ArrayUtils.joinArrays(data, crc16Array);
         out.setData(data);
         log.info("Response data generate finish: "+out);

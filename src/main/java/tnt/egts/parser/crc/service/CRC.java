@@ -12,11 +12,14 @@ public interface CRC {
      */
     long calculate8(byte[] data);
 
+    long calculateHead(byte[] data);
+
     /**
      * returns crc16 for given byte array
      * @param data
      * @return
      */
     long calculate16(byte[] data);
+
 
 }

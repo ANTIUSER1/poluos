@@ -14,11 +14,9 @@ public class CRCValidateService implements CRCValidate {
 
     @Override
     public boolean CRC8Correct(byte[] income) {
-        int crcIndex = ByteFixPositions.HEAD_LENGTH_INDEX;
-        byte[] onlyHead = ArrayUtils.getSubArrayFromTo(income, 0,
-                income[ByteFixPositions.HEAD_LENGTH_INDEX] - 1);
-        long crc8 = crc.calculate8(onlyHead);
-        return (byte) (crc8) == income[income[crcIndex] - 1];
+        long crc8=crc.calculateHead(income);
+        int headLengthIndexIndex = ByteFixPositions.HEAD_LENGTH_INDEX;
+        return (byte) (crc8) == income[income[headLengthIndexIndex] - 1];
     }
 
     @Override

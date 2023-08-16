@@ -10,6 +10,7 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class AuthResponseService  implements ResponseData{
     @Override
     public void sendResponse(Socket socket, IncomeDataStorage store,
                              OutcomeIdent preparingOutcomeData, byte code) throws NumberArrayDataException {
+
         preparingOutcomeData =
                 outcomeIdentCreate.createAuthResponse(store, code);
 //        preparingOutcomeData.prepareAuthData();
@@ -36,6 +38,7 @@ public class AuthResponseService  implements ResponseData{
 
         System.out.println("MMMMMMMMMMMMMMMMMMMM");
         System.out.println("MMMMMMMMMMMMMMMMMMMM");
+        System.out.println("MMMMMM   "+code);
         System.out.println("MMMMMM   ");
         System.out.println("MMMMMM   "+ArrayUtils.arrayPrintToScreen(preparingOutcomeData.getData()));
         System.out.println("MMMMMM   ");
