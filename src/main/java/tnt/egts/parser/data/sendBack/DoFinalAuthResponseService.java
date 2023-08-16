@@ -37,25 +37,26 @@ public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
                 .build();
         out.prepareAuthData();
 System.out.println("   from out T PT:  "+out );
-System.out.println();
-System.out.println();
-System.out.println();
-        short crc8 = (short) crc.calculate8(out.getProperPackageHeader());
+//
+//System.out.println();
+//System.out.println();
+//System.out.println();
+
+        byte[] mainHead=
+                ArrayUtils.getFixedLengthSubArray(out.getProperPackageHeader(),
+                        0,out.getProperPackageHeader().length-1);
+       long crc8 =   crc.calculate8(mainHead);
         short crc16 = (short) crc.calculate16(out.getSfrd());
 
         System.out.println( " ********************   " );
-        System.out.println( " ********************   " );
-        System.out.println( " ********************   " );
+        System.out.println( " CRC8::   "+(byte) crc8);
         System.out.println( " CRC16::   "+crc16);
         System.out.println( " out.getSfrd()::   "+ArrayUtils.arrayPrintToScreen(out.getSfrd()));
         System.out.println( " out.getSfrd() lrn::   "+out.getSfrd().length);
-        System.out.println( " CRC16::   "+crc16);
         System.out.println( " CRC16 AS Arr::   "+ArrayUtils.arrayPrintToScreen(
                 ArrayUtils.shortToByteArray(crc16)
         ));
         System.out.println( " CRC16::   "+crc16);
-        System.out.println( " ********************   " );
-        System.out.println( " ********************   " );
         System.out.println( " ********************   " );
         System.out.println( " ********************   " );
 
@@ -64,20 +65,14 @@ System.out.println();
         crc16Array = ArrayUtils.inverse(crc16Array);
 
         byte[] data = out.getData();
-       data [10] = (byte) crc8;
+       data [9] = (byte) crc8;
         data = ArrayUtils.joinArrays(data, crc16Array);
         out.setData(data);
-//        System.out.println();
-//        System.out.println();
-//        System.out.println("DATA: "+data[10] +" HEX: " +Long.toHexString(crc8));
-//        System.out.println(ArrayUtils.arrayPrintToScreen(data));
-//        System.out.println("CRC8: "+crc8);
-//        System.out.println();
-//        System.out.println();
-
         log.info("Response data generate finish: "+out);
 
-
+System.out.println("-------------");
+System.out.println("---------  "+out);
+System.out.println("-------------");
         return out;
     }
 //

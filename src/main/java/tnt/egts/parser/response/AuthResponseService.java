@@ -31,7 +31,20 @@ public class AuthResponseService  implements ResponseData{
                              OutcomeIdent preparingOutcomeData, byte code) throws NumberArrayDataException {
         preparingOutcomeData =
                 outcomeIdentCreate.createAuthResponse(store, code);
-        preparingOutcomeData.prepareAuthData();
+//        preparingOutcomeData.prepareAuthData();
+
+
+        System.out.println("MMMMMMMMMMMMMMMMMMMM");
+        System.out.println("MMMMMMMMMMMMMMMMMMMM");
+        System.out.println("MMMMMM   ");
+        System.out.println("MMMMMM   "+ArrayUtils.arrayPrintToScreen(preparingOutcomeData.getData()));
+        System.out.println("MMMMMM   ");
+        System.out.println("MMMMMM   ");
+        System.out.println("MMMMMMMMMMMMMMMMMMMM");
+        System.out.println("MMMMMMMMMMMMMMMMMMMM");
+        System.out.println("MMMMMMMMMMMMMMMMMMMM");
+
+
         log.info("Sending back AUTH-response to BNSO start. \n  " + ArrayUtils.arrayPrintToScreen(preparingOutcomeData.getData()));
         OutputStream output = null;
         try {

@@ -45,7 +45,7 @@ public class ResponseDataService implements ResponseData {
             throw  new InvalidDataTypeException("Incoming request has unknown" +
                                                 " data type. ");
         }
-        testOutSendData(preparingOutcomeData.getData());
+        //testOutSendData(preparingOutcomeData.getData());
     }
 
     private void testOutSendData(byte[] data) {
