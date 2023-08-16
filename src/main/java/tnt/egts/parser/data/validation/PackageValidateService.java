@@ -27,7 +27,7 @@ public class PackageValidateService implements PackageValidate {
     public boolean validPRF(byte[] income) {
         String bits =
                 ArrayUtils.byteToBinary(income[ByteFixPositions.PACKAGE_PRF_INDEX]);
-        bits = bits.substring(bits.length() - ByteFixValues.PRF_LENGTH);
+        bits = bits.substring(0, ByteFixValues.PRF_LENGTH);
         return bits.equals(ByteFixValues.PACKAGE_PRF_VALUE);
     }
 
