@@ -21,6 +21,8 @@ public class IncomeDataStorage {
      */
     private byte[] packagSFRD;
 
+    private short recNum;
+
     /**
      * Head Checker Sum (HCM)
      */

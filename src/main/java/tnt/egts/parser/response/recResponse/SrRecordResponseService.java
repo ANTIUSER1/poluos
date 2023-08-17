@@ -14,7 +14,8 @@ public class SrRecordResponseService implements OutcomeIdentCreate {
     public OutcomeIdent create(IncomeDataStorage storage ) {
         log.info("Storage SrRecord start");
         SrRecordResponse out= SrRecordResponse.builder()
-                .confirmRN((short) 10)
+                .confirmRN(storage.getRecNum())
+
                 .build();
         out.prepareAuthData();
         log.info("Storage SrRecord finish: "+out);

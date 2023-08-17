@@ -18,7 +18,7 @@ public class SeparateRecord implements OutcomeIdent {
     private short recordLength;
 
     /**
-     * RN
+     * CRN
      */
     private short recordNumber;
 

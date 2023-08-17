@@ -22,9 +22,7 @@ public class CRCValidateService implements CRCValidate {
     @Override
     public boolean CRC16Correct(byte[] income) {
 
-        byte[] dataOnly = ArrayUtils.getSubArrayFromTo(income,
-                income[ByteFixPositions.HEAD_LENGTH_INDEX], income.length - 2);
-        long crcFromData = crc.calculate16(dataOnly);
+       long crcFromData = crc.calculateSfrd(income);
         byte[] crcFromDataShort =
                 ArrayUtils.shortToByteArray((short) crcFromData);
         crcFromDataShort = ArrayUtils.inverse(crcFromDataShort);

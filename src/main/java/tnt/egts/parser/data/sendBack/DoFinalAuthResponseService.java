@@ -32,42 +32,52 @@ public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
 
         int headLen=storage.getPackageHeader().length;
         int headLen1=storage.getPackageHeader() [headLengthIndexIndex];
+          PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
 
-        PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
-
-        System.out.println("    PP PT:  "+pt.getResponsePacketID());
+       // System.out.println("    PP PT:  "+pt.getResponsePacketID());
         PrepareedResponseData out = PrepareedResponseData.builder()
                 .sfrd(pt.getData()).code(code)
                 .responseHead(storage.getPackageHeader())
                 .build();
         out.prepareAuthData();
-System.out.println(" ******  from out T PT:  "+out );
-//
-//System.out.println();
-//System.out.println();
-//System.out.println();
+//System.out.println(" ******  from out T PT:  "+out );
+
 
         byte[] mainHead=
                 ArrayUtils.getFixedLengthSubArray(out.getProperPackageHeader(),
                         0,out.getProperPackageHeader().length-1);
        long crc8 =   crc.calculateHead(out.getResponseHead());
-        short crc16 = (short) crc.calculate16(out.getSfrd());
+        long crc16 =  crc.calculateSfrd(out.getData());
+        long crc16SFRD =  crc.calculate16(out.getSfrd());
 
+        byte[] t16= {0x3,0x2,0x4};
+        long testCRC=crc.calculate16(t16) ;
+
+
+
+        System.out.println( " *********** testCRC  "+testCRC +" "+Long.toHexString(testCRC) );
+        System.out.println( " ********************  t16  "
+        +ArrayUtils.arrayPrintToScreen(t16));
         System.out.println( " ********************   " );
         System.out.println( " ******** code   " +code);
         System.out.println( " CRC8::   "+(byte) crc8);
-        System.out.println( " CRC16::   "+crc16);
+        System.out.println( " CRC16::   "+crc16+ " HEX: "+Long.toHexString(crc16));
+        System.out.println( " CRC16SFRD::   "+crc16SFRD+ " HEX: "+Long.toHexString(crc16SFRD));
         System.out.println( " out.getSfrd()::   "+ArrayUtils.arrayPrintToScreen(out.getSfrd()));
+        System.out.println( " out.getData()::   "+ArrayUtils.arrayPrintToScreen(out.getData()));
         System.out.println( " out.getSfrd() lrn::   "+out.getSfrd().length);
+        System.out.println( " out.getData() lrn::   "+out.getData().length);
         System.out.println( " CRC16 AS Arr::   "+ArrayUtils.arrayPrintToScreen(
-                ArrayUtils.shortToByteArray(crc16)
+                ArrayUtils.shortToByteArray((short) crc16)
         ));
-        System.out.println( " CRC16::   "+crc16);
+        System.out.println( " CRC16SFRD AS Arr::   "+ArrayUtils.arrayPrintToScreen(
+                ArrayUtils.shortToByteArray((short) crc16SFRD)
+        ));
+
         System.out.println( " ********************   " );
         System.out.println( " ********************   " );
 
-        out.getResponseHead()[9] = 0;//tmp
-        byte[] crc16Array = ArrayUtils.shortToByteArray(crc16);
+        byte[] crc16Array = ArrayUtils.shortToByteArray((short) crc16SFRD);
         crc16Array = ArrayUtils.inverse(crc16Array);
 
         byte[] data = out.getData();
@@ -76,9 +86,7 @@ System.out.println(" ******  from out T PT:  "+out );
         out.setData(data);
         log.info("Response data generate finish: "+out);
 
-System.out.println("-------------");
-System.out.println("---------  "+out);
-System.out.println("-------------");
+
         return out;
     }
 //

@@ -94,8 +94,10 @@ public class ReceiverData implements Runnable {
             }
             log.info("Response code " + responseCode);
             dataTransform(income, (byte) responseCode);
-            responseData.sendResponse(socket, store, preparingOutcomeAuthData, (byte) responseCode);
+            responseData.sendResponse(socket, store,
+                    preparingOutcomeAuthData, (byte) responseCode);
             msgNO++;
+
             log.info("work on request finish. Correct steps: " + msgNO + "; errors: " + errorN0);
         } catch (Exception e) {
             log.error("Error while data transform: " + e.getMessage());
@@ -127,7 +129,15 @@ public class ReceiverData implements Runnable {
     private void dataTransform(byte[] income, byte code) throws NumberArrayDataException {
         log.info("Storage  income Data start");
         store = storage.create(income);
-        preparingOutcomeAuthData = outcomeIdentCreate.createAuthResponse(store, code);
+        System.out.println("UUUUUUUUUUUUUUUUUUUUUUU");
+        System.out.println("UUUUUUUUUUUUUUUUUUUUUUU");
+        System.out.println("UUUUUUUUUUUUUUUUUUUUUUU");
+        System.out.println("UUUUUUUUUUUUUUUUUUUUUUU");
+        System.out.println("UUUUUUUUUUUUUUUUUUUUUUU");
+        System.out.println("UUUUUUUUUUUUUUUUUUUUUUU");
+        preparingOutcomeAuthData =
+                outcomeIdentCreate.createAuthResponse(store, code);
+                System.out.println("FFFFFFFFFFFFFFFFFFFFF");
         log.info("Storage  income Data finish");
     }
 

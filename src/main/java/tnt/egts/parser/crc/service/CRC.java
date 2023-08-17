@@ -20,6 +20,7 @@ public interface CRC {
      * @return
      */
     long calculate16(byte[] data);
+    long calculateSfrd(byte[] data);
 
 
 }

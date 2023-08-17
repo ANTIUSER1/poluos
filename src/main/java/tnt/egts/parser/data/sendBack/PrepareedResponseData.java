@@ -6,6 +6,7 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import tnt.egts.parser.cmmon.OutcomeIdent;
 import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.ByteFixPositions;
 
 @Builder
 @Data
@@ -24,15 +25,25 @@ public class PrepareedResponseData implements OutcomeIdent {
 
     @Override
     public void prepareAuthData() {
-        log.info("Create Answer data start");
+        log.info("Create AUTH-Answer data start");
+
+        System.out.println("AUTH-ANSWER:: ");
+        System.out.println("AUTH-ANSWER:: ");
+        System.out.println("AUTH-ANSWER:: ");
+        System.out.println("AUTH-ANSWER:: ");
+        System.out.println("AUTH-ANSWER:: ");
+        System.out.println("AUTH-ANSWER:: ");
+        System.out.println("A "+ArrayUtils.arrayPrintToScreen(sfrd));
         short sffdLength= (short) sfrd.length;
+
+
         byte[] sfrdArray=ArrayUtils.shortToByteArray(sffdLength);
-        responseHead[9]=code;
+        responseHead[ByteFixPositions.PACKAGE_TYPE_INDEX]=code;
         responseHead[5]=sfrdArray[1]; responseHead[6]=sfrdArray[0];
          properPackageHeader=ArrayUtils.getFixedLengthSubArray(responseHead,0
                  , responseHead.length-1);
         data= ArrayUtils.joinArrays(responseHead, sfrd);
-System.out.println("3  " +ArrayUtils.arrayPrintToScreen(data)+" \n");
+        System.out.println("3  " +ArrayUtils.arrayPrintToScreen(data)+" \n");
         log.info("Answer Data: \n "+ArrayUtils.arrayPrintToScreen(data)+" \n");
         log.info("Create Answer data finish");
     }

@@ -8,6 +8,7 @@ import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
+import tnt.egts.parser.util.ByteFixValues;
 
 @Service
 @Slf4j
@@ -26,13 +27,26 @@ public class IncomeDataStorageService implements Storage {
                 .crc8(income[hcsPos])
                 .packagSFRD(ArrayUtils.getSubArrayToEnd(income,hcsPos+1))
                 .crc16(income[income.length-1])
-                .packageType(income[9])
+                .packageType(income[ByteFixPositions.PACKAGE_TYPE_INDEX])
+                .recNum(createRN(income))
                 .packetIdentifier(createPID(income))
                 .frameDataLength(createFLD(income))
                 .build();
 
         log.info("Backup data generate finish: "+out);
         return out;
+    }
+
+    private short createRN(byte[] income) throws NumberArrayDataException {
+        byte[] out =ArrayUtils.getFixedLengthSubArray(income,
+                2+1 +
+                ByteFixPositions.getHCSIndex(income),
+                2);
+        System.out.println("RN CREATE::: "+ArrayUtils.arrayPrintToScreen(out));
+        System.out.println("RN CREATE::: "+ArrayUtils.arrayPrintToScreen(out));
+        System.out.println("RN CREATE::: "+ArrayUtils.arrayPrintToScreen(out));
+        System.out.println("RN CREATE::: "+ArrayUtils.arrayPrintToScreen(out));
+return ArrayUtils.byteArrayInverseToShort(out);
     }
 
     private short createFLD(byte[] income) throws NumberArrayDataException {

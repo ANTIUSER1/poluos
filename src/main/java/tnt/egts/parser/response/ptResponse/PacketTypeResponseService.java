@@ -9,6 +9,7 @@ import tnt.egts.parser.cmmon.OutcomeIdentCreate;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.response.separate.SeparateRecord;
 import tnt.egts.parser.errors.NumberArrayDataException;
+import tnt.egts.parser.util.ArrayUtils;
 
 @Service("pt")
 @Slf4j
@@ -23,7 +24,8 @@ public class PacketTypeResponseService implements OutcomeIdentCreate {
     public OutcomeIdent create(IncomeDataStorage storage ) throws NumberArrayDataException {
         log.info("Storage Packet Type data start");
         SeparateRecord sr= (SeparateRecord) creator.create(storage);
-             PacketTypeResponse out =PacketTypeResponse.builder()
+
+        PacketTypeResponse out =PacketTypeResponse.builder()
                      .responsePacketID(storage.getPacketIdentifier())
                      .processingResult((byte) 0)
                      .separateRecord(sr)

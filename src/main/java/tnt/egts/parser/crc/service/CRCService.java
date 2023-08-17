@@ -42,4 +42,12 @@ public class CRCService implements CRC {
        return calculator16.crc16calc(data);
     }
 
+    @Override
+    public long calculateSfrd(byte[] data) {
+        byte[] dataOnly =
+            ArrayUtils.getSubArrayFromTo(data,
+            data[ByteFixPositions.HEAD_LENGTH_INDEX], data.length - 2);
+        return calculate16(dataOnly);
+    }
+
 }

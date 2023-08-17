@@ -27,6 +27,9 @@ public class AuthRecordDataService implements OutcomeIdentCreate {
                 .srRecResponse(srRecResponse)
                 .build();
         out.prepareAuthData();
+        System.out.println("SR  ");
+        System.out.println("SR  SR  SrRecordResp  "+srRecResponse);
+        System.out.println("SR  ");
         log.info("Storage PAuth Response data finish: "+out);
         return out;
     }
