@@ -78,35 +78,35 @@ public class ReceiverData implements Runnable {
     @Override
     public void run() {
         log.info("work on request from " + socket.getRemoteSocketAddress() + "  start");
-        log.info("local server runs on address/port " + socket.getLocalAddress()
-        +":"+socket.getPort()
-        );
-       while(true){
-        try {
-            byte[] income = receive();
-            throwReceivedInfoGlobalError(income);
-            log.info("Received data from BNSO. Data length: " + income.length);
-            log.debug("DATA:\n  " + ArrayUtils.arrayPrintToScreen(income) + "\n");
-            if (isValidatePacket) {
-                responseCode = byteAnalizer.analize(income);
-                if (responseCode < 0) {
-                    errorN0++;
-                    log.error("Data are invalid in received package from " + socket.getRemoteSocketAddress());
-                    throw new InvalidDataException("Processing terminated unexpectedly due to a broken data packet ");
+        log.info("local server runs on address/port " + socket.getLocalAddress() + ":" + socket.getPort());
+        while (true) {
+            System.out.println("   ===== START! ");
+            try {System.out.println("=================");
+                byte[] income = receive();
+                throwReceivedInfoGlobalError(income);
+                log.info("Received data from BNSO. Data length: " + income.length);
+                log.debug("DATA:\n  " + ArrayUtils.arrayPrintToScreen(income) + "\n");
+                if (isValidatePacket) {
+                    responseCode = byteAnalizer.analize(income);
+                    if (responseCode < 0) {
+                        errorN0++;
+                        log.error("Data are invalid in received package from " + socket.getRemoteSocketAddress());
+                        throw new InvalidDataException("Processing terminated unexpectedly due to a broken data packet ");
+                    }
                 }
-            }
-            log.info("Response code " + responseCode);
-            dataTransform(income, (byte) responseCode);
-            responseData.sendResponse(socket, store,
-                    preparingOutcomeAuthData, (byte) responseCode);
-            msgNO++;
+                log.info("Response code " + responseCode);
+                dataTransform(income, (byte) responseCode);
+                responseData.sendResponse(socket, store, preparingOutcomeAuthData, (byte) responseCode);
+                msgNO++;
 
-            log.info("work on request finish. Correct steps: " + msgNO + "; errors: " + errorN0);
-        } catch (Exception e) {
-            log.error("Error while data transform: " + e.getMessage());
-           //  e.printStackTrace();
-            return;
-        }}
+                log.info("work on request finish. Correct steps: " + msgNO + "; errors: " + errorN0);
+            } catch (Exception e) {
+                log.error("Error while data transform: " + e.getMessage());
+                //  e.printStackTrace();
+                return;
+            }
+            System.out.println("STOP!!");
+        }
     }
 
     /**
@@ -116,7 +116,7 @@ public class ReceiverData implements Runnable {
      * @return
      */
     private byte[] fakeByte(byte[] income) {
-        income[3]=0;
+        income[3] = 0;
         income[2] = 4;
         income[ByteFixPositions.PACKAGE_TYPE_INDEX] = 1;
         byte[] head = ArrayUtils.getFixedLengthSubArray(income, 0, 10);
@@ -133,9 +133,8 @@ public class ReceiverData implements Runnable {
     private void dataTransform(byte[] income, byte code) throws NumberArrayDataException {
         log.info("Storage  income Data start");
         store = storage.create(income);
-         preparingOutcomeAuthData =
-                outcomeIdentCreate.createAuthResponse(store, code);
-                System.out.println("FFFFFFFFFFFFFFFFFFFFF");
+        preparingOutcomeAuthData = outcomeIdentCreate.createAuthResponse(store, code);
+        System.out.println("FFFFFFFFFFFFFFFFFFFFF");
         log.info("Storage  income Data finish");
     }
 
@@ -164,25 +163,26 @@ public class ReceiverData implements Runnable {
             log.error("Data are invalid in received package from " + socket.getRemoteSocketAddress());
             log.error(" Details: the Value of HeaderLength is 0 or " + "the length of SFRD is 0 ");
             throw new InvalidDataException("Processing terminated unexpectedly due to a broken data packet " + ArrayUtils.arrayPrintToScreen(resTest) + "\n");
-        }else{
-        byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5, 2);
-        short    fdl = ArrayUtils.byteArrayInverseToShort(shortArray);
-        dsize = resTest[3] + fdl + 2;
+        } else {
+            byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5, 2);
+            short fdl = ArrayUtils.byteArrayInverseToShort(shortArray);
+            dsize = resTest[3] + fdl + 2;
 
-        result = new byte[dsize - resTest.length];
-        in.read(result);
-        result = ArrayUtils.joinArrays(resTest, result);
-        if (result.length < dsize) {
-            log.error("Invalid length :  " + result.length);
-            return new byte[0];
-        }
+            result = new byte[dsize - resTest.length];
+            in.read(result);
+            result = ArrayUtils.joinArrays(resTest, result);
+            if (result.length < dsize) {
+                log.error("Invalid length :  " + result.length);
+                return new byte[0];
+            }
         }
         return result;
     }
 
 
     private void throwReceivedInfoGlobalError(byte[] income) {
-
+System.out.println("income == null  :"+ (income == null)  );
+System.out.println("income.length  :"+ income.length  );
         if (income == null || income.length < 3 || income.length < 7) {
             errorN0++;
             log.error("Null data received, or income data is empty" + socket.getRemoteSocketAddress());

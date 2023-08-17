@@ -42,10 +42,7 @@ public class IncomeDataStorageService implements Storage {
                 2+1 +
                 ByteFixPositions.getHCSIndex(income),
                 2);
-        System.out.println("RN CREATE::: "+ArrayUtils.arrayPrintToScreen(out));
-        System.out.println("RN CREATE::: "+ArrayUtils.arrayPrintToScreen(out));
-        System.out.println("RN CREATE::: "+ArrayUtils.arrayPrintToScreen(out));
-        System.out.println("RN CREATE::: "+ArrayUtils.arrayPrintToScreen(out));
+
 return ArrayUtils.byteArrayInverseToShort(out);
     }
 
