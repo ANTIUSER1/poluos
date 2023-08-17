@@ -51,6 +51,13 @@ byte[] data;
 
     @Override
     public void prepareAuthData() {
+
+        System.out.println("MMMMM<M authRecordData data");
+        System.out.println("MMMMM<M authRecordData data" );
+        System.out.println("MMMMM<M  "+ArrayUtils.arrayPrintToScreen(authRecordData.getData()));
+        System.out.println("MMMMM<M authRecordData data");
+        System.out.println("MMMMM<M authRecordData data" );
+        System.out.println("MMMMM<M authRecordData data");
         data= ArrayUtils.inverse(ArrayUtils.shortToByteArray((short) authRecordData.getData().length));
         data=ArrayUtils.inverse(data);
         byte[] rn=ArrayUtils.shortToByteArray(recordNumber);

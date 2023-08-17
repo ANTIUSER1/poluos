@@ -31,6 +31,27 @@ public class PacketTypeResponseService implements OutcomeIdentCreate {
                      .separateRecord(sr)
                 .build();
         out.prepareAuthData();
+
+System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    "+sr);
+System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    " );
+System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    " );
+System.out.println("Db   GGGFFFDDD " );
+System.out.println("Db   GGGFFFDDD " );
+System.out.println("Db   GGGFFFDDD " );
+System.out.println("Db   GGGF   !!!! -->>>>OOOOOOOO  "+out );
+System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    " );
+//        System.out.println();
+//        System.out.println("SRSRSR DATA:   "+ArrayUtils.arrayPrintToScreen(sr.getData()));
+//        System.out.println();
+//        System.out.println("GGGGGGGGGGGGGG BBBBBBBBBBBBBB RRRRR");
+//        System.out.println("MMMM NNNN BBBB "+ArrayUtils.arrayPrintToScreen(out.getData()));
+//        System.out.println();
+//        System.out.println("GFFFFFFFFFFGGGGGGGGF");
+//        System.out.println("GFFFFFFFFFFGGGGGGGGF");
+//        System.out.println("GF FGF   "+out);
+//        System.out.println("GFFFFFFFFFFGGGGGGGGF");
+//        System.out.println();
+//        System.out.println();
         log.info("Storage Packet Type data finish: "+out);
         return out;
     }

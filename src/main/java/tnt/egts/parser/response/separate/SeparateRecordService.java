@@ -22,18 +22,26 @@ public class SeparateRecordService implements OutcomeIdentCreate {
     @Override
     public OutcomeIdent create(IncomeDataStorage storage ) throws NumberArrayDataException {
         log.info("Storage  separate Data start");
-        AuthRecordData ars = (AuthRecordData) creator.create(storage);
+        AuthRecordData ard = (AuthRecordData) creator.create(storage);
         SeparateRecord out = SeparateRecord.builder()
-                .authRecordData(ars)
-               // .recordNumber(storage.getRecNum())
+                .authRecordData(ard)
+                .recordNumber(storage.getRecNum())
                 .build();
+
+
         out.prepareAuthData();
-//        System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
-//        System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
-//        System.out.println("KKKKK  SeparateRecord  "+out);
-//        System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
-//        System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
-//        System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("KKKKKKKKKKKKKKKKKKKK "+ard);
+        System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
+        System.out.println("KKKKK  SeparateRecord  "+out);
+        System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
+        System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
+        System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
+
+
         log.info("Storage  separate Data finish: "+out);
         return out;
     }
