@@ -15,13 +15,9 @@ public class SrRecordResponseService implements OutcomeIdentCreate {
         log.info("Storage SrRecord start");
         SrRecordResponse out= SrRecordResponse.builder()
                 .confirmRN(storage.getRecNum())
-
                 .build();
         out.prepareAuthData();
-        System.out.println("OOOOO "+out);
-        System.out.println("OOOOO "+out);
-        System.out.println("OOOOO "+out);
-        System.out.println("OOOOO "+out);
+
         log.info("Storage SrRecord finish: "+out);
         return out;
     }

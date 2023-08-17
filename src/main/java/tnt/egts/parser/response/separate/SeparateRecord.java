@@ -51,21 +51,30 @@ byte[] data;
 
     @Override
     public void prepareAuthData() {
+System.out.println();
+System.out.println();
+System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+System.out.println();
 
-        System.out.println("MMMMM<M authRecordData data");
-        System.out.println("MMMMM<M authRecordData data" );
-        System.out.println("MMMMM<M  "+ArrayUtils.arrayPrintToScreen(authRecordData.getData()));
-        System.out.println("MMMMM<M authRecordData data");
-        System.out.println("MMMMM<M authRecordData data" );
-        System.out.println("MMMMM<M authRecordData data");
-        data= ArrayUtils.inverse(ArrayUtils.shortToByteArray((short) authRecordData.getData().length));
-        data=ArrayUtils.inverse(data);
+        //RL
+        data=ArrayUtils.inverse(
+                ArrayUtils.shortToByteArray((short) authRecordData.getData().length ) );
+
+        //RN
         byte[] rn=ArrayUtils.shortToByteArray(recordNumber);
-        data=ArrayUtils.inverse(data);
+        rn=ArrayUtils.inverse(rn);
         data=ArrayUtils.joinArrays(data, rn);
+
+        // FLAGS   === RFL
         data=ArrayUtils.addByteToTail(data, flags);
+
+        // SST
         data=ArrayUtils.addByteToTail(data, sourceServicceType);
+
+        //RST
         data=ArrayUtils.addByteToTail(data, recipientServicceType);
+
+        //RD
         data=ArrayUtils.joinArrays(data,authRecordData.getData());
 
     }

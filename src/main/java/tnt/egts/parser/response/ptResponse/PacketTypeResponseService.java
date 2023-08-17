@@ -32,14 +32,25 @@ public class PacketTypeResponseService implements OutcomeIdentCreate {
                 .build();
         out.prepareAuthData();
 
-System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    "+sr);
-System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    " );
-System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    " );
-System.out.println("Db   GGGFFFDDD " );
-System.out.println("Db   GGGFFFDDD " );
-System.out.println("Db   GGGFFFDDD " );
-System.out.println("Db   GGGF   !!!! -->>>>OOOOOOOO  "+out );
-System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    " );
+
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY");
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY");
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY");
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY");
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY");
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY");
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY");
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY");
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY");
+
+//System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    "+sr);
+//System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    " );
+//System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    " );
+//System.out.println("Db   GGGFFFDDD " );
+//System.out.println("Db   GGGFFFDDD " );
+//System.out.println("Db   GGGFFFDDD " );
+//System.out.println("Db   GGGF   !!!! OUT:::-->>>>OOOOOOOO  "+out );
+//System.out.println("Db   GGGFFFDDDSS SEPARATE_RESP    " );
 //        System.out.println();
 //        System.out.println("SRSRSR DATA:   "+ArrayUtils.arrayPrintToScreen(sr.getData()));
 //        System.out.println();

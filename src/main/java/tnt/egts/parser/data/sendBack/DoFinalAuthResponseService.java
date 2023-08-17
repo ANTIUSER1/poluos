@@ -73,10 +73,8 @@ System.out.println( " ******** code   " +code);
         int headLen1=storage.getPackageHeader() [headLengthIndexIndex];
         long crc8 =   crc.calculateHead(out.getResponseHead());
         long crc16 =  crc.calculateSfrd(out.getData());
-        long crc16SFRD =  crc.calculate16(out.getSfrd());
+        long crc16SFRD   = crc.calculate16(out.getSfrd());
 
-        byte[] t16= {0x3,0x2,0x4};
-        long testCRC=crc.calculate16(t16) ;
 
         byte[] crc16Array = ArrayUtils.shortToByteArray((short) crc16SFRD);
         crc16Array = ArrayUtils.inverse(crc16Array);
@@ -86,11 +84,7 @@ System.out.println( " ******** code   " +code);
         data = ArrayUtils.joinArrays(data, crc16Array);
         out.setData(data);
 
-
-        System.out.println( " *********** testCRC  "+testCRC +" "+Long.toHexString(testCRC) );
-        System.out.println( " ********************  t16  "
-                            +ArrayUtils.arrayPrintToScreen(t16));
-        System.out.println( " ********************   " );
+    System.out.println( " ********************   " );
 
         System.out.println( " CRC8::   "+(byte) crc8);
         System.out.println( " CRC16::   "+crc16+ " HEX: "+Long.toHexString(crc16));

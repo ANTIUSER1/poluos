@@ -30,8 +30,10 @@ public class SrRecordResponse implements OutcomeIdent {
 
     @Override
     public void prepareAuthData() {
+        // CRN
         data = ByteBuffer.wrap(ArrayUtils.shortToByteArray(confirmRN)).array();
         data = ArrayUtils.inverse(data);
+        //  RST
         data = ArrayUtils.addByteToTail(data, recStatus);
 
     }
