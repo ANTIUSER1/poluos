@@ -15,36 +15,30 @@ import tnt.egts.parser.util.ByteFixPositions;
 public class PrepareedResponseData implements OutcomeIdent {
 
     private byte[] responseHead;
+
     /**
      * only PackageHead -- скс8=free
      */
     private byte[] properPackageHeader;
-    private   byte[] sfrd;
-    private   byte[] data;
-    private byte code ;
+
+    private byte[] sfrd;
+
+    private byte[] data;
+
+    private byte code;
 
     @Override
     public void prepareAuthData() {
         log.info("Create AUTH-Answer data start");
+        short sffdLength = (short) sfrd.length;
 
-        System.out.println("AUTH-ANSWER:: ");
-        System.out.println("AUTH-ANSWER:: ");
-        System.out.println("AUTH-ANSWER:: ");
-        System.out.println("AUTH-ANSWER:: ");
-        System.out.println("AUTH-ANSWER:: ");
-        System.out.println("AUTH-ANSWER:: ");
-        System.out.println("A "+ArrayUtils.arrayPrintToScreen(sfrd));
-        short sffdLength= (short) sfrd.length;
-
-
-        byte[] sfrdArray=ArrayUtils.shortToByteArray(sffdLength);
-        responseHead[ByteFixPositions.PACKAGE_TYPE_INDEX]=code;
-        responseHead[5]=sfrdArray[1]; responseHead[6]=sfrdArray[0];
-         properPackageHeader=ArrayUtils.getFixedLengthSubArray(responseHead,0
-                 , responseHead.length-1);
-        data= ArrayUtils.joinArrays(responseHead, sfrd);
-        System.out.println("3  " +ArrayUtils.arrayPrintToScreen(data)+" \n");
-        log.info("Answer Data: \n "+ArrayUtils.arrayPrintToScreen(data)+" \n");
+        byte[] sfrdArray = ArrayUtils.shortToByteArray(sffdLength);
+        responseHead[ByteFixPositions.PACKAGE_TYPE_INDEX] = code;
+        responseHead[5] = sfrdArray[1];
+        responseHead[6] = sfrdArray[0];
+        properPackageHeader = ArrayUtils.getFixedLengthSubArray(responseHead, 0, responseHead.length - 1);
+        data = ArrayUtils.joinArrays(responseHead, sfrd);
+        log.info("Answer Data: \n " + ArrayUtils.arrayPrintToScreen(data) + " \n");
         log.info("Create Answer data finish");
     }
 }

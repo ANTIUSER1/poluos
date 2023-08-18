@@ -51,11 +51,6 @@ byte[] data;
 
     @Override
     public void prepareAuthData() {
-System.out.println();
-System.out.println();
-System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-System.out.println();
-
         //RL
         data=ArrayUtils.inverse(
                 ArrayUtils.shortToByteArray((short) authRecordData.getData().length ) );

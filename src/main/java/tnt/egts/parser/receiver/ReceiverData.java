@@ -80,8 +80,8 @@ public class ReceiverData implements Runnable {
         log.info("work on request from " + socket.getRemoteSocketAddress() + "  start");
         log.info("local server runs on address/port " + socket.getLocalAddress() + ":" + socket.getPort());
         while (true) {
-            System.out.println("   ===== START! ");
-            try {System.out.println("=================");
+            log.info("   ===== START! ");
+            try {
                 byte[] income = receive();
                 throwReceivedInfoGlobalError(income);
                 log.info("Received data from BNSO. Data length: " + income.length);
@@ -105,7 +105,7 @@ public class ReceiverData implements Runnable {
                 //  e.printStackTrace();
                 return;
             }
-            System.out.println("STOP!!");
+            log.info("STOP!!");
         }
     }
 
@@ -134,7 +134,6 @@ public class ReceiverData implements Runnable {
         log.info("Storage  income Data start");
         store = storage.create(income);
         preparingOutcomeAuthData = outcomeIdentCreate.createAuthResponse(store, code);
-        System.out.println("FFFFFFFFFFFFFFFFFFFFF");
         log.info("Storage  income Data finish");
     }
 
@@ -181,8 +180,6 @@ public class ReceiverData implements Runnable {
 
 
     private void throwReceivedInfoGlobalError(byte[] income) {
-System.out.println("income == null  :"+ (income == null)  );
-System.out.println("income.length  :"+ income.length  );
         if (income == null || income.length < 3 || income.length < 7) {
             errorN0++;
             log.error("Null data received, or income data is empty" + socket.getRemoteSocketAddress());

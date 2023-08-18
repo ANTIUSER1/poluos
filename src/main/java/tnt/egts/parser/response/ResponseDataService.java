@@ -33,18 +33,8 @@ public class ResponseDataService implements ResponseData {
     public void sendResponse(Socket socket, IncomeDataStorage store,
                              OutcomeIdent  preparingOutcomeData, byte code) throws NumberArrayDataException {
 
-//        System.out.println("|||||| \n " + store.getType().name() + " \n ||||| ");
-//        System.out.println("|||||| \n " + store.getType().name() + " \n ||||| ");
-//        System.out.println("|||||| \n " + store.getType().name() + " \n ||||| ");
-//        System.out.println("|||||| \n " + store.getType().name() + " \n ||||| ");
-       // if (store.getType().equals(PackageType.AUTH_SERVICE)) {
-            authResponse.sendResponse(socket, store, preparingOutcomeData, code);
-//        }else  if(store.getType().equals(PackageType.TELEDATA_SERVICE)){
-//            teleDataResponse.sendResponse(socket,store,preparingOutcomeData,code);
-//        }else{
-//            throw  new InvalidDataTypeException("Incoming request has unknown" +
-//                                                " data type. ");
-//        }
+            authResponse.sendResponse(socket, store, preparingOutcomeData,
+                    code);
         //testOutSendData(preparingOutcomeData.getData());
     }
 
