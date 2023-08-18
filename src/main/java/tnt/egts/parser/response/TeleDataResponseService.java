@@ -2,10 +2,9 @@ package tnt.egts.parser.response;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import tnt.egts.parser.cmmon.OutcomeIdent;
+import tnt.egts.parser.commontasks.OutcomeIdent;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
-import tnt.egts.parser.response.ResponseData;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.net.Socket;

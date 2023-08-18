@@ -1,4 +1,4 @@
-package tnt.egts.parser.cmmon;
+package tnt.egts.parser.commontasks;
 
 /**
  * preparing data for responses

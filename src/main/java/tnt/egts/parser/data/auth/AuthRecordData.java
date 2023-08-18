@@ -1,9 +1,9 @@
-package tnt.egts.parser.cmmon.authService.authInfo;
+package tnt.egts.parser.data.auth;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import tnt.egts.parser.cmmon.OutcomeIdent;
+import tnt.egts.parser.commontasks.OutcomeIdent;
 
 import tnt.egts.parser.response.recResponse.SrRecordResponse;
 import tnt.egts.parser.util.ArrayUtils;

@@ -1,4 +1,4 @@
-package tnt.egts.parser.cmmon;
+package tnt.egts.parser.commontasks;
 
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;

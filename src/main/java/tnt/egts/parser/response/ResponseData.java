@@ -1,6 +1,6 @@
 package tnt.egts.parser.response;
 
-import tnt.egts.parser.cmmon.OutcomeIdent;
+import tnt.egts.parser.commontasks.OutcomeIdent;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 

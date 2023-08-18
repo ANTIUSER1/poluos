@@ -3,7 +3,7 @@ package tnt.egts.parser.response.recResponse;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import tnt.egts.parser.cmmon.OutcomeIdent;
+import tnt.egts.parser.commontasks.OutcomeIdent;
 import tnt.egts.parser.util.ArrayUtils;
 
 import java.nio.ByteBuffer;

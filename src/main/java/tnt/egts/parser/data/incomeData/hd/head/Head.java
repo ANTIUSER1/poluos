@@ -3,7 +3,7 @@ package tnt.egts.parser.data.incomeData.hd.head;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import tnt.egts.parser.cmmon.IncomeIdent;
+import tnt.egts.parser.commontasks.IncomeIdent;
 
 @Builder
 @Data
