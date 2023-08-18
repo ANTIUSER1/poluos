@@ -38,14 +38,6 @@ public class ArrayUtils {
         return out.toString();
     }
 
-    /**
-     * exposes byte as binary string
-     * @param value
-     * @return
-     */
-    public static String byteToBinary(byte value) {
-        return String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace(' ', '0');
-    }
 
     /**
      * join two arrays
@@ -111,7 +103,7 @@ public class ArrayUtils {
      * slice subarray  from start pos to finish pos
      * @param inData
      * @param from
-     * @param length
+     * @param to
      * @return
      */
     public static byte[] getSubArrayFromTo(byte[] inData, int from, int to) {
@@ -163,52 +155,6 @@ public class ArrayUtils {
             out[k] = data[k] & 0xff;
         }
         return out;
-    }
-
-    public static long byteArrayToLong(byte[] data) throws NumberArrayDataException {
-        if (data.length != 8)
-            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
-        ByteBuffer bbf = ByteBuffer.wrap(data);
-        return bbf.getLong(0);
-    }
-
-    public static long byteArrayInverseToLong(byte[] data) throws NumberArrayDataException {
-        if (data.length != 8)
-            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
-        data = inverse(data);
-        ByteBuffer bbf = ByteBuffer.wrap(data);
-        return bbf.getLong(0);
-    }
-
-    public static int byteArrayToInt(byte[] data) throws NumberArrayDataException {
-        if (data.length != 4)
-            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
-        ByteBuffer bbf = ByteBuffer.wrap(data);
-        return bbf.getInt(0);
-    }
-
-    public static int byteArrayInverseToInt(byte[] data) throws NumberArrayDataException {
-        if (data.length != 4)
-            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
-        data = inverse(data);
-        ByteBuffer bbf = ByteBuffer.wrap(data);
-        return bbf.getInt(0);
-    }
-
-    public static short byteArrayToShort(byte[] data) throws NumberArrayDataException {
-        if (data.length != 2)
-            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data));
-
-        ByteBuffer bbf = ByteBuffer.wrap(data);
-        return bbf.getShort(0);
-    }
-
-    public static short byteArrayInverseToShort(byte[] data) throws NumberArrayDataException {
-        if (data.length != 2)
-            throw new NumberArrayDataException("Invalid " + "incoming data" + " " + arrayPrintToScreen(data)); 
-        data = inverse(data);
-        ByteBuffer bbf = ByteBuffer.wrap(data);
-        return bbf.getShort(0);
     }
 
     /**

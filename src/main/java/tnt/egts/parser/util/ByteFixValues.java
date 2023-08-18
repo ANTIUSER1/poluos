@@ -67,7 +67,7 @@ public class ByteFixValues {
         return ArrayUtils.inverse(fdl);
     }
     public static short getFDLNumberValue(byte[] byteValue) throws NumberArrayDataException {
-        return ArrayUtils.byteArrayToShort(byteValue);
+        return NumberUtils.byteArrayToShort(byteValue);
     }
 
 }

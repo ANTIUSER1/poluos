@@ -9,14 +9,12 @@ import tnt.egts.parser.commontasks.OutcomeIdentFinalCreate;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.data.analysis.ByteAnalizer;
+import tnt.egts.parser.data.store.IncomeCollectionsService;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.InvalidDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.response.ResponseData;
-import tnt.egts.parser.util.ArrayUtils;
-import tnt.egts.parser.util.ByteFixPositions;
-import tnt.egts.parser.util.ErrorCodes;
-import tnt.egts.parser.util.StringFixedBeanNames;
+import tnt.egts.parser.util.*;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -67,9 +65,13 @@ public class ReceiverData implements Runnable {
     @Qualifier (StringFixedBeanNames.INCOMING_ARRAY_ANALIZER_BEAN)
     private ByteAnalizer incomeArrayAnalizer;
 
+    @Autowired
+    private IncomeCollectionsService incomeCollectionsService;
+
     private IncomeDataStorage store;
 
     private int responseCode;
+    private int step;
 
     private volatile long msgNO;
 
@@ -80,7 +82,9 @@ public class ReceiverData implements Runnable {
         log.info("work on request from " + socket.getRemoteSocketAddress() + "  start");
         log.info("local server runs on address/port " + socket.getLocalAddress() + ":" + socket.getPort());
         while (true) {
-            log.info("   ===== START! ");
+            log.info("\n----  \n start work! "+step+" step ");
+            log.info("\n\n\n" +
+                     "*******************************************************\n");
             try {
                 byte[] income = receive();
                 throwReceivedInfoGlobalError(income);
@@ -99,8 +103,20 @@ public class ReceiverData implements Runnable {
                 responseData.sendResponse(socket, store, preparingOutcomeAuthData, (byte) responseCode);
                 msgNO++;
 
-                log.info("work on request finish. Correct steps: " + msgNO + "; errors: " + errorN0);
-            } catch (Exception e) {
+                System.out.println("INFO SFRD:");
+                System.out.println("          HEADERS");
+                incomeCollectionsService.printCollectionHeadersOnly();
+                System.out.println("         SFRD");
+                incomeCollectionsService.printCollectionSFRDOnly();
+
+                log.info("\n work on request finish. Steps: "+step+". " +
+                         "Correct" +
+                         " " +
+                         "messeges: " + msgNO + "; errors: " + errorN0
+                +"\n\n "
+                );
+                step++;
+            } catch (Exception e) {step++;
                 log.error("Error while data transform: " + e.getMessage());
                 //  e.printStackTrace();
                 return;
@@ -164,7 +180,7 @@ public class ReceiverData implements Runnable {
             throw new InvalidDataException("Processing terminated unexpectedly due to a broken data packet " + ArrayUtils.arrayPrintToScreen(resTest) + "\n");
         } else {
             byte[] shortArray = ArrayUtils.getFixedLengthSubArray(resTest, 5, 2);
-            short fdl = ArrayUtils.byteArrayInverseToShort(shortArray);
+            short fdl = NumberUtils.byteArrayInverseToShort(shortArray);
             dsize = resTest[3] + fdl + 2;
 
             result = new byte[dsize - resTest.length];

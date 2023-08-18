@@ -66,6 +66,14 @@ byte[] data;
         // SST
         data=ArrayUtils.addByteToTail(data, sourceServicceType);
 
+        System.out.println(   "     SST:");
+        System.out.println(   "     SST:");
+        System.out.println(   "     SST:   "+sourceServicceType);
+        System.out.println(   "     SST:   "+sourceServicceType);
+        System.out.println(   "     SST:   "+sourceServicceType);
+        System.out.println(   "     SST:");
+        System.out.println(   "     SST:");
+        System.out.println(   "     SST:");
         //RST
         data=ArrayUtils.addByteToTail(data, recipientServicceType);
 

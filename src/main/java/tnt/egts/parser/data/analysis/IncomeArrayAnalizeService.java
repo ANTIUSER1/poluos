@@ -24,7 +24,7 @@ public class IncomeArrayAnalizeService implements ByteAnalizer {
 
     private boolean invalidHeaderDataValues(byte[] income) throws NumberArrayDataException {
         byte[] shortArray = ArrayUtils.getFixedLengthSubArray(income, 5, 2);
-        short fdl = ArrayUtils.byteArrayInverseToShort(shortArray);
+        short fdl = NumberUtils.byteArrayInverseToShort(shortArray);
         return income[ByteFixPositions.HEAD_LENGTH_INDEX] <= 0 || fdl <= 0;
     }
 

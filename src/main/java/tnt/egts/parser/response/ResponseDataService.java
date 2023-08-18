@@ -9,6 +9,7 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.NumberUtils;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
 import java.net.Socket;
@@ -56,7 +57,7 @@ public class ResponseDataService implements ResponseData {
         fdl[1] = data[5];
         short fdlDat;
         try {
-            fdlDat = ArrayUtils.byteArrayToShort(fdl);
+            fdlDat = NumberUtils.byteArrayToShort(fdl);
         } catch (NumberArrayDataException e) {
             throw new RuntimeException(e);
         }
@@ -67,7 +68,7 @@ public class ResponseDataService implements ResponseData {
         pid[1] = data[7];
         short pidDat;
         try {
-            pidDat = ArrayUtils.byteArrayToShort(pid);
+            pidDat = NumberUtils.byteArrayToShort(pid);
         } catch (NumberArrayDataException e) {
             throw new RuntimeException(e);
         }

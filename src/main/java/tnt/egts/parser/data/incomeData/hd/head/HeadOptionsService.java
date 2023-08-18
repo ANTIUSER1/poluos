@@ -1,25 +1,30 @@
 package tnt.egts.parser.data.incomeData.hd.head;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.commontasks.IncomeIdent;
 import tnt.egts.parser.commontasks.IncomeIdentCreate;
+import tnt.egts.parser.commontasks.NumberToBits;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
+import tnt.egts.parser.util.NumberUtils;
 
 @Service
 @Slf4j
 public class HeadOptionsService implements IncomeIdentCreate {
 
+@Autowired
+private NumberToBits numberToBitsService;
 
     @Override
     public IncomeIdent create(IncomeDataStorage storage) throws NumberArrayDataException {
         log.info("Storage  income head options Data start  "
         +ArrayUtils.arrayPrintToScreen(storage.getPackageHeader()));
         byte income = storage.getPackageHeader()[2];
-        if(hasRTE(ArrayUtils.byteToBinary(income))){
+        if(hasRTE(numberToBitsService.bitsFromByte(income))){
             log.info("Storage  income head options Data finish : Returned NULL ");
             return null;
         }
@@ -37,12 +42,12 @@ public class HeadOptionsService implements IncomeIdentCreate {
 
     private short createRCA(byte[] income) throws NumberArrayDataException {
         byte[] out = ArrayUtils.getFixedLengthSubArray(income, 2, 2);
-        return ArrayUtils.byteArrayInverseToShort(out);
+        return NumberUtils.byteArrayInverseToShort(out);
     }
 
     private short createPRA(byte[] income) throws NumberArrayDataException {
         byte[] out = ArrayUtils.getFixedLengthSubArray(income, 0, 2);
-        return ArrayUtils.byteArrayInverseToShort(out);
+        return NumberUtils.byteArrayInverseToShort(out);
     }
 
 

@@ -3,12 +3,15 @@ package tnt.egts.parser.data.store;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import tnt.egts.parser.data.analysis.ProcessingPriority;
+
+import java.io.Serializable;
 
 
 @Builder
 @Data
 @ToString
-public class IncomeDataStorage {
+public class IncomeDataStorage implements Serializable {
 
     private byte[] fullPacket;
     /**
@@ -20,6 +23,18 @@ public class IncomeDataStorage {
      * Services frame data (SFRD)
      */
     private byte[] packagSFRD;
+
+    // 3-d byte as bit string
+    private String flags;
+
+    //OID
+    private int objectIdentifier;
+
+    //EVID
+    private int eventIdentifier;
+
+    //TM
+    private int time;
 
     private short recNum;
 
@@ -47,8 +62,27 @@ public class IncomeDataStorage {
      */
     private  byte packageType;
 
+    private byte sst;
+
+    private ServiceType serviceType;
+
+
+ private    boolean inGroup;
+
+ private    boolean reciplentServiceOnDevice;
+
+private     boolean sourceServiceOnDevice;
+
+    private ProcessingPriority processingPriority;
+
+private     int lengthToRD;
+
+   private int sstIndex;
 
     public ServiceType getByTypeID(int id){
+        System.out.println();
+        System.out.println("SEARCH ServiceType by ID= "+id);
+        System.out.println();
         for(ServiceType t:ServiceType.values()){
             if(id==t.getSrvTypeNo())return t;
         }
