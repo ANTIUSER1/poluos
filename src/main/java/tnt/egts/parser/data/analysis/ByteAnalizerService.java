@@ -17,12 +17,12 @@ import tnt.egts.parser.util.StringFixedBeanNames;
 @Slf4j
 public class ByteAnalizerService implements ByteAnalizer {
 
+@Autowired
+private  DataLengthValidate dataLengthValidate;
 
     @Autowired
     private CRCValidate crcValidate;
 
-    @Autowired
-    private DataLengthValidate dataLengthValidate;
 
     @Autowired
     private PackageValidate packageValidate;

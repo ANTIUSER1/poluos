@@ -47,9 +47,11 @@ public class IncomeDataStorage {
      */
     private  byte packageType;
 
-    public PackageType getType(){
-if (packageType==0) return PackageType.PT_RESPONSE;
-if (packageType==1) return PackageType.AUTH_SERVICE;
-  return PackageType.TELEDATA_SERVICE;
+
+    public ServiceType getByTypeID(int id){
+        for(ServiceType t:ServiceType.values()){
+            if(id==t.getSrvTypeNo())return t;
+        }
+        return null;
     }
 }

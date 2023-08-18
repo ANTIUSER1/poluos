@@ -2,8 +2,7 @@ package tnt.egts.parser.data.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tnt.egts.parser.data.analysis.BitFlags;
-import tnt.egts.parser.data.analysis.BitsAnalizer;
+import tnt.egts.parser.data.analysis.HeaderBitsAnalizer;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ByteFixValues;
 import tnt.egts.parser.util.ByteFixPositions;
@@ -13,7 +12,7 @@ import tnt.egts.parser.util.ArrayUtils;
 public class DataLengthValidateService implements DataLengthValidate {
 
     @Autowired
-    private BitsAnalizer bitsAnalizer;
+    private HeaderBitsAnalizer headerBitsAnalizer;
 
     @Override
     public boolean validDataLength(byte[] income) {
@@ -24,11 +23,9 @@ public class DataLengthValidateService implements DataLengthValidate {
 
     @Override
     public boolean validHeaderLength(byte[] income) {
-        BitFlags flag =
-                bitsAnalizer.optionAnalysis(ArrayUtils.byteToBinary(income[2]));
-        if (flag.equals(BitFlags.HOPTIONS_NOT_EXISTS))
-            return income[ByteFixPositions.HEAD_LENGTH_INDEX] == ByteFixValues.HEAD_MIN_LENGTH;
-        return income[ByteFixPositions.HEAD_LENGTH_INDEX] == ByteFixValues.HEAD_MAX_LENGTH;
+         if (headerBitsAnalizer. routeOptionBitExist(ArrayUtils.byteToBinary(income[2])))
+            return income[ByteFixPositions.HEAD_LENGTH_INDEX] == ByteFixValues.HEAD_MAX_LENGTH;
+        return income[ByteFixPositions.HEAD_LENGTH_INDEX] == ByteFixValues.HEAD_MIN_LENGTH;
    }
 
     @Override
@@ -39,11 +36,9 @@ public class DataLengthValidateService implements DataLengthValidate {
     }
 
     private   int calcPacageHead(byte[] income){
-        BitFlags flag =
-                bitsAnalizer.optionAnalysis(ArrayUtils.byteToBinary(income[2]));
-        if (flag.equals(BitFlags.HOPTIONS_NOT_EXISTS))
+        if (headerBitsAnalizer. routeOptionBitExist(ArrayUtils.byteToBinary(income[2])))
+            return  ByteFixValues.HEAD_MAX_LENGTH;
         return   ByteFixValues.HEAD_MIN_LENGTH ;
-        return  ByteFixValues.HEAD_MAX_LENGTH;
     }
     private  int calcFDLFromIncome(byte[] income){
         byte[] fdl = ArrayUtils.getSubArrayFromTo(income, 5, 7);

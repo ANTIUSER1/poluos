@@ -52,7 +52,10 @@ public class ByteFixPositions {
 
 
     public static int getHCSIndex(byte[] data) {
+//        BitAnalysisService bitAnalysisService=BitAnalysisService.builder().build();
+//        boolean rte=bitAnalysisService.routeOptionBitExist(data[2]);
         if (data[HEAD_LENGTH_INDEX] == 11) return 10;
         return 15;
     }
+
 }

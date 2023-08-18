@@ -1,13 +1,16 @@
 package tnt.egts.parser.data.store;
 
 public enum ServiceType {
-   TELEDATA_SERVICE(2)
-
-    ;
-
-    private    int t;
+    AUTH_SERVICE(1),
+     TELEDATA_SERVICE(2),
+    COMMANDS_SERVICE(3),
+    FIRMWARE_SERVICE(4);
+    private  final   int srvTypeNo;
   private   ServiceType(int type) {
-      this.t=  type;
+      this.srvTypeNo =  type;
     }
 
+    public int getSrvTypeNo() {
+        return srvTypeNo;
+    }
 }
