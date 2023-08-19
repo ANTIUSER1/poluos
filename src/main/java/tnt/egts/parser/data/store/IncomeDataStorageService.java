@@ -17,6 +17,7 @@ import tnt.egts.parser.util.NumberUtils;
 public class IncomeDataStorageService implements Storage {
 
     private static final int FLAG_INDEX = 4;
+    private static final int SST_INDEX = FLAG_INDEX+3*4;
 
     @Autowired
     private CRC crc;
@@ -41,21 +42,23 @@ public class IncomeDataStorageService implements Storage {
 
         out.setFlags(numberToBitsService.bitsFromByte(out.getPackagSFRD()[FLAG_INDEX]));
         prepareStorageData(out);
-        incomeCollectionsService.add(out);
+        //       incomeCollectionsService.add(out);
+
+
         System.out.println();
         System.out.println();
         System.out.println("   ::::::::::::::::::::  ");
         System.out.println("   ::::::::::::::::::::  ");
         System.out.println("--------------------------------------");
-        System.out.println("OUT.   flag штвуч " +  FLAG_INDEX );
-        System.out.println("OUT. flag as byte " + out.getPackagSFRD()[FLAG_INDEX]);
+        System.out.println("OUT.    flag index " +  FLAG_INDEX );
+        System.out.println("OUT.  flag as byte " + out.getPackagSFRD()[FLAG_INDEX]);
         System.out.println("OUT.           oid " + out.getObjectIdentifier());
         System.out.println("OUT.          evid " + out.getEventIdentifier());
         System.out.println("OUT.            tm " + out.getTime());
+        System.out.println("OUT.           grp " + out.isInGroup());
         System.out.println("OUT.         prior " + out.getProcessingPriority());
         System.out.println("OUT.      RD-Start " + out.getLengthToRD());
         System.out.println("OUT.     sst index " + out.getSstIndex());
-        System.out.println("OUT.     sst Value " + out.getPackagSFRD()[out.getSstIndex()]);
         System.out.println("OUT.     sst Value " + out.getPackagSFRD()[out.getSstIndex()]);
         System.out.println("OUT.   SteviceType " + out.getServiceType()  );
         System.out.println("OUT.        HEADER " + ArrayUtils.arrayPrintToScreen( out.getPackageHeader())  );
@@ -74,16 +77,16 @@ public class IncomeDataStorageService implements Storage {
     private void prepareStorageData(IncomeDataStorage out) {
         System.out.println("FLAGS::   " + out.getFlags());
         System.out.println("FLAGS::---   " + out.getPackagSFRD()[FLAG_INDEX]);
-        int n = 0;
+
         try {
             System.out.println("HHH- 00");
+          //  System.out.println("HHH- 00  "+shiftPos);
             System.out.println("HHH- 00");
-            System.out.println("HHH- 00");
-            if (bitsAnalizer.objectFieldExists(out.getFlags())) {
+            if (bitsAnalizer.objectFieldExists(out.getFlags()) || out.isInGroup()) {
                 setOID(out);
             }
             System.out.println("HHH- 01");
-            System.out.println("HHH- 01");
+        //    System.out.println("HHH- 01  "+shiftPos);
             System.out.println("HHH- 00");
         } catch (NumberArrayDataException e) {
             log.error("Can not create OID  flag: \"+out.getFlags()");
@@ -91,13 +94,13 @@ public class IncomeDataStorageService implements Storage {
         }
         try {
             System.out.println("HHH- 10");
-            System.out.println("HHH- 10");
+            //System.out.println("HHH- 10  "+shiftPos);
             System.out.println("HHH- 10");
             if (bitsAnalizer.eventFieldExists(out.getFlags())) {
                 setEVID(out);
             }
             System.out.println("HHH- 11");
-            System.out.println("HHH- 11");
+         //   System.out.println("HHH- 11  "+shiftPos);
             System.out.println("HHH- 11");
         } catch (NumberArrayDataException e) {
             log.error("Can not create EVID  flag: " + out.getFlags());
@@ -105,13 +108,13 @@ public class IncomeDataStorageService implements Storage {
         }
         try {
             System.out.println("HHH- 02");
-            System.out.println("HHH- 02");
+        //    System.out.println("HHH- 02  "+shiftPos);
             System.out.println("HHH- 02");
             if (bitsAnalizer.timeFieldExists(out.getFlags())) {
                 seTM(out);
             }
             System.out.println("HHH- 12");
-            System.out.println("HHH- 12");
+          //  System.out.println("HHH- 12  "+shiftPos);
             System.out.println("HHH- 12");
         } catch (NumberArrayDataException e) {
             log.error("Can not create TM  flag: \"+out.getFlags()");
@@ -121,15 +124,11 @@ public class IncomeDataStorageService implements Storage {
         out.setInGroup(bitsAnalizer.inGroup(out.getFlags()));
         out.setReciplentServiceOnDevice(bitsAnalizer.reciplentServiceOnDevice(out.getFlags()));
         out.setSourceServiceOnDevice(bitsAnalizer.sourceServiceOnDevice(out.getFlags()));
-
+        out.setInGroup(bitsAnalizer.inGroup(out.getFlags()));
+       out.setLengthToRD(FLAG_INDEX + shiftPos + 3);
+        out.setSstIndex(FLAG_INDEX + shiftPos+1);
         out.setServiceType(out.getByTypeID( out.getPackagSFRD()[out.getSstIndex()]));
-        out.setLengthToRD(FLAG_INDEX + shiftPos + 2);
-        out.setSstIndex(FLAG_INDEX + shiftPos + 1);
-System.out.println();
-System.out.println();
-System.out.println(  "QQQQQQQQQQQQQQQQQQQQ");
-System.out.println();
-System.out.println();
+        //        out.setSstIndex(SST_INDEX);
 
     }
 
@@ -149,6 +148,9 @@ System.out.println();
         byte[] intArray = ArrayUtils.getFixedLengthSubArray(out.getPackagSFRD(), FLAG_INDEX + 1, 4);
         out.setObjectIdentifier(NumberUtils.byteArrayInverseToInt(intArray));
         shiftPos += 4;
+        System.out.println(shiftPos+"   OOOOO:  1-index " + (FLAG_INDEX + 1)+
+                           " \n ARRAY: "+ArrayUtils.arrayPrintToScreen(intArray)+
+                           "\n   vvvvvv  "+ out.getObjectIdentifier() );
 
     }
 

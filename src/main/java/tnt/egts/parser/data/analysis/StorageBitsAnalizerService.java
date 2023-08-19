@@ -8,7 +8,7 @@ public class StorageBitsAnalizerService implements StorageBitsAnalizer{
 
     @Override
     public boolean sourceServiceOnDevice(String data) {
-         return data.charAt( 7)=='1';
+         return data.charAt(  7)=='1';
     }
 
     @Override
@@ -35,16 +35,16 @@ public class StorageBitsAnalizerService implements StorageBitsAnalizer{
 
     @Override
     public boolean timeFieldExists(String data) {
-        return data.charAt( 2)=='1';
+        return data.charAt(  2)=='1';
     }
 
     @Override
     public boolean eventFieldExists(String data) {
-        return data.charAt( 1)=='1';
+        return data.charAt(  1)=='1';
     }
 
     @Override
     public boolean objectFieldExists(String data) {
-        return data.charAt( 0)=='1';
+        return data.charAt(  0)=='1';
     }
 }
