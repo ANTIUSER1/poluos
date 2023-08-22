@@ -2,10 +2,11 @@ package tnt.egts.parser.util;
 
 public class StringFixedBeanNames {
 
-
     private StringFixedBeanNames() {
     }
 
+    public static final String DO_TELEDATA_FINAL_RESPONSE_DATA_GENERATOR_BEAN
+            = "DoFinalTeledataResponse";
     public  static final String EGTS_CONNECTOR_BEAN="egts";
 
     public  static final String HEADER_CREATOR_BEAN="headerCreator";
@@ -14,8 +15,8 @@ public class StringFixedBeanNames {
 
     public  static final String RESPONSE_DATA_BEAN= "responseDataService";
 
-    public  static final String AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN =
-            "finalAuthResponseSend";
+    public  static final String DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN =
+            "dofinalAuthResponseSend";
 
     public static final String BYTE_ANALIZER_FOR_EGTS_ERRORS_BEAN =
             "byteAnalizerService";
@@ -24,7 +25,7 @@ public class StringFixedBeanNames {
             "incomeArrayAnalizeService";
 
     public static final String TELEDATA_RESPONSE_SERVICE_BEAN =
-            "teleDataResponseService";
+            "TeleDataResponseService";
 
     public static final String AUTH_RESPONSE_SERVICE_BEAN = "authResponseService";
 }

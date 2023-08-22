@@ -31,7 +31,7 @@ import java.net.Socket;
 public class ReceiverData implements Runnable {
 
     @Autowired
-    @Qualifier (StringFixedBeanNames.AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
+    @Qualifier (StringFixedBeanNames.DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
     OutcomeIdentFinalCreate outcomeIdentCreate;
 
     @Autowired

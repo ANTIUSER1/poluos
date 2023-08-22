@@ -15,7 +15,7 @@ import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service (StringFixedBeanNames.AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
+@Service (StringFixedBeanNames.DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
 @Slf4j
 public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
 
@@ -38,6 +38,20 @@ public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
         log.info("Response data generate finish: " + out);
 
         return out;
+    }
+
+    @Override
+    public OutcomeIdent createTeleDataResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException {
+//        PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
+//        PrepareedResponseData out = PrepareedResponseData.builder()
+//                .sfrd(pt.getData()).code(code)
+//                .responseHead(storage.getPackageHeader())
+//                .build();
+//        out.prepareAuthData();
+//        modyfySFRD(out, storage);
+//        log.info("Response data generate finish: " + out);
+
+        return null;
     }
 
     private void modyfySFRD(PrepareedResponseData out, IncomeDataStorage storage) {

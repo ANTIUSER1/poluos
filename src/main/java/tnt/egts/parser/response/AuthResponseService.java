@@ -20,7 +20,7 @@ import java.net.Socket;
 public class AuthResponseService implements ResponseData {
 
     @Autowired
-    @Qualifier (StringFixedBeanNames.AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
+    @Qualifier (StringFixedBeanNames.DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
     OutcomeIdentFinalCreate outcomeIdentCreate;
 
     @Override
