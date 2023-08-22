@@ -36,13 +36,28 @@ public class IncomeDataStorageService implements Storage {
     @Override
     public IncomeDataStorage create(byte[] income) throws NumberArrayDataException {
         log.info("Backup data generate start");
+        shiftPos=0;
+        System.out.println("start---000 SHIFT:: "+shiftPos);
         int hcsPos = ByteFixPositions.getHCSIndex(income);
-        IncomeDataStorage out = IncomeDataStorage.builder().fullPacket(income).packageHeader(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos + 1)).crc8(income[hcsPos]).packagSFRD(ArrayUtils.getSubArrayToEnd(income, hcsPos + 1)).crc16(income[income.length - 1]).packageType(income[ByteFixPositions.PACKAGE_TYPE_INDEX]).recNum(createRN(income)).packetIdentifier(createPID(income)).frameDataLength(createFLD(income))
+        IncomeDataStorage out = IncomeDataStorage.builder()
+                .fullPacket(income).packageHeader(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos + 1))
+                .crc8(income[hcsPos])
+                .packagSFRD(ArrayUtils.getSubArrayToEnd(income, hcsPos + 1))
+                .crc16(income[income.length - 1]).packageType(income[ByteFixPositions.PACKAGE_TYPE_INDEX])
+                .recNum(createRN(income)).packetIdentifier(createPID(income))
+                .frameDataLength(createFLD(income))
     .build();
 
+        System.out.println("start--111 SHIFT:: "+shiftPos);
+        System.out.println("start--111 SHIFT:: "+shiftPos);
+        System.out.println("start--111 SHIFT:: "+shiftPos);
+        System.out.println("start--111 SHIFT:: "+shiftPos);
         out.setFlags(numberToBitsService.bitsFromByte(out.getPackagSFRD()[FLAG_INDEX]));
+        System.out.println("start--2222 SHIFT:: "+shiftPos);
         prepareStorageData(out);
-        //       incomeCollectionsService.add(out);
+        System.out.println("start--2 SHIFT:: "+shiftPos);
+        System.out.println("start--2 SHIFT:: "+shiftPos);
+        System.out.println("start--2 SHIFT:: "+shiftPos);
 
 
         System.out.println();
@@ -50,6 +65,18 @@ public class IncomeDataStorageService implements Storage {
         System.out.println("   ::::::::::::::::::::  ");
         System.out.println("   ::::::::::::::::::::  ");
         System.out.println("--------------------------------------");
+        System.out.println("--------------------------------------");
+        System.out.println(":  FLAGS :: "+out.getFlags());
+        System.out.println( "OID : "+(bitsAnalizer.objectFieldExists(out.getFlags()) ));
+        System.out.println( "GRP: "+(  out.isInGroup()));
+        System.out.println( "TM: "+  bitsAnalizer.timeFieldExists(out.getFlags()));
+        System.out.println( "EVID: "+ bitsAnalizer.eventFieldExists(out.getFlags()));
+        System.out.println( "OID exists: "+(bitsAnalizer.objectFieldExists(out.getFlags()) || out.isInGroup()));
+        System.out.println( "RPP: "+bitsAnalizer.getRecordProcessingPriority(out.getFlags()) );
+        System.out.println( "SSOD: "+bitsAnalizer.sourceServiceOnDevice(out.getFlags()));
+        System.out.println( "RSOD: "+bitsAnalizer.reciplentServiceOnDevice(out.getFlags()));
+        System.out.println();
+        System.out.println();
         System.out.println("OUT.    flag index " +  FLAG_INDEX );
         System.out.println("OUT.  flag as byte " + out.getPackagSFRD()[FLAG_INDEX]);
         System.out.println("OUT.           oid " + out.getObjectIdentifier());
@@ -63,73 +90,63 @@ public class IncomeDataStorageService implements Storage {
         System.out.println("OUT.   SteviceType " + out.getServiceType()  );
         System.out.println("OUT.        HEADER " + ArrayUtils.arrayPrintToScreen( out.getPackageHeader())  );
         System.out.println();
-        System.out.println();
         System.out.println("OUT.  SFRD " + ArrayUtils.arrayPrintToScreen( out.getPackagSFRD())  );
         System.out.println();
         System.out.println();
         System.out.println("OUT.  full " + ArrayUtils.arrayPrintToScreen( out.getFullPacket())  );
         System.out.println();
         System.out.println();
+
+
         log.info("Backup data generate finish: " + out);
         return out;
     }
 
     private void prepareStorageData(IncomeDataStorage out) {
-        System.out.println("FLAGS::   " + out.getFlags());
-        System.out.println("FLAGS::---   " + out.getPackagSFRD()[FLAG_INDEX]);
-
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+        System.out.println("start SHIFT:: "+shiftPos);
         try {
-            System.out.println("HHH- 00");
-          //  System.out.println("HHH- 00  "+shiftPos);
-            System.out.println("HHH- 00");
             if (bitsAnalizer.objectFieldExists(out.getFlags()) || out.isInGroup()) {
+                System.out.println("00000000000000000 SHIFT:: "+shiftPos);
                 setOID(out);
+                System.out.println("1111111111111111111111111 SHIFT:: "+shiftPos);
             }
-            System.out.println("HHH- 01");
-        //    System.out.println("HHH- 01  "+shiftPos);
-            System.out.println("HHH- 00");
+            System.out.println("oid SHIFT:: "+shiftPos);
         } catch (NumberArrayDataException e) {
             log.error("Can not create OID  flag: \"+out.getFlags()");
             throw new RuntimeException(e);
         }
         try {
-            System.out.println("HHH- 10");
-            //System.out.println("HHH- 10  "+shiftPos);
-            System.out.println("HHH- 10");
             if (bitsAnalizer.eventFieldExists(out.getFlags())) {
                 setEVID(out);
             }
-            System.out.println("HHH- 11");
-         //   System.out.println("HHH- 11  "+shiftPos);
-            System.out.println("HHH- 11");
+            System.out.println("evid SHIFT:: "+shiftPos);
         } catch (NumberArrayDataException e) {
             log.error("Can not create EVID  flag: " + out.getFlags());
             throw new RuntimeException(e);
         }
         try {
-            System.out.println("HHH- 02");
-        //    System.out.println("HHH- 02  "+shiftPos);
-            System.out.println("HHH- 02");
             if (bitsAnalizer.timeFieldExists(out.getFlags())) {
                 seTM(out);
             }
-            System.out.println("HHH- 12");
-          //  System.out.println("HHH- 12  "+shiftPos);
-            System.out.println("HHH- 12");
+            System.out.println("tm SHIFT:: "+shiftPos);
         } catch (NumberArrayDataException e) {
             log.error("Can not create TM  flag: \"+out.getFlags()");
             throw new RuntimeException(e);
         }
+        System.out.println("result SHIFT:: "+shiftPos);
+        System.out.println("FLAG_INDEX:: "+FLAG_INDEX);
+        System.out.println("sst index:: "+ (FLAG_INDEX + shiftPos+1) );
         out.setProcessingPriority(bitsAnalizer.getRecordProcessingPriority(out.getFlags()));
         out.setInGroup(bitsAnalizer.inGroup(out.getFlags()));
         out.setReciplentServiceOnDevice(bitsAnalizer.reciplentServiceOnDevice(out.getFlags()));
         out.setSourceServiceOnDevice(bitsAnalizer.sourceServiceOnDevice(out.getFlags()));
         out.setInGroup(bitsAnalizer.inGroup(out.getFlags()));
-       out.setLengthToRD(FLAG_INDEX + shiftPos + 3);
+
         out.setSstIndex(FLAG_INDEX + shiftPos+1);
         out.setServiceType(out.getByTypeID( out.getPackagSFRD()[out.getSstIndex()]));
         //        out.setSstIndex(SST_INDEX);
-
+System.out.println("&&&&&&&&&&&&&&&&&&&&&&&");
     }
 
     private void seTM(IncomeDataStorage out) throws NumberArrayDataException {
@@ -148,10 +165,6 @@ public class IncomeDataStorageService implements Storage {
         byte[] intArray = ArrayUtils.getFixedLengthSubArray(out.getPackagSFRD(), FLAG_INDEX + 1, 4);
         out.setObjectIdentifier(NumberUtils.byteArrayInverseToInt(intArray));
         shiftPos += 4;
-        System.out.println(shiftPos+"   OOOOO:  1-index " + (FLAG_INDEX + 1)+
-                           " \n ARRAY: "+ArrayUtils.arrayPrintToScreen(intArray)+
-                           "\n   vvvvvv  "+ out.getObjectIdentifier() );
-
     }
 
     private short createRN(byte[] income) throws NumberArrayDataException {
