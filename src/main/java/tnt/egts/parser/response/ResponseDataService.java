@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import tnt.egts.parser.commontasks.OutcomeIdent;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.ServiceType;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.NumberUtils;
@@ -31,9 +32,24 @@ public class ResponseDataService implements ResponseData {
 
     public void sendResponse(Socket socket, IncomeDataStorage store,
                              OutcomeIdent  preparingOutcomeData, byte code) throws NumberArrayDataException {
+System.out.println("SERVICE TYPE");
+System.out.println("SERVICE TYPE  ****************************************");
+System.out.println("SERVICE TYPE  "+store.getServiceType());
+System.out.println("SERVICE TYPE  ****************************************");
+System.out.println("SERVICE TYPE");
+System.out.println("SERVICE TYPE");
+        if (store.getServiceType().equals(ServiceType.TELEDATA_SERVICE)) {
+            log.info("Response Work with TELEDATA Service start");
+            teleDataResponse.sendResponse(socket, store, preparingOutcomeData, code);
+            log.info(" ResponseWork with TELEDATA Service stop");
+        }
 
-            authResponse.sendResponse(socket, store, preparingOutcomeData,
-                    code);
+        if (store.getServiceType().equals(ServiceType.AUTH_SERVICE)) {
+            log.info("Response Work with AUTH Service start");
+            authResponse.sendResponse(socket, store, preparingOutcomeData, code);
+            log.info("Response Work with AUTH Service stop");
+        }
+
         //testOutSendData(preparingOutcomeData.getData());
     }
 

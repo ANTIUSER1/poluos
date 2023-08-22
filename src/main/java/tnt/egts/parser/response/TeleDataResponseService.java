@@ -16,6 +16,6 @@ public class TeleDataResponseService implements ResponseData {
     @Override
     public void sendResponse(Socket socket, IncomeDataStorage store,
                              OutcomeIdent  preparingOutcomeData, byte code) throws NumberArrayDataException {
-
+System.out.println(".......TELE=DATA response........");
     }
 }
