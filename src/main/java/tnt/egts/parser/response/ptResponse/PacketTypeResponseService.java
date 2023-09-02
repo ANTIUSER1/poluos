@@ -9,14 +9,16 @@ import tnt.egts.parser.commontasks.OutcomeIdentCreate;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.response.separate.SeparateRecord;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service ("pt")
+//@Service ("pt")
+@Service(StringFixedBeanNames.PACKET_TYPE_RESPONSE_DATA_BEAN)
 @Slf4j
 public class PacketTypeResponseService implements OutcomeIdentCreate {
 
 
     @Autowired
-    @Qualifier ("separate")
+    @Qualifier (StringFixedBeanNames.SEPARATE_RECORD_SERVICE_DATA_BEAN)
     private OutcomeIdentCreate creator;
 
     @Override

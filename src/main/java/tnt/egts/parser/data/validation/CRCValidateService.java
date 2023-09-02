@@ -1,15 +1,18 @@
 package tnt.egts.parser.data.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service
+@Service(StringFixedBeanNames.CRC_VALIDATOR_SERVICE_DATA_BEAN)
 public class CRCValidateService implements CRCValidate {
 
     @Autowired
+    @Qualifier(StringFixedBeanNames.CRC_SERVICE_DATA_BEAN)
     private CRC crc;
 
     @Override

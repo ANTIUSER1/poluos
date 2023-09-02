@@ -11,8 +11,6 @@ import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Socket;
 
 @Service (StringFixedBeanNames.AUTH_RESPONSE_SERVICE_BEAN)
@@ -20,7 +18,7 @@ import java.net.Socket;
 public class AuthResponseService  extends ResponseServiceAbstract  implements ResponseData {
 
     @Autowired
-    @Qualifier (StringFixedBeanNames.DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
+    @Qualifier (StringFixedBeanNames.DO_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
     OutcomeIdentFinalCreate outcomeIdentCreate;
 
     @Override

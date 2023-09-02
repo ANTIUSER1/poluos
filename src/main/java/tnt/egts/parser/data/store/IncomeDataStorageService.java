@@ -2,6 +2,7 @@ package tnt.egts.parser.data.store;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.commontasks.NumberToBits;
 import tnt.egts.parser.crc.service.CRC;
@@ -11,6 +12,7 @@ import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.NumberUtils;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
 @Service
 @Slf4j
@@ -21,6 +23,7 @@ public class IncomeDataStorageService implements Storage {
     private static final int SST_INDEX = FLAG_INDEX + 3 * 4;
 
     @Autowired
+    @Qualifier (StringFixedBeanNames.CRC_SERVICE_DATA_BEAN)
     private CRC crc;
 
     @Autowired

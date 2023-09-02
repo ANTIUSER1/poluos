@@ -7,17 +7,18 @@ import org.springframework.stereotype.Service;
 import tnt.egts.parser.crc.generator.*;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service("makeCRC")
+@Service(StringFixedBeanNames.CRC_SERVICE_DATA_BEAN)
 @Slf4j
 public class CRCService implements CRC {
 
     @Autowired
-    @Qualifier("crc8")
+    @Qualifier(StringFixedBeanNames.CRC8_SERVICE_DATA_BEAN)
     private CRC8Calculator calculator8;
 
     @Autowired
-    @Qualifier("crc16")
+    @Qualifier(StringFixedBeanNames.CRC16_SERVICE_DATA_BEAN)
     private CRC16Calculator calculator16;
 
     @Override

@@ -9,14 +9,16 @@ import tnt.egts.parser.commontasks.OutcomeIdentCreate;
 import tnt.egts.parser.data.auth.AuthRecordData;
 import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service ("separate")
+@Service(StringFixedBeanNames.SEPARATE_RECORD_SERVICE_DATA_BEAN) //("separate")
 @Slf4j
 public class SeparateRecordService implements OutcomeIdentCreate {
 
     @Autowired
-    @Qualifier ("authRecord")
-    private OutcomeIdentCreate creator;
+
+    @Qualifier (StringFixedBeanNames.RESPONSE_DATA_GENERATOR_BEAN)
+     private OutcomeIdentCreate creator;
 
 
     @Override

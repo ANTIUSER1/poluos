@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 import tnt.egts.parser.commontasks.OutcomeIdent;
 import tnt.egts.parser.commontasks.OutcomeIdentCreate;
 import tnt.egts.parser.data.store.IncomeDataStorage;
+import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service("sr")
+@Service(StringFixedBeanNames.SR_RECORD_RESPONSE_DATA_BEAN)
 @Slf4j
 public class SrRecordResponseService implements OutcomeIdentCreate {
 

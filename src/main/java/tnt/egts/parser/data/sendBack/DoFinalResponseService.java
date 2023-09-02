@@ -15,15 +15,16 @@ import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service (StringFixedBeanNames.DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
+@Service (StringFixedBeanNames.DO_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
 @Slf4j
-public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
+public class DoFinalResponseService implements OutcomeIdentFinalCreate {
 
     @Autowired
-    @Qualifier ("pt")
+    @Qualifier (StringFixedBeanNames.PACKET_TYPE_RESPONSE_DATA_BEAN)
     OutcomeIdentCreate creator;
 
     @Autowired
+    @Qualifier(StringFixedBeanNames.CRC_SERVICE_DATA_BEAN)
     private CRC crc;
 
     @Override
