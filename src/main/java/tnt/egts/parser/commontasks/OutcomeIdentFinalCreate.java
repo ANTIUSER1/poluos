@@ -15,6 +15,6 @@ public interface OutcomeIdentFinalCreate {
      * @return
      * @throws NumberArrayDataException
      */
-    OutcomeIdent createAuthResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException;
-    OutcomeIdent createTeleDataResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException;
+    OutcomeIdent createResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException;
+//    OutcomeIdent createTeleDataResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException;
 }

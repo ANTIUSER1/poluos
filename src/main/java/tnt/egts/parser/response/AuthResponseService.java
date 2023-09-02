@@ -29,8 +29,10 @@ public class AuthResponseService implements ResponseData {
 
         log.info("Sending back AUTH-response to BNSO start. \n  " + ArrayUtils.arrayPrintToScreen(preparingOutcomeData.getData()));
         preparingOutcomeData =
-                outcomeIdentCreate.createAuthResponse(store, code);
+                outcomeIdentCreate.createResponse(store, code);
 
+
+// common ---- to parent class
         OutputStream output = null;
         try {
             output = socket.getOutputStream();
@@ -40,5 +42,6 @@ public class AuthResponseService implements ResponseData {
             log.error("Error while response to  attempt");
             e.printStackTrace();
         }
+// common ---- to parent class
     }
 }

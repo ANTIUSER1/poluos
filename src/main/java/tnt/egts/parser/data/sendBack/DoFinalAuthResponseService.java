@@ -27,34 +27,22 @@ public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
     private CRC crc;
 
     @Override
-    public OutcomeIdent createAuthResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException {
+    public OutcomeIdent createResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException {
+
         PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
         PrepareedResponseData out = PrepareedResponseData.builder()
                 .sfrd(pt.getData()).code(code)
                 .responseHead(storage.getPackageHeader())
                 .build();
         out.prepareAuthData();
-        modyfySFRD(out, storage);
+        out=   modyfySFRD(out, storage);
         log.info("Response data generate finish: " + out);
 
         return out;
     }
 
-    @Override
-    public OutcomeIdent createTeleDataResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException {
-//        PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
-//        PrepareedResponseData out = PrepareedResponseData.builder()
-//                .sfrd(pt.getData()).code(code)
-//                .responseHead(storage.getPackageHeader())
-//                .build();
-//        out.prepareAuthData();
-//        modyfySFRD(out, storage);
-//        log.info("Response data generate finish: " + out);
 
-        return null;
-    }
-
-    private void modyfySFRD(PrepareedResponseData out, IncomeDataStorage storage) {
+    private PrepareedResponseData modyfySFRD(PrepareedResponseData out, IncomeDataStorage storage) {
         int headLengthIndexIndex = ByteFixPositions.HEAD_LENGTH_INDEX;
 
         int headLen = storage.getPackageHeader().length;
@@ -72,5 +60,12 @@ public class DoFinalAuthResponseService implements OutcomeIdentFinalCreate {
         out.setData(data);
 
 
+        System.out.println("OUT;;;  ");
+        System.out.println("****************;;;  ");
+        System.out.println("   "+out);
+        System.out.println("****************;;;  ");
+        System.out.println("OUT;;;  ");
+
+return  out;
     }
 }

@@ -11,6 +11,8 @@ import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 
 @Service (StringFixedBeanNames.TELEDATA_RESPONSE_SERVICE_BEAN)
@@ -18,7 +20,7 @@ import java.net.Socket;
 public class TeleDataResponseService implements ResponseData {
 
     @Autowired
-    @Qualifier (StringFixedBeanNames.DO_TELEDATA_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
+    @Qualifier (StringFixedBeanNames.DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
     OutcomeIdentFinalCreate outcomeIdentCreate;
 
     @Override
@@ -30,7 +32,7 @@ public class TeleDataResponseService implements ResponseData {
                            "\n .0:::  "+ ArrayUtils.arrayPrintToScreen(preparingOutcomeData.getData())
         );
         preparingOutcomeData =
-                outcomeIdentCreate.createTeleDataResponse(store, code);
+                outcomeIdentCreate.createResponse(store, code);
 
 
         System.out.println(".   ......TELE=DATA response......."  + "\n   " +
@@ -38,5 +40,24 @@ public class TeleDataResponseService implements ResponseData {
 
         );
 
+// common ---- to parent class
+        OutputStream output = null;
+        try {
+            output = socket.getOutputStream();
+            output.write(preparingOutcomeData.getData());
+            log.info("Sending back TELEDATA-response to BNSO finish. ");
+        } catch (IOException e) {
+            log.error("Error while response to  attempt");
+            e.printStackTrace();
+        }
+// common ---- to parent class
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
     }
 }

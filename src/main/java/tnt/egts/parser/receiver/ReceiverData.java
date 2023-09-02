@@ -149,7 +149,7 @@ public class ReceiverData implements Runnable {
     private void dataTransform(byte[] income, byte code) throws NumberArrayDataException {
         log.info("Storage  income Data start");
         store = storage.create(income);
-        preparingOutcomeAuthData = outcomeIdentCreate.createAuthResponse(store, code);
+        preparingOutcomeAuthData = outcomeIdentCreate.createResponse(store, code);
         log.info("Storage  income Data finish");
     }
 
