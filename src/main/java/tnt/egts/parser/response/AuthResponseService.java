@@ -17,7 +17,7 @@ import java.net.Socket;
 
 @Service (StringFixedBeanNames.AUTH_RESPONSE_SERVICE_BEAN)
 @Slf4j
-public class AuthResponseService implements ResponseData {
+public class AuthResponseService  extends ResponseServiceAbstract  implements ResponseData {
 
     @Autowired
     @Qualifier (StringFixedBeanNames.DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
@@ -31,17 +31,6 @@ public class AuthResponseService implements ResponseData {
         preparingOutcomeData =
                 outcomeIdentCreate.createResponse(store, code);
 
-
-// common ---- to parent class
-        OutputStream output = null;
-        try {
-            output = socket.getOutputStream();
-            output.write(preparingOutcomeData.getData());
-            log.info("Sending back AUTH-response to BNSO finish. ");
-        } catch (IOException e) {
-            log.error("Error while response to  attempt");
-            e.printStackTrace();
-        }
-// common ---- to parent class
+        sendData(socket,preparingOutcomeData.getData() );
     }
 }

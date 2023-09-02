@@ -17,7 +17,7 @@ import java.net.Socket;
 
 @Service (StringFixedBeanNames.TELEDATA_RESPONSE_SERVICE_BEAN)
 @Slf4j
-public class TeleDataResponseService implements ResponseData {
+public class TeleDataResponseService extends ResponseServiceAbstract implements ResponseData {
 
     @Autowired
     @Qualifier (StringFixedBeanNames.DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN)
@@ -39,25 +39,15 @@ public class TeleDataResponseService implements ResponseData {
                            "1:::  "+ ArrayUtils.arrayPrintToScreen(preparingOutcomeData.getData())
 
         );
+        sendData(socket,preparingOutcomeData.getData() );
 
-// common ---- to parent class
-        OutputStream output = null;
-        try {
-            output = socket.getOutputStream();
-            output.write(preparingOutcomeData.getData());
-            log.info("Sending back TELEDATA-response to BNSO finish. ");
-        } catch (IOException e) {
-            log.error("Error while response to  attempt");
-            e.printStackTrace();
-        }
-// common ---- to parent class
 System.out.println();
 System.out.println();
 System.out.println();
 System.out.println();
 System.out.println();
 System.out.println();
-System.out.println();
+System.out.println("***************************************************");
 System.out.println();
     }
 }
