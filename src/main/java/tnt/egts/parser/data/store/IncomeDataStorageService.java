@@ -38,48 +38,47 @@ public class IncomeDataStorageService implements Storage {
     public IncomeDataStorage create(byte[] income) throws NumberArrayDataException {
         log.info("Backup data generate start");
         shiftPos = 0;
-        System.out.println("start---000 SHIFT:: " + shiftPos);
         int hcsPos = ByteFixPositions.getHCSIndex(income);
         IncomeDataStorage out = IncomeDataStorage.builder().fullPacket(income).packageHeader(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos + 1)).crc8(income[hcsPos]).packagSFRD(ArrayUtils.getSubArrayToEnd(income, hcsPos + 1)).crc16(income[income.length - 1]).packageType(income[ByteFixPositions.PACKAGE_TYPE_INDEX]).recNum(createRN(income)).packetIdentifier(createPID(income)).frameDataLength(createFLD(income)).build();
 
         prepareStorageData(out);
 
-//        System.out.println();
-//        System.out.println();
-//        System.out.println("   ::::::::::::::::::::  ");
-//        System.out.println("   ::::::::::::::::::::  ");
-//        System.out.println("--------------------------------------");
-//        System.out.println("--------------------------------------");
-//        System.out.println(":  FLAGS :: "+out.getFlags());
-//        System.out.println( "OID : "+(bitsAnalizer.objectFieldExists(out.getFlags()) ));
-//        System.out.println( "GRP: "+(  out.isInGroup()));
-//        System.out.println( "TM: "+  bitsAnalizer.timeFieldExists(out.getFlags()));
-//        System.out.println( "EVID: "+ bitsAnalizer.eventFieldExists(out.getFlags()));
-//        System.out.println( "OID exists: "+(bitsAnalizer.objectFieldExists(out.getFlags()) || out.isInGroup()));
-//        System.out.println( "RPP: "+bitsAnalizer.getRecordProcessingPriority(out.getFlags()) );
-//        System.out.println( "SSOD: "+bitsAnalizer.sourceServiceOnDevice(out.getFlags()));
-//        System.out.println( "RSOD: "+bitsAnalizer.reciplentServiceOnDevice(out.getFlags()));
-//        System.out.println();
-//        System.out.println();
-//        System.out.println("OUT.    flag index " +  FLAG_INDEX );
-//        System.out.println("OUT.  flag as byte " + out.getPackagSFRD()[FLAG_INDEX]);
-//        System.out.println("OUT.           oid " + out.getObjectIdentifier());
-//        System.out.println("OUT.          evid " + out.getEventIdentifier());
-//        System.out.println("OUT.            tm " + out.getTime());
-//        System.out.println("OUT.           grp " + out.isInGroup());
-//        System.out.println("OUT.         prior " + out.getProcessingPriority());
-//        System.out.println("OUT.      RD-Start " + out.getLengthToRD());
-//        System.out.println("OUT.     sst index " + out.getSstIndex());
-//        System.out.println("OUT.     sst Value " + out.getPackagSFRD()[out.getSstIndex()]);
-//        System.out.println("OUT.   SteviceType " + out.getServiceType()  );
-//        System.out.println("OUT.        HEADER " + ArrayUtils.arrayPrintToScreen( out.getPackageHeader())  );
-//        System.out.println();
-//        System.out.println("OUT.  SFRD " + ArrayUtils.arrayPrintToScreen( out.getPackagSFRD())  );
-//        System.out.println();
-//        System.out.println();
-//        System.out.println("OUT.  full " + ArrayUtils.arrayPrintToScreen( out.getFullPacket())  );
-//        System.out.println();
-//        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("   ::::::::::::::::::::  ");
+        System.out.println("   ::::::::::::::::::::  ");
+        System.out.println("--------------------------------------");
+        System.out.println("--------------------------------------");
+        System.out.println(":  FLAGS :: "+out.getFlags());
+        System.out.println( "OID : "+(bitsAnalizer.objectFieldExists(out.getFlags()) ));
+        System.out.println( "GRP: "+(  out.isInGroup()));
+        System.out.println( "TM: "+  bitsAnalizer.timeFieldExists(out.getFlags()));
+        System.out.println( "EVID: "+ bitsAnalizer.eventFieldExists(out.getFlags()));
+        System.out.println( "OID exists: "+(bitsAnalizer.objectFieldExists(out.getFlags()) || out.isInGroup()));
+        System.out.println( "RPP: "+bitsAnalizer.getRecordProcessingPriority(out.getFlags()) );
+        System.out.println( "SSOD: "+bitsAnalizer.sourceServiceOnDevice(out.getFlags()));
+        System.out.println( "RSOD: "+bitsAnalizer.reciplentServiceOnDevice(out.getFlags()));
+        System.out.println();
+        System.out.println();
+        System.out.println("OUT.    flag index " +  FLAG_INDEX );
+        System.out.println("OUT.  flag as byte " + out.getPackagSFRD()[FLAG_INDEX]);
+        System.out.println("OUT.           oid " + out.getObjectIdentifier());
+        System.out.println("OUT.          evid " + out.getEventIdentifier());
+        System.out.println("OUT.            tm " + out.getTime());
+        System.out.println("OUT.           grp " + out.isInGroup());
+        System.out.println("OUT.         prior " + out.getProcessingPriority());
+        System.out.println("OUT.      RD-Start " + out.getLengthToRD());
+        System.out.println("OUT.     sst index " + out.getSstIndex());
+        System.out.println("OUT.     sst Value " + out.getPackagSFRD()[out.getSstIndex()]);
+        System.out.println("OUT.   SteviceType " + out.getServiceType()  );
+        System.out.println("OUT.        HEADER " + ArrayUtils.arrayPrintToScreen( out.getPackageHeader())  );
+        System.out.println();
+        System.out.println("OUT.  SFRD " + ArrayUtils.arrayPrintToScreen( out.getPackagSFRD())  );
+        System.out.println();
+        System.out.println();
+        System.out.println("OUT.  full " + ArrayUtils.arrayPrintToScreen( out.getFullPacket())  );
+        System.out.println();
+        System.out.println();
 
         log.info("Backup data generate finish: " + out);
         return out;
@@ -90,11 +89,8 @@ public class IncomeDataStorageService implements Storage {
         out.setFlags(numberToBitsService.bitsFromByte(out.getPackagSFRD()[FLAG_INDEX]));
         try {
             if (bitsAnalizer.objectFieldExists(out.getFlags()) || out.isInGroup()) {
-                System.out.println("00000000000000000 SHIFT:: " + shiftPos);
                 setOID(out);
-                System.out.println("1111111111111111111111111 SHIFT:: " + shiftPos);
             }
-            System.out.println("oid SHIFT:: " + shiftPos);
         } catch (NumberArrayDataException e) {
             log.error("Can not create OID  flag: \"+out.getFlags()");
             throw new RuntimeException(e);
@@ -103,7 +99,6 @@ public class IncomeDataStorageService implements Storage {
             if (bitsAnalizer.eventFieldExists(out.getFlags())) {
                 setEVID(out);
             }
-            System.out.println("evid SHIFT:: " + shiftPos);
         } catch (NumberArrayDataException e) {
             log.error("Can not create EVID  flag: " + out.getFlags());
             throw new RuntimeException(e);
@@ -112,7 +107,6 @@ public class IncomeDataStorageService implements Storage {
             if (bitsAnalizer.timeFieldExists(out.getFlags())) {
                 seTM(out);
             }
-            System.out.println("tm SHIFT:: " + shiftPos);
         } catch (NumberArrayDataException e) {
             log.error("Can not create TM  flag: \"+out.getFlags()");
             throw new RuntimeException(e);

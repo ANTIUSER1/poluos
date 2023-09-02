@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
+
 @Service (StringFixedBeanNames.TELEDATA_RESPONSE_SERVICE_BEAN)
 @Slf4j
 public class TeleDataResponseService extends ResponseServiceAbstract implements ResponseData {
@@ -39,7 +40,7 @@ public class TeleDataResponseService extends ResponseServiceAbstract implements 
                            "1:::  "+ ArrayUtils.arrayPrintToScreen(preparingOutcomeData.getData())
 
         );
-        sendData(socket,preparingOutcomeData.getData() );
+      //  sendData(socket,preparingOutcomeData.getData() );
 
 System.out.println();
 System.out.println();

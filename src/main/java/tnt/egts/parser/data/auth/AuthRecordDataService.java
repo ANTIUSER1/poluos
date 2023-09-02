@@ -10,7 +10,9 @@ import tnt.egts.parser.data.store.IncomeDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.response.recResponse.SrRecordResponse;
 
-@Service("authRecord")
+@Service(
+
+        "authRecord")
 @Slf4j
 public class AuthRecordDataService implements OutcomeIdentCreate {
 

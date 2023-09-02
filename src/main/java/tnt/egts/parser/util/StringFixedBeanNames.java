@@ -16,7 +16,7 @@ public class StringFixedBeanNames {
     public  static final String RESPONSE_DATA_BEAN= "responseDataService";
 
     public  static final String DO_AUTH_FINAL_RESPONSE_DATA_GENERATOR_BEAN =
-            "dofinalAuthResponseSend";
+            "dofinalResponseSend";
 
     public static final String BYTE_ANALIZER_FOR_EGTS_ERRORS_BEAN =
             "byteAnalizerService";
