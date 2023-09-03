@@ -35,6 +35,7 @@ public class ReceiverData implements Runnable {
     OutcomeIdentFinalCreate outcomeIdentCreate;
 
     @Autowired
+            @Qualifier(StringFixedBeanNames.CRC_SERVICE_DATA_BEAN)
     CRC crc;
 
     private OutcomeIdent preparingIdentData;
