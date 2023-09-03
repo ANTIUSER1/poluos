@@ -8,7 +8,7 @@ import tnt.egts.parser.commontasks.OutcomeIdent;
 import tnt.egts.parser.commontasks.OutcomeIdentCreate;
 import tnt.egts.parser.commontasks.OutcomeIdentFinalCreate;
 import tnt.egts.parser.crc.service.CRC;
-import tnt.egts.parser.data.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.ResponseDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.response.ptResponse.PacketTypeResponse;
 import tnt.egts.parser.util.ArrayUtils;
@@ -28,7 +28,7 @@ public class DoFinalResponseService implements OutcomeIdentFinalCreate {
     private CRC crc;
 
     @Override
-    public OutcomeIdent createResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException {
+    public OutcomeIdent createResponse(ResponseDataStorage storage, byte code) throws NumberArrayDataException {
 
         PacketTypeResponse pt = (PacketTypeResponse) creator.create(storage);
         PrepareedResponseData out = PrepareedResponseData.builder()
@@ -43,7 +43,7 @@ public class DoFinalResponseService implements OutcomeIdentFinalCreate {
     }
 
 
-    private PrepareedResponseData modyfySFRD(PrepareedResponseData out, IncomeDataStorage storage) {
+    private PrepareedResponseData modyfySFRD(PrepareedResponseData out, ResponseDataStorage storage) {
         int headLengthIndexIndex = ByteFixPositions.HEAD_LENGTH_INDEX;
 
         int headLen = storage.getPackageHeader().length;

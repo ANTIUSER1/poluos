@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.commontasks.OutcomeIdent;
 import tnt.egts.parser.crc.service.CRC;
-import tnt.egts.parser.data.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.ResponseDataStorage;
 import tnt.egts.parser.data.store.ServiceType;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
@@ -30,7 +30,7 @@ public class ResponseDataService implements ResponseData {
     @Qualifier (StringFixedBeanNames.TELEDATA_RESPONSE_SERVICE_BEAN)
     private ResponseData teleDataResponse;
 
-    public void sendResponse(Socket socket, IncomeDataStorage store,
+    public void sendResponse(Socket socket, ResponseDataStorage store,
                              OutcomeIdent  preparingOutcomeData, byte code) throws NumberArrayDataException {
 System.out.println("SERVICE TYPE");
 System.out.println("SERVICE TYPE  ****************************************");

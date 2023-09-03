@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnt.egts.parser.commontasks.IncomeIdent;
 import tnt.egts.parser.commontasks.IncomeIdentCreate;
-import tnt.egts.parser.data.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.ResponseDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ByteFixPositions;
 
@@ -16,7 +16,7 @@ public class HeadService implements IncomeIdentCreate {
     @Autowired
     private HeadOptionsService hoService;
     @Override
-    public IncomeIdent create(IncomeDataStorage storage) throws NumberArrayDataException {
+    public IncomeIdent create(ResponseDataStorage storage) throws NumberArrayDataException {
         log.info("Storage  income head Data start");
         byte[] income=storage.getPackageHeader();
 

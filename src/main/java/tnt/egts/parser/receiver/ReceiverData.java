@@ -10,7 +10,7 @@ import tnt.egts.parser.crc.service.CRC;
 import tnt.egts.parser.data.Storage;
 import tnt.egts.parser.data.analysis.ByteAnalizer;
 import tnt.egts.parser.data.store.IncomeCollectionsService;
-import tnt.egts.parser.data.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.ResponseDataStorage;
 import tnt.egts.parser.errors.InvalidDataException;
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.response.ResponseData;
@@ -54,11 +54,8 @@ public class ReceiverData implements Runnable {
 
     @Autowired
     @Qualifier(StringFixedBeanNames.RESPONSE_DATA_STOREGE_SERVICE_BEAN)
-    private Storage responseStorage;
+    private Storage dataStorage;
 
-    @Autowired
-    @Qualifier(StringFixedBeanNames.BNSO_DATA_STORAGE_SERVICE_BEAN)
-    private Storage bnsoStorage;
 
     @Autowired
     @Qualifier (StringFixedBeanNames.BYTE_ANALIZER_FOR_EGTS_ERRORS_BEAN)
@@ -71,7 +68,7 @@ public class ReceiverData implements Runnable {
     @Autowired
     private IncomeCollectionsService incomeCollectionsService;
 
-    private IncomeDataStorage store;
+    private ResponseDataStorage store;
 
     private int responseCode;
     private int step;
@@ -152,7 +149,7 @@ public class ReceiverData implements Runnable {
 
     private void dataTransform(byte[] income, byte code) throws NumberArrayDataException {
         log.info("Storage  income Data start");
-        store = responseStorage.create(income);
+        store = dataStorage.createResponseStorage(income);
         preparingIdentData = outcomeIdentCreate.createResponse(store, code);
         log.info("Storage  income Data finish");
     }

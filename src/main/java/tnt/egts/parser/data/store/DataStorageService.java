@@ -16,7 +16,7 @@ import tnt.egts.parser.util.StringFixedBeanNames;
 
 @Service(StringFixedBeanNames.RESPONSE_DATA_STOREGE_SERVICE_BEAN)
 @Slf4j
-public class ResponseDataStorageService implements Storage {
+public class DataStorageService implements Storage {
 
     private static final int FLAG_INDEX = 4;
 
@@ -38,11 +38,11 @@ public class ResponseDataStorageService implements Storage {
     private int shiftPos;
 
     @Override
-    public IncomeDataStorage create(byte[] income) throws NumberArrayDataException {
+    public ResponseDataStorage createResponseStorage(byte[] income) throws NumberArrayDataException {
         log.info("Backup data generate start");
         shiftPos = 0;
         int hcsPos = ByteFixPositions.getHCSIndex(income);
-        IncomeDataStorage out = IncomeDataStorage.builder().fullPacket(income).packageHeader(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos + 1)).crc8(income[hcsPos]).packagSFRD(ArrayUtils.getSubArrayToEnd(income, hcsPos + 1)).crc16(income[income.length - 1]).packageType(income[ByteFixPositions.PACKAGE_TYPE_INDEX]).recNum(createRN(income)).packetIdentifier(createPID(income)).frameDataLength(createFLD(income)).build();
+        ResponseDataStorage out = ResponseDataStorage.builder().fullPacket(income).packageHeader(ArrayUtils.getSubArrayFromTo(income, 0, hcsPos + 1)).crc8(income[hcsPos]).packagSFRD(ArrayUtils.getSubArrayToEnd(income, hcsPos + 1)).crc16(income[income.length - 1]).packageType(income[ByteFixPositions.PACKAGE_TYPE_INDEX]).recNum(createRN(income)).packetIdentifier(createPID(income)).frameDataLength(createFLD(income)).build();
 
         prepareStorageData(out);
 
@@ -87,7 +87,12 @@ public class ResponseDataStorageService implements Storage {
         return out;
     }
 
-    private void prepareStorageData(IncomeDataStorage out) {
+    @Override
+    public BNSODataStorage createBNSOStorage(byte[] income) throws NumberArrayDataException {
+        return null;
+    }
+
+    private void prepareStorageData(ResponseDataStorage out) {
         log.info("set additional data to IncomeDataStorage start");
         out.setFlags(numberToBitsService.bitsFromByte(out.getPackagSFRD()[FLAG_INDEX]));
         try {
@@ -126,21 +131,21 @@ public class ResponseDataStorageService implements Storage {
         log.info("set additional data to IncomeDataStorage finish");
     }
 
-    private void seTM(IncomeDataStorage out) throws NumberArrayDataException {
+    private void seTM(ResponseDataStorage out) throws NumberArrayDataException {
         log.info("set additional time data to IncomeDataStorage start");
         byte[] intArray = ArrayUtils.getFixedLengthSubArray(out.getPackagSFRD(), FLAG_INDEX + 1 + shiftPos, 4);
         out.setTime(NumberUtils.byteArrayInverseToInt(intArray));
         shiftPos += 4;
     }
 
-    private void setEVID(IncomeDataStorage out) throws NumberArrayDataException {
+    private void setEVID(ResponseDataStorage out) throws NumberArrayDataException {
         log.info("set additional evidid data to IncomeDataStorage start");
         byte[] intArray = ArrayUtils.getFixedLengthSubArray(out.getPackagSFRD(), FLAG_INDEX + 1 + shiftPos, 4);
         out.setEventIdentifier(NumberUtils.byteArrayInverseToInt(intArray));
         shiftPos += 4;
     }
 
-    private void setOID(IncomeDataStorage out) throws NumberArrayDataException {
+    private void setOID(ResponseDataStorage out) throws NumberArrayDataException {
         log.info("set additional oid data to IncomeDataStorage start");
         byte[] intArray = ArrayUtils.getFixedLengthSubArray(out.getPackagSFRD(), FLAG_INDEX + 1, 4);
         out.setObjectIdentifier(NumberUtils.byteArrayInverseToInt(intArray));

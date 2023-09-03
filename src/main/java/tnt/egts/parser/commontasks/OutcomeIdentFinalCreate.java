@@ -1,6 +1,6 @@
 package tnt.egts.parser.commontasks;
 
-import tnt.egts.parser.data.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.ResponseDataStorage;
 import tnt.egts.parser.errors.NumberArrayDataException;
 
 /**
@@ -15,6 +15,6 @@ public interface OutcomeIdentFinalCreate {
      * @return
      * @throws NumberArrayDataException
      */
-    OutcomeIdent createResponse(IncomeDataStorage storage, byte code) throws NumberArrayDataException;
+    OutcomeIdent createResponse(ResponseDataStorage storage, byte code) throws NumberArrayDataException;
 
 }

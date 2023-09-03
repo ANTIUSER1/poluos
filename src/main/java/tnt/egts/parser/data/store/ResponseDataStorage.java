@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Builder
 @Data
 @ToString
-public class IncomeDataStorage implements Serializable {
+public class ResponseDataStorage implements Serializable {
 
     private byte[] fullPacket;
 

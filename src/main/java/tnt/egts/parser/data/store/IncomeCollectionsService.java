@@ -9,29 +9,29 @@ import java.util.List;
 @Service
 public class IncomeCollectionsService {
 
-    List<IncomeDataStorage> incomeDataStorageList = new ArrayList<>();
+    List<ResponseDataStorage> responseDataStorageList = new ArrayList<>();
 
-    public void add(IncomeDataStorage ds) {
-        incomeDataStorageList.add(ds);
+    public void add(ResponseDataStorage ds) {
+        responseDataStorageList.add(ds);
     }
 
     public void printCollectionAll(){
-        System.out.println(incomeDataStorageList);
+        System.out.println(responseDataStorageList);
     }
     public void printCollectionHeadersOnly(){
-        for( IncomeDataStorage  ids:incomeDataStorageList){
+        for( ResponseDataStorage ids: responseDataStorageList){
             System.out.println(ArrayUtils.arrayPrintToScreen(ids.getPackageHeader()));
         }
     }
 
     public void printCollectionSFRDOnly(){
-        for( IncomeDataStorage  ids:incomeDataStorageList){
+        for( ResponseDataStorage ids: responseDataStorageList){
             System.out.println(ArrayUtils.arrayPrintToScreen(ids.getPackagSFRD()));
         }
     }
 
     public void printCollectionFullPacket(){
-        for( IncomeDataStorage  ids:incomeDataStorageList){
+        for( ResponseDataStorage ids: responseDataStorageList){
             System.out.println(ArrayUtils.arrayPrintToScreen(ids.getFullPacket()));
         }
     }

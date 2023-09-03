@@ -46,9 +46,7 @@ public class StringFixedBeanNames {
     public static final String RESPONSE_DATA_STOREGE_SERVICE_BEAN =
             "ResponseDataStorageService" ;
 
-    public static final String BNSO_DATA_STORAGE_SERVICE_BEAN = "BNSODataStorageService";
-
-
+    
     private StringFixedBeanNames() {
     }
 }

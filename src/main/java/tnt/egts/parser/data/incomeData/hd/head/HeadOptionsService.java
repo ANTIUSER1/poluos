@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import tnt.egts.parser.commontasks.IncomeIdent;
 import tnt.egts.parser.commontasks.IncomeIdentCreate;
 import tnt.egts.parser.commontasks.NumberToBits;
-import tnt.egts.parser.data.store.IncomeDataStorage;
+import tnt.egts.parser.data.store.ResponseDataStorage;
 
 import tnt.egts.parser.errors.NumberArrayDataException;
 import tnt.egts.parser.util.ArrayUtils;
@@ -20,7 +20,7 @@ public class HeadOptionsService implements IncomeIdentCreate {
 private NumberToBits numberToBitsService;
 
     @Override
-    public IncomeIdent create(IncomeDataStorage storage) throws NumberArrayDataException {
+    public IncomeIdent create(ResponseDataStorage storage) throws NumberArrayDataException {
         log.info("Storage  income head options Data start  "
         +ArrayUtils.arrayPrintToScreen(storage.getPackageHeader()));
         byte income = storage.getPackageHeader()[2];
