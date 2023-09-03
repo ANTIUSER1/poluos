@@ -14,6 +14,7 @@ import java.io.Serializable;
 public class IncomeDataStorage implements Serializable {
 
     private byte[] fullPacket;
+
     /**
      * only PackageHead
      */
@@ -52,6 +53,7 @@ public class IncomeDataStorage implements Serializable {
      * FLD
      */
     private short frameDataLength;
+
     /**
      * PID
      */
@@ -60,31 +62,28 @@ public class IncomeDataStorage implements Serializable {
     /**
      * PT
      */
-    private  byte packageType;
+    private byte packageType;
 
     private byte sst;
 
     private ServiceType serviceType;
 
 
- private    boolean inGroup;
+    private boolean inGroup;
 
- private    boolean reciplentServiceOnDevice;
+    private boolean reciplentServiceOnDevice;
 
-private     boolean sourceServiceOnDevice;
+    private boolean sourceServiceOnDevice;
 
     private ProcessingPriority processingPriority;
 
-private     int lengthToRD;
+    private int lengthToRD;
 
-   private int sstIndex;
+    private int sstIndex;
 
-    public ServiceType getByTypeID(int id){
-        System.out.println();
-        System.out.println("SEARCH ServiceType by ID= "+id);
-        System.out.println();
-        for(ServiceType t:ServiceType.values()){
-            if(id==t.getSrvTypeNo())return t;
+    public ServiceType getByTypeID(int id) {
+        for (ServiceType t : ServiceType.values()) {
+            if (id == t.getSrvTypeNo()) return t;
         }
         return null;
     }

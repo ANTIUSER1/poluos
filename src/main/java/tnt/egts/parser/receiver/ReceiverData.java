@@ -37,7 +37,7 @@ public class ReceiverData implements Runnable {
     @Autowired
     CRC crc;
 
-    private OutcomeIdent preparingOutcomeAuthData;
+    private OutcomeIdent preparingIdentData;
 
     @Autowired
     @Qualifier (StringFixedBeanNames.RESPONSE_DATA_BEAN)
@@ -53,7 +53,12 @@ public class ReceiverData implements Runnable {
 
 
     @Autowired
-    private Storage storage;
+    @Qualifier(StringFixedBeanNames.RESPONSE_DATA_STOREGE_SERVICE_BEAN)
+    private Storage responseStorage;
+
+    @Autowired
+    @Qualifier(StringFixedBeanNames.BNSO_DATA_STORAGE_SERVICE_BEAN)
+    private Storage bnsoStorage;
 
     @Autowired
     @Qualifier (StringFixedBeanNames.BYTE_ANALIZER_FOR_EGTS_ERRORS_BEAN)
@@ -98,7 +103,8 @@ public class ReceiverData implements Runnable {
                 }
                 log.info("Response code " + responseCode);
                 dataTransform(income, (byte) responseCode);
-                responseData.sendResponse(socket, store, preparingOutcomeAuthData, (byte) responseCode);
+
+                responseData.sendResponse(socket, store, preparingIdentData, (byte) responseCode);
                 msgNO++;
 
                 System.out.println("INFO SFRD:");
@@ -146,8 +152,8 @@ public class ReceiverData implements Runnable {
 
     private void dataTransform(byte[] income, byte code) throws NumberArrayDataException {
         log.info("Storage  income Data start");
-        store = storage.create(income);
-        preparingOutcomeAuthData = outcomeIdentCreate.createResponse(store, code);
+        store = responseStorage.create(income);
+        preparingIdentData = outcomeIdentCreate.createResponse(store, code);
         log.info("Storage  income Data finish");
     }
 

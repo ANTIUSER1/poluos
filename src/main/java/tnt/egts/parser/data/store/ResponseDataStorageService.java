@@ -14,9 +14,9 @@ import tnt.egts.parser.util.ByteFixPositions;
 import tnt.egts.parser.util.NumberUtils;
 import tnt.egts.parser.util.StringFixedBeanNames;
 
-@Service
+@Service(StringFixedBeanNames.RESPONSE_DATA_STOREGE_SERVICE_BEAN)
 @Slf4j
-public class IncomeDataStorageService implements Storage {
+public class ResponseDataStorageService implements Storage {
 
     private static final int FLAG_INDEX = 4;
 
@@ -73,7 +73,7 @@ public class IncomeDataStorageService implements Storage {
         System.out.println("OUT.      RD-Start " + out.getLengthToRD());
         System.out.println("OUT.     sst index " + out.getSstIndex());
         System.out.println("OUT.     sst Value " + out.getPackagSFRD()[out.getSstIndex()]);
-        System.out.println("OUT.   SteviceType " + out.getServiceType()  );
+        System.out.println("OUT.   ServiceType " + out.getServiceType()  );
         System.out.println("OUT.        HEADER " + ArrayUtils.arrayPrintToScreen( out.getPackageHeader())  );
         System.out.println();
         System.out.println("OUT.  SFRD " + ArrayUtils.arrayPrintToScreen( out.getPackagSFRD())  );
