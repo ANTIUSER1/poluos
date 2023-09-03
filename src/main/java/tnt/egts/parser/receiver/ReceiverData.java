@@ -36,7 +36,7 @@ public class ReceiverData implements Runnable {
 
     @Autowired
     CRC crc;
- 
+
     private OutcomeIdent preparingOutcomeAuthData;
 
     @Autowired
